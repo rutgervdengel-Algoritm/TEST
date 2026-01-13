@@ -1,0 +1,15 @@
+tasks:
+  - name: Backend
+    init: cd backend && npm install
+    command: cd backend && npm run init-db && npm run seed && npm run dev
+
+  - name: Frontend
+    init: cd frontend && npm install
+    command: cd frontend && npm run dev
+
+ports:
+  - port: 3000
+    onOpen: open-browser
+    visibility: public
+  - port: 3001
+    visibility: public
