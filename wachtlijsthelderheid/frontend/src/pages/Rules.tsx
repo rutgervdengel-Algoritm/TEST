@@ -104,15 +104,12 @@ export default function Rules() {
       <div className="max-w-3xl">
         {/* Info card */}
         <div className="card p-4 bg-blue-50 border-blue-200 mb-6">
-          <div className="flex gap-3">
-            <span className="text-2xl">ℹ️</span>
-            <div>
-              <h3 className="font-medium text-blue-900">Hoe werken prioriteitsregels?</h3>
-              <p className="text-sm text-blue-800 mt-1">
-                Prioriteitsregels bepalen de volgorde op de wachtlijst. Elke regel heeft een percentage
-                dat aangeeft hoeveel gewicht deze regel heeft in de totale score. Het totaal moet 100% zijn.
-              </p>
-            </div>
+          <div>
+            <h3 className="font-medium text-blue-900">Hoe werken prioriteitsregels?</h3>
+            <p className="text-sm text-blue-800 mt-1">
+              Prioriteitsregels bepalen de volgorde op de wachtlijst. Elke regel heeft een percentage
+              dat aangeeft hoeveel gewicht deze regel heeft in de totale score. Het totaal moet 100% zijn.
+            </p>
           </div>
         </div>
 

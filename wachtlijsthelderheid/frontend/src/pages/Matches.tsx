@@ -85,7 +85,7 @@ export default function Matches() {
       {filteredMatches.length === 0 ? (
         <div className="card p-8 text-center">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">🤝</span>
+            <span className="text-xl font-bold text-gray-400">M</span>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">Geen voorstellen</h3>
           <p className="text-gray-500 mb-4">
@@ -106,15 +106,13 @@ export default function Matches() {
               <div className="card-body">
                 <div className="flex items-center gap-4">
                   {/* Status icon */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                    match.status === 'accepted' ? 'bg-green-100' :
-                    match.status === 'rejected' ? 'bg-red-100' :
-                    'bg-blue-100'
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg ${
+                    match.status === 'accepted' ? 'bg-green-100 text-green-600' :
+                    match.status === 'rejected' ? 'bg-red-100 text-red-600' :
+                    'bg-blue-100 text-blue-600'
                   }`}>
-                    <span className="text-2xl">
-                      {match.status === 'accepted' ? '✅' :
-                       match.status === 'rejected' ? '❌' : '⏳'}
-                    </span>
+                    {match.status === 'accepted' ? 'OK' :
+                     match.status === 'rejected' ? 'X' : '...'}
                   </div>
 
                   {/* Info */}

@@ -55,25 +55,21 @@ export default function Dashboard() {
         <StatCard
           label="Wachtenden"
           value={analytics?.totalWaiting || 0}
-          icon="👶"
           color="blue"
         />
         <StatCard
           label="Geplaatst"
           value={analytics?.acceptedCount || 0}
-          icon="✅"
           color="green"
         />
         <StatCard
           label="Gem. wachttijd"
           value={`${analytics?.avgWaitTimeDays || 0} dagen`}
-          icon="⏱️"
           color="yellow"
         />
         <StatCard
           label="Activiteit (7d)"
           value={analytics?.recentActivity || 0}
-          icon="📊"
           color="purple"
         />
       </div>
@@ -86,7 +82,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center group-hover:bg-primary-200 transition-colors">
-              <span className="text-2xl">➕</span>
+              <span className="text-xl font-bold text-primary-600">+</span>
             </div>
             <div>
               <h3 className="font-medium text-gray-900">Nieuwe inschrijving</h3>
@@ -101,7 +97,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
-              <span className="text-2xl">🎯</span>
+              <span className="text-xl font-bold text-green-600">P</span>
             </div>
             <div>
               <h3 className="font-medium text-gray-900">Plek beschikbaar</h3>
@@ -116,7 +112,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-              <span className="text-2xl">🤝</span>
+              <span className="text-xl font-bold text-yellow-600">M</span>
             </div>
             <div>
               <h3 className="font-medium text-gray-900">Bekijk matches</h3>
@@ -245,26 +241,24 @@ export default function Dashboard() {
 function StatCard({
   label,
   value,
-  icon,
   color,
 }: {
   label: string;
   value: string | number;
-  icon: string;
   color: 'blue' | 'green' | 'yellow' | 'purple';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-100',
-    green: 'bg-green-100',
-    yellow: 'bg-yellow-100',
-    purple: 'bg-purple-100',
+    blue: 'bg-blue-100 text-blue-600',
+    green: 'bg-green-100 text-green-600',
+    yellow: 'bg-yellow-100 text-yellow-600',
+    purple: 'bg-purple-100 text-purple-600',
   };
 
   return (
     <div className="card p-6">
       <div className="flex items-center gap-4">
-        <div className={`w-12 h-12 ${colorClasses[color]} rounded-xl flex items-center justify-center`}>
-          <span className="text-2xl">{icon}</span>
+        <div className={`w-12 h-12 ${colorClasses[color]} rounded-xl flex items-center justify-center font-bold text-lg`}>
+          {label.charAt(0)}
         </div>
         <div>
           <p className="text-2xl font-bold text-gray-900">{value}</p>

@@ -61,28 +61,24 @@ export default function Analytics() {
         <MetricCard
           label="Totaal wachtenden"
           value={analytics.totalWaiting}
-          icon="👶"
           color="blue"
           subtext="Actief op wachtlijst"
         />
         <MetricCard
           label="Geplaatst"
           value={analytics.acceptedCount}
-          icon="✅"
           color="green"
           subtext={`${conversionRate}% conversie`}
         />
         <MetricCard
           label="Gem. wachttijd"
           value={`${analytics.avgWaitTimeDays} dagen`}
-          icon="⏱️"
           color="yellow"
           subtext="Voor geplaatste kinderen"
         />
         <MetricCard
           label="Activiteit (7d)"
           value={analytics.recentActivity}
-          icon="📊"
           color="purple"
           subtext="Acties in logboek"
         />
@@ -181,12 +177,10 @@ export default function Analytics() {
           <div className="card-body">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InsightCard
-                icon="📈"
                 title="Piekdagen"
                 description={`${getMostPopularDay(analytics.dayDemand)} en ${getSecondMostPopularDay(analytics.dayDemand)} zijn het populairst. Overweeg hier extra capaciteit.`}
               />
               <InsightCard
-                icon="⏰"
                 title="Wachttijd"
                 description={
                   analytics.avgWaitTimeDays > 60
@@ -195,7 +189,6 @@ export default function Analytics() {
                 }
               />
               <InsightCard
-                icon="🎯"
                 title="Capaciteit"
                 description={`Met ${analytics.totalWaiting} wachtenden kun je vooruit plannen voor de komende periode.`}
               />
@@ -210,21 +203,19 @@ export default function Analytics() {
 function MetricCard({
   label,
   value,
-  icon,
   color,
   subtext,
 }: {
   label: string;
   value: string | number;
-  icon: string;
   color: 'blue' | 'green' | 'yellow' | 'purple';
   subtext: string;
 }) {
   const colorClasses = {
-    blue: 'bg-blue-100',
-    green: 'bg-green-100',
-    yellow: 'bg-yellow-100',
-    purple: 'bg-purple-100',
+    blue: 'bg-blue-100 text-blue-600',
+    green: 'bg-green-100 text-green-600',
+    yellow: 'bg-yellow-100 text-yellow-600',
+    purple: 'bg-purple-100 text-purple-600',
   };
 
   return (
@@ -235,8 +226,8 @@ function MetricCard({
           <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
           <p className="text-xs text-gray-400 mt-1">{subtext}</p>
         </div>
-        <div className={`w-12 h-12 ${colorClasses[color]} rounded-xl flex items-center justify-center`}>
-          <span className="text-2xl">{icon}</span>
+        <div className={`w-12 h-12 ${colorClasses[color]} rounded-xl flex items-center justify-center font-bold text-lg`}>
+          {label.charAt(0)}
         </div>
       </div>
     </div>
@@ -281,18 +272,18 @@ function FunnelStep({
 }
 
 function InsightCard({
-  icon,
   title,
   description,
 }: {
-  icon: string;
   title: string;
   description: string;
 }) {
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-xl">{icon}</span>
+        <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center font-bold text-sm">
+          {title.charAt(0)}
+        </div>
         <h3 className="font-medium text-gray-900">{title}</h3>
       </div>
       <p className="text-sm text-gray-600">{description}</p>

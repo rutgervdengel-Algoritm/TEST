@@ -4,14 +4,14 @@ import { logApi, getAuthToken } from '../utils/api';
 import type { DecisionLogEntry } from '../types';
 
 const ACTION_ICONS: Record<string, string> = {
-  entry_added: '➕',
-  entry_updated: '✏️',
-  entry_removed: '🗑️',
-  spot_created: '🎯',
-  proposal_sent: '📤',
-  proposal_accepted: '✅',
-  proposal_rejected: '❌',
-  rule_updated: '⚖️',
+  entry_added: '+',
+  entry_updated: 'E',
+  entry_removed: 'X',
+  spot_created: 'P',
+  proposal_sent: 'V',
+  proposal_accepted: 'OK',
+  proposal_rejected: 'X',
+  rule_updated: 'R',
 };
 
 const ACTION_COLORS: Record<string, string> = {
@@ -116,26 +116,23 @@ export default function DecisionLog() {
           <option value="all">Alle acties</option>
           {actionTypes.map(type => (
             <option key={type} value={type}>
-              {ACTION_ICONS[type] || '📝'} {type.replace(/_/g, ' ')}
+              {type.replace(/_/g, ' ')}
             </option>
           ))}
         </select>
         <button onClick={handleExport} className="btn-secondary whitespace-nowrap">
-          📥 Exporteer CSV
+          Exporteer CSV
         </button>
       </div>
 
       {/* Info banner */}
       <div className="card p-4 bg-blue-50 border-blue-200 mb-6">
-        <div className="flex gap-3">
-          <span className="text-xl">📜</span>
-          <div>
-            <h3 className="font-medium text-blue-900">Audit trail</h3>
-            <p className="text-sm text-blue-700">
-              Alle beslissingen en wijzigingen worden hier gelogd voor transparantie en verantwoording.
-              Totaal: {logs.length} logboekregels
-            </p>
-          </div>
+        <div>
+          <h3 className="font-medium text-blue-900">Audit trail</h3>
+          <p className="text-sm text-blue-700">
+            Alle beslissingen en wijzigingen worden hier gelogd voor transparantie en verantwoording.
+            Totaal: {logs.length} logboekregels
+          </p>
         </div>
       </div>
 
@@ -143,7 +140,7 @@ export default function DecisionLog() {
       {filteredLogs.length === 0 ? (
         <div className="card p-8 text-center">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">📜</span>
+            <span className="text-xl font-bold text-gray-400">L</span>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">Geen activiteit</h3>
           <p className="text-gray-500">
@@ -165,10 +162,10 @@ export default function DecisionLog() {
                     <div className="card-body py-3">
                       <div className="flex items-start gap-4">
                         {/* Icon */}
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-sm ${
                           ACTION_COLORS[log.action_type] || 'bg-gray-100 text-gray-700'
                         }`}>
-                          <span className="text-lg">{ACTION_ICONS[log.action_type] || '📝'}</span>
+                          {ACTION_ICONS[log.action_type] || '?'}
                         </div>
 
                         {/* Content */}

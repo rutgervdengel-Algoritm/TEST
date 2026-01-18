@@ -219,10 +219,6 @@ export default function ParentPortal() {
               <div className="text-right">
                 <p className="text-white/80 text-sm mb-1">Match-kans</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">
-                    {data.position.matchChance === 'high' ? '😊' :
-                     data.position.matchChance === 'medium' ? '😐' : '😟'}
-                  </span>
                   <span className="text-xl font-semibold capitalize">
                     {data.position.matchChance === 'high' ? 'Hoog' :
                      data.position.matchChance === 'medium' ? 'Gemiddeld' : 'Laag'}
@@ -246,7 +242,7 @@ export default function ParentPortal() {
           <div className="card mb-6 border-2 border-green-500">
             <div className="card-header bg-green-50">
               <h2 className="font-semibold text-green-800">
-                🎉 U heeft een voorstel!
+                U heeft een voorstel!
               </h2>
             </div>
             <div className="divide-y divide-gray-100">
@@ -376,7 +372,7 @@ export default function ParentPortal() {
               {editingPreferences ? (
                 <div className="space-y-4">
                   <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 mb-4">
-                    ⚠️ Let op: het aanpassen van uw voorkeuren kan uw positie op de wachtlijst beïnvloeden.
+                    Let op: het aanpassen van uw voorkeuren kan uw positie op de wachtlijst beïnvloeden.
                   </div>
 
                   <div>

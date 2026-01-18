@@ -179,7 +179,7 @@ export default function NewSpot() {
             <div className="card p-4 bg-green-50 border-green-200 mb-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🎯</span>
+                  <span className="text-xl font-bold text-green-600">P</span>
                 </div>
                 <div>
                   <h3 className="font-semibold text-green-900">Plek beschikbaar</h3>

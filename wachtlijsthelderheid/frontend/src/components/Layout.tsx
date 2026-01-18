@@ -17,13 +17,13 @@ export default function Layout({ children, title }: LayoutProps) {
   };
 
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: '📊' },
-    { path: '/waitlist', label: 'Wachtlijst', icon: '📋' },
-    { path: '/spots/new', label: 'Nieuwe Plek', icon: '➕' },
-    { path: '/matches', label: 'Matches', icon: '🤝' },
-    { path: '/rules', label: 'Prioriteitsregels', icon: '⚖️' },
-    { path: '/log', label: 'Beslissingslog', icon: '📜' },
-    { path: '/analytics', label: 'Analytics', icon: '📈' },
+    { path: '/', label: 'Dashboard' },
+    { path: '/waitlist', label: 'Wachtlijst' },
+    { path: '/spots/new', label: 'Nieuwe Plek' },
+    { path: '/matches', label: 'Matches' },
+    { path: '/rules', label: 'Prioriteitsregels' },
+    { path: '/log', label: 'Beslissingslog' },
+    { path: '/analytics', label: 'Analytics' },
   ];
 
   return (
@@ -52,7 +52,6 @@ export default function Layout({ children, title }: LayoutProps) {
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <span>{item.icon}</span>
               <span>{item.label}</span>
             </Link>
           ))}
