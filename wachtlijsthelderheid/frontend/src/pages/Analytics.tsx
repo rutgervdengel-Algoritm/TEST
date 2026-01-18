@@ -11,6 +11,40 @@ const DAY_LABELS: Record<Day, string> = {
   VR: 'Vrijdag',
 };
 
+// Icons
+const Icons = {
+  users: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  check: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  clock: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  activity: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+    </svg>
+  ),
+  chart: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  ),
+  lightbulb: (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    </svg>
+  ),
+};
+
 export default function Analytics() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +68,7 @@ export default function Analytics() {
     return (
       <Layout title="Analytics">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
         </div>
       </Layout>
     );
@@ -61,30 +95,30 @@ export default function Analytics() {
         <MetricCard
           label="Totaal wachtenden"
           value={analytics.totalWaiting}
-          color="blue"
           subtext="Actief op wachtlijst"
+          icon={Icons.users}
         />
         <MetricCard
           label="Geplaatst"
           value={analytics.acceptedCount}
-          color="green"
           subtext={`${conversionRate}% conversie`}
+          icon={Icons.check}
         />
         <MetricCard
           label="Gem. wachttijd"
-          value={`${analytics.avgWaitTimeDays} dagen`}
-          color="yellow"
+          value={`${analytics.avgWaitTimeDays}d`}
           subtext="Voor geplaatste kinderen"
+          icon={Icons.clock}
         />
         <MetricCard
           label="Activiteit (7d)"
           value={analytics.recentActivity}
-          color="purple"
           subtext="Acties in logboek"
+          icon={Icons.activity}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Day demand chart */}
         <div className="card">
           <div className="card-header">
@@ -102,12 +136,12 @@ export default function Analytics() {
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm font-medium text-gray-700">{DAY_LABELS[day]}</span>
                       <span className="text-sm text-gray-500">
-                        {count} aanvragen ({sharePercentage}%)
+                        {count} ({sharePercentage}%)
                       </span>
                     </div>
-                    <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-4 bg-gray-100 rounded overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-500"
+                        className="h-full bg-primary-500 rounded transition-all duration-500"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -171,7 +205,8 @@ export default function Analytics() {
 
         {/* Insights */}
         <div className="card lg:col-span-2">
-          <div className="card-header">
+          <div className="card-header flex items-center gap-2">
+            <span className="text-primary-500">{Icons.lightbulb}</span>
             <h2 className="font-semibold text-gray-900">Inzichten & aanbevelingen</h2>
           </div>
           <div className="card-body">
@@ -179,6 +214,7 @@ export default function Analytics() {
               <InsightCard
                 title="Piekdagen"
                 description={`${getMostPopularDay(analytics.dayDemand)} en ${getSecondMostPopularDay(analytics.dayDemand)} zijn het populairst. Overweeg hier extra capaciteit.`}
+                icon={Icons.chart}
               />
               <InsightCard
                 title="Wachttijd"
@@ -187,10 +223,12 @@ export default function Analytics() {
                     ? 'De gemiddelde wachttijd is vrij hoog. Meer plekken kunnen helpen.'
                     : 'De wachttijd is binnen redelijke grenzen.'
                 }
+                icon={Icons.clock}
               />
               <InsightCard
                 title="Capaciteit"
                 description={`Met ${analytics.totalWaiting} wachtenden kun je vooruit plannen voor de komende periode.`}
+                icon={Icons.users}
               />
             </div>
           </div>
@@ -203,31 +241,24 @@ export default function Analytics() {
 function MetricCard({
   label,
   value,
-  color,
   subtext,
+  icon,
 }: {
   label: string;
   value: string | number;
-  color: 'blue' | 'green' | 'yellow' | 'purple';
   subtext: string;
+  icon: React.ReactNode;
 }) {
-  const colorClasses = {
-    blue: 'bg-blue-100 text-blue-600',
-    green: 'bg-green-100 text-green-600',
-    yellow: 'bg-yellow-100 text-yellow-600',
-    purple: 'bg-purple-100 text-purple-600',
-  };
-
   return (
-    <div className="card p-6">
+    <div className="stat-card">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">{label}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
-          <p className="text-xs text-gray-400 mt-1">{subtext}</p>
+          <p className="stat-label">{label}</p>
+          <p className="stat-value">{value}</p>
+          <p className="stat-sublabel">{subtext}</p>
         </div>
-        <div className={`w-12 h-12 ${colorClasses[color]} rounded-xl flex items-center justify-center font-bold text-lg`}>
-          {label.charAt(0)}
+        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+          {icon}
         </div>
       </div>
     </div>
@@ -246,7 +277,7 @@ function FunnelStep({
   color: 'gray' | 'yellow' | 'green';
 }) {
   const colorClasses = {
-    gray: 'bg-gray-200',
+    gray: 'bg-gray-300',
     yellow: 'bg-yellow-400',
     green: 'bg-green-500',
   };
@@ -257,12 +288,12 @@ function FunnelStep({
         <span className="text-sm font-medium text-gray-700">{label}</span>
         <span className="text-sm font-bold text-gray-900">{value}</span>
       </div>
-      <div className="h-8 bg-gray-100 rounded-lg overflow-hidden">
+      <div className="h-6 bg-gray-100 rounded overflow-hidden">
         <div
-          className={`h-full ${colorClasses[color]} rounded-lg transition-all duration-500 flex items-center justify-end pr-2`}
-          style={{ width: `${percentage}%` }}
+          className={`h-full ${colorClasses[color]} rounded transition-all duration-500 flex items-center justify-end pr-2`}
+          style={{ width: `${Math.max(percentage, 5)}%` }}
         >
-          {percentage >= 10 && (
+          {percentage >= 15 && (
             <span className="text-xs font-medium text-white">{Math.round(percentage)}%</span>
           )}
         </div>
@@ -274,15 +305,17 @@ function FunnelStep({
 function InsightCard({
   title,
   description,
+  icon,
 }: {
   title: string;
   description: string;
+  icon: React.ReactNode;
 }) {
   return (
     <div className="p-4 bg-gray-50 rounded-lg">
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center font-bold text-sm">
-          {title.charAt(0)}
+        <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
+          {icon}
         </div>
         <h3 className="font-medium text-gray-900">{title}</h3>
       </div>

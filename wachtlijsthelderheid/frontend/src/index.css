@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-gray-100 text-gray-900 antialiased;
   }
 }
 
@@ -14,7 +14,7 @@
   }
 
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500;
   }
 
   .btn-secondary {
@@ -30,7 +30,7 @@
   }
 
   .input {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm;
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm bg-white;
   }
 
   .label {
@@ -38,11 +38,11 @@
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
   }
 
   .card-header {
-    @apply px-6 py-4 border-b border-gray-200;
+    @apply px-6 py-4 border-b border-gray-100;
   }
 
   .card-body {
@@ -71,6 +71,36 @@
 
   .badge-gray {
     @apply badge bg-gray-100 text-gray-800;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150;
+  }
+
+  .nav-item-active {
+    @apply nav-item bg-primary-500/20 text-primary-400;
+  }
+
+  .nav-item-inactive {
+    @apply nav-item text-gray-400 hover:bg-sidebar-light hover:text-gray-200;
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply bg-white rounded-lg border border-gray-200 p-5;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-500 mb-1;
+  }
+
+  .stat-value {
+    @apply text-2xl font-semibold text-gray-900;
+  }
+
+  .stat-sublabel {
+    @apply text-xs text-gray-400 mt-1;
   }
 }
 

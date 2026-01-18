@@ -117,54 +117,52 @@ export default function ParentPortal() {
   // Access code entry screen
   if (!urlCode || !data) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-4">
-              <span className="text-white font-bold text-2xl">WH</span>
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-primary-500 rounded-xl mb-4">
+              <span className="text-white font-bold text-xl">WH</span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Ouder Portal</h1>
-            <p className="text-gray-600 mt-1">Bekijk uw wachtlijstpositie</p>
+            <p className="text-gray-500 mt-1">Bekijk uw wachtlijstpositie</p>
           </div>
 
-          <div className="card">
-            <div className="card-body">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Voer uw toegangscode in</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Voer uw toegangscode in</h2>
 
-              {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
-                  {error}
-                </div>
-              )}
-
-              <form onSubmit={handleLookup} className="space-y-4">
-                <div>
-                  <label htmlFor="accessCode" className="label">Toegangscode</label>
-                  <input
-                    type="text"
-                    id="accessCode"
-                    value={accessCode}
-                    onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
-                    className="input font-mono text-lg tracking-wider"
-                    placeholder="WL-XXXXXX"
-                    required
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Deze code heeft u ontvangen bij uw inschrijving
-                  </p>
-                </div>
-
-                <button type="submit" disabled={loading} className="btn-primary w-full">
-                  {loading ? 'Laden...' : 'Bekijk mijn positie'}
-                </button>
-              </form>
-
-              <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-                <Link to="/login" className="text-sm text-primary-600 hover:text-primary-700">
-                  Beheerder? Log hier in
-                </Link>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                {error}
               </div>
+            )}
+
+            <form onSubmit={handleLookup} className="space-y-4">
+              <div>
+                <label htmlFor="accessCode" className="label">Toegangscode</label>
+                <input
+                  type="text"
+                  id="accessCode"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
+                  className="input font-mono text-lg tracking-wider"
+                  placeholder="WL-XXXXXX"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Deze code heeft u ontvangen bij uw inschrijving
+                </p>
+              </div>
+
+              <button type="submit" disabled={loading} className="btn-primary w-full">
+                {loading ? 'Laden...' : 'Bekijk mijn positie'}
+              </button>
+            </form>
+
+            <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+              <Link to="/login" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                Beheerder? Log hier in
+              </Link>
             </div>
           </div>
         </div>
@@ -174,13 +172,13 @@ export default function ParentPortal() {
 
   // Main portal view
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">WH</span>
               </div>
               <div>
@@ -200,7 +198,7 @@ export default function ParentPortal() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Position card */}
-        <div className="card mb-6 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
           <div className={`p-6 text-white ${
             data.position.matchChance === 'high' ? 'bg-gradient-to-r from-green-500 to-green-600' :
             data.position.matchChance === 'medium' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' :
@@ -239,8 +237,8 @@ export default function ParentPortal() {
 
         {/* Pending matches */}
         {data.pendingMatches.length > 0 && (
-          <div className="card mb-6 border-2 border-green-500">
-            <div className="card-header bg-green-50">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-green-500 mb-6">
+            <div className="px-6 py-4 bg-green-50 border-b border-green-200">
               <h2 className="font-semibold text-green-800">
                 U heeft een voorstel!
               </h2>
@@ -285,7 +283,7 @@ export default function ParentPortal() {
         {/* Rejection modal */}
         {respondingMatch && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl max-w-md w-full animate-fade-in">
+            <div className="bg-white rounded-lg max-w-md w-full animate-fade-in">
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Voorstel afwijzen
@@ -329,11 +327,11 @@ export default function ParentPortal() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Child info */}
-          <div className="card">
-            <div className="card-header">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-100">
               <h2 className="font-semibold text-gray-900">Inschrijving</h2>
             </div>
-            <div className="card-body space-y-3">
+            <div className="px-6 py-4 space-y-3">
               <div>
                 <p className="text-sm text-gray-500">Kind</p>
                 <p className="font-medium text-gray-900">{data.entry.child_name}</p>
@@ -356,23 +354,23 @@ export default function ParentPortal() {
           </div>
 
           {/* Preferences */}
-          <div className="card">
-            <div className="card-header flex items-center justify-between">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
               <h2 className="font-semibold text-gray-900">Uw voorkeuren</h2>
               {!editingPreferences && (
                 <button
                   onClick={() => setEditingPreferences(true)}
-                  className="text-sm text-primary-600 hover:text-primary-700"
+                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
                   Aanpassen
                 </button>
               )}
             </div>
-            <div className="card-body">
+            <div className="px-6 py-4">
               {editingPreferences ? (
                 <div className="space-y-4">
                   <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 mb-4">
-                    Let op: het aanpassen van uw voorkeuren kan uw positie op de wachtlijst beïnvloeden.
+                    Let op: het aanpassen van uw voorkeuren kan uw positie op de wachtlijst beinvloeden.
                   </div>
 
                   <div>
@@ -472,11 +470,11 @@ export default function ParentPortal() {
         </div>
 
         {/* Timeline */}
-        <div className="card mt-6">
-          <div className="card-header">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-6">
+          <div className="px-6 py-4 border-b border-gray-100">
             <h2 className="font-semibold text-gray-900">Tijdlijn</h2>
           </div>
-          <div className="card-body">
+          <div className="px-6 py-4">
             {data.timeline.length === 0 ? (
               <p className="text-gray-500 text-center py-4">Nog geen gebeurtenissen</p>
             ) : (
@@ -498,7 +496,7 @@ export default function ParentPortal() {
         </div>
 
         {/* Contact info */}
-        <div className="mt-6 p-4 bg-gray-100 rounded-lg text-center">
+        <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200 text-center">
           <p className="text-sm text-gray-600">
             Vragen over uw inschrijving? Neem contact op met {data.organization}.
           </p>
