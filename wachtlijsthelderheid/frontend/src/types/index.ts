@@ -1,10 +1,14 @@
 // Day types
 export type Day = 'MA' | 'DI' | 'WO' | 'DO' | 'VR';
 
+// Confirmation status (Feature 9)
+export type ConfirmationStatus = 'active' | 'pending_confirmation' | 'expired' | 'archived';
+
 // Organization type
 export interface Organization {
   id: number;
   name: string;
+  type?: 'KDV' | 'BSO';
   email: string;
   created_at?: string;
 }
@@ -22,14 +26,21 @@ export interface WaitlistEntry {
   org_id: number;
   parent_name: string;
   parent_email?: string;
+  parent_phone?: string;
   child_name: string;
   child_birthdate?: string;
   preferred_days: Day[];
   desired_start_date: string;
   notes?: string;
-  status: 'waiting' | 'matched' | 'accepted' | 'removed';
+  status: 'waiting' | 'matched' | 'accepted' | 'removed' | 'pending_confirmation' | 'expired' | 'archived';
   access_code: string;
   priority_factors: PriorityFactors;
+  // Feature 9: Interest confirmation
+  last_confirmed_at?: string;
+  confirmation_status?: ConfirmationStatus;
+  other_registrations?: string[];
+  archived_at?: string;
+  // Metadata
   created_at: string;
   updated_at: string;
 }
@@ -42,6 +53,7 @@ export interface PriorityRule {
   rule_type: 'registration_date' | 'sibling' | 'single_parent' | 'custom';
   weight_percentage: number;
   description?: string;
+  is_active?: boolean;
 }
 
 // Available spot
@@ -115,15 +127,18 @@ export interface Match {
   start_date?: string;
 }
 
-// Decision log entry
+// Decision log entry (Feature 5: Enhanced)
 export interface DecisionLogEntry {
   id: number;
   org_id: number;
   action_type: string;
+  category?: 'inschrijving' | 'matching' | 'regelwijziging' | 'archivering' | 'import_export' | 'system' | 'general';
   description: string;
   related_entry_id?: number;
   related_spot_id?: number;
   related_match_id?: number;
+  employee_name?: string;
+  reason?: string;
   metadata: Record<string, unknown>;
   created_at: string;
 }
@@ -136,9 +151,40 @@ export interface Analytics {
   avgWaitTimeDays: number;
   dayDemand: Record<Day, number>;
   recentActivity: number;
+  // Feature 9: Confirmation stats
+  confirmationStats?: {
+    active: number;
+    pending: number;
+    expired: number;
+    archived: number;
+  };
 }
 
-// Waitlist position
+// Position range (Feature 1)
+export interface PositionRange {
+  best: number;
+  worst: number;
+  explanation: string;
+}
+
+// Ahead by rule breakdown (Feature 2)
+export interface AheadByRule {
+  [ruleType: string]: {
+    ruleName: string;
+    count: number;
+    description: string;
+  };
+}
+
+// Enhanced ahead info
+export interface AheadInfo {
+  total: number;
+  withSibling: number;
+  withSingleParent?: number;
+  withOverlappingDays?: number;
+}
+
+// Waitlist position (Features 1 & 2)
 export interface WaitlistPosition {
   position: number;
   total: number;
@@ -157,10 +203,55 @@ export interface WaitlistPosition {
     }>;
     explanation: string;
   };
-  aheadInfo: {
-    total: number;
-    withSibling: number;
+  aheadInfo: AheadInfo;
+  // Feature 1: Position range
+  positionRange?: PositionRange;
+  // Feature 2: Ahead by rule breakdown
+  aheadByRule?: AheadByRule;
+}
+
+// Simulation result (Feature 4)
+export interface SimulationResult {
+  currentPosition: number;
+  simulatedPosition: number;
+  positionChange: number;
+  currentDays: Day[];
+  simulatedDays: Day[];
+  impact: {
+    direction: 'better' | 'worse' | 'same';
+    explanation: string;
+    competitionChange: string;
   };
+}
+
+// Fairness check result (Feature 8)
+export interface FairnessCheck {
+  isBalanced: boolean;
+  warnings: Array<{
+    ruleType: string;
+    ruleName: string;
+    weight: number;
+    message: string;
+    severity: 'warning' | 'critical';
+  }>;
+  suggestions: string[];
+  affectedAnalysis: {
+    totalEntries: number;
+    byRuleType: Record<string, { count: number; percentage: number }>;
+  };
+  simulationResults?: {
+    withCurrentRules: { position: number; entryId: number }[];
+    withBalancedRules: { position: number; entryId: number }[];
+  };
+}
+
+// Import result (Feature 7)
+export interface ImportResult {
+  success: boolean;
+  imported: number;
+  skipped: number;
+  errors: Array<{ row: number; error: string }>;
+  duplicates: Array<{ row: number; existingId: number; reason: string }>;
 }
 
 // Portal data (parent view)
@@ -170,6 +261,9 @@ export interface PortalData {
   position: WaitlistPosition;
   pendingMatches: Array<Match & { days: Day[] }>;
   timeline: DecisionLogEntry[];
+  // Feature 9: Confirmation info
+  confirmationNeeded?: boolean;
+  daysUntilExpiry?: number;
 }
 
 // Auth context

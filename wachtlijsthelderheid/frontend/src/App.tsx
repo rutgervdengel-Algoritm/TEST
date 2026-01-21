@@ -15,6 +15,7 @@ import Matches from './pages/Matches';
 import DecisionLog from './pages/DecisionLog';
 import Analytics from './pages/Analytics';
 import ParentPortal from './pages/ParentPortal';
+import ImportExport from './pages/ImportExport';
 
 // Auth Context
 interface AuthContextType extends AuthState {
@@ -155,6 +156,11 @@ export default function App() {
         <Route path="/analytics" element={
           <ProtectedRoute>
             <Analytics />
+          </ProtectedRoute>
+        } />
+        <Route path="/import-export" element={
+          <ProtectedRoute>
+            <ImportExport />
           </ProtectedRoute>
         } />
 

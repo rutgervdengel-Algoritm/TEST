@@ -138,21 +138,89 @@ export default function EntryForm() {
             </div>
           )}
 
-          {/* Access code display for existing entries */}
+          {/* Feature 6: Access code with QR code display */}
           {isEditing && accessCode && (
             <div className="card p-4 bg-primary-50 border-primary-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-primary-800">Toegangscode ouder portal</p>
-                  <p className="text-lg font-mono font-bold text-primary-900">{accessCode}</p>
+              <div className="flex items-start gap-6">
+                {/* QR Code */}
+                <div className="flex-shrink-0">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(
+                      `${window.location.origin}/portal/${accessCode}`
+                    )}`}
+                    alt={`QR code voor ${accessCode}`}
+                    className="w-[120px] h-[120px] rounded-lg border border-primary-200"
+                  />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => navigator.clipboard.writeText(accessCode)}
-                  className="btn-secondary text-sm"
-                >
-                  Kopiëren
-                </button>
+                {/* Info */}
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-primary-800">Toegangscode ouder portal</p>
+                  <p className="text-xl font-mono font-bold text-primary-900 mt-1">{accessCode}</p>
+                  <p className="text-xs text-primary-600 mt-2">
+                    Scan de QR-code of gebruik de code om in te loggen op het ouderportaal.
+                  </p>
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      type="button"
+                      onClick={() => navigator.clipboard.writeText(accessCode)}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Kopieer code
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigator.clipboard.writeText(`${window.location.origin}/portal/${accessCode}`)}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                      Kopieer link
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const printWindow = window.open('', '_blank');
+                        if (printWindow) {
+                          printWindow.document.write(`
+                            <!DOCTYPE html>
+                            <html>
+                              <head>
+                                <title>Toegangscode - ${accessCode}</title>
+                                <style>
+                                  body { font-family: system-ui, sans-serif; text-align: center; padding: 40px; }
+                                  h1 { font-size: 18px; color: #333; margin-bottom: 20px; }
+                                  .qr { margin: 20px auto; }
+                                  .code { font-family: monospace; font-size: 28px; font-weight: bold; margin: 20px 0; }
+                                  .info { color: #666; font-size: 14px; max-width: 300px; margin: 0 auto; }
+                                  .url { font-size: 12px; color: #999; margin-top: 20px; word-break: break-all; }
+                                </style>
+                              </head>
+                              <body>
+                                <h1>Ouder Portal Toegangscode</h1>
+                                <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${window.location.origin}/portal/${accessCode}`)}" />
+                                <div class="code">${accessCode}</div>
+                                <p class="info">Scan de QR-code of ga naar het ouderportaal en voer de bovenstaande code in.</p>
+                                <p class="url">${window.location.origin}/portal/${accessCode}</p>
+                              </body>
+                            </html>
+                          `);
+                          printWindow.document.close();
+                          printWindow.print();
+                        }
+                      }}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                      </svg>
+                      Print QR
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}

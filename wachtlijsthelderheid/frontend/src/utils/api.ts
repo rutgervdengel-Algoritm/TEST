@@ -46,22 +46,24 @@ export const authApi = {
       { method: 'POST', body: JSON.stringify({ email, password }) }
     ),
 
-  register: (name: string, email: string, password: string) =>
+  register: (name: string, email: string, password: string, type?: 'KDV' | 'BSO') =>
     fetchApi<{ token: string; organization: { id: number; name: string; email: string } }>(
       '/auth/register',
-      { method: 'POST', body: JSON.stringify({ name, email, password }) }
+      { method: 'POST', body: JSON.stringify({ name, email, password, type }) }
     ),
 
   me: () =>
-    fetchApi<{ organization: { id: number; name: string; email: string; created_at: string } }>(
+    fetchApi<{ organization: { id: number; name: string; email: string; type?: string; created_at: string } }>(
       '/auth/me'
     ),
 };
 
 // Entries API
 export const entriesApi = {
-  getAll: () =>
-    fetchApi<{ entries: import('../types').WaitlistEntry[] }>('/entries'),
+  getAll: (includeArchived?: boolean) =>
+    fetchApi<{ entries: import('../types').WaitlistEntry[] }>(
+      `/entries${includeArchived ? '?includeArchived=true' : ''}`
+    ),
 
   get: (id: number) =>
     fetchApi<{ entry: import('../types').WaitlistEntry }>(`/entries/${id}`),
@@ -80,6 +82,29 @@ export const entriesApi = {
 
   delete: (id: number) =>
     fetchApi<{ success: boolean }>(`/entries/${id}`, { method: 'DELETE' }),
+
+  // Feature 9: Reset confirmation status
+  resetConfirmation: (id: number) =>
+    fetchApi<{ entry: import('../types').WaitlistEntry }>(`/entries/${id}/reset-confirmation`, {
+      method: 'POST',
+    }),
+
+  // Feature 9: Bulk reset confirmation
+  bulkResetConfirmation: (ids: number[]) =>
+    fetchApi<{ updated: number }>('/entries/bulk-reset-confirmation', {
+      method: 'POST',
+      body: JSON.stringify({ ids }),
+    }),
+
+  // Feature 9: Restore archived entry
+  restore: (id: number) =>
+    fetchApi<{ entry: import('../types').WaitlistEntry }>(`/entries/${id}/restore`, {
+      method: 'POST',
+    }),
+
+  // Feature 9: Get archived entries
+  getArchived: () =>
+    fetchApi<{ entries: import('../types').WaitlistEntry[] }>('/entries/archived'),
 };
 
 // Rules API
@@ -92,6 +117,10 @@ export const rulesApi = {
       method: 'PUT',
       body: JSON.stringify({ rules }),
     }),
+
+  // Feature 8: Fairness check
+  checkFairness: () =>
+    fetchApi<import('../types').FairnessCheck>('/rules/fairness'),
 };
 
 // Spots API
@@ -129,12 +158,41 @@ export const matchesApi = {
     }),
 };
 
-// Decision log API
+// Decision log API (Feature 5: Enhanced)
 export const logApi = {
-  getAll: () =>
-    fetchApi<{ logs: import('../types').DecisionLogEntry[] }>('/log'),
+  getAll: (filters?: {
+    category?: string;
+    action_type?: string;
+    from_date?: string;
+    to_date?: string;
+    entry_id?: number;
+  }) => {
+    const params = new URLSearchParams();
+    if (filters?.category) params.append('category', filters.category);
+    if (filters?.action_type) params.append('action_type', filters.action_type);
+    if (filters?.from_date) params.append('from_date', filters.from_date);
+    if (filters?.to_date) params.append('to_date', filters.to_date);
+    if (filters?.entry_id) params.append('entry_id', String(filters.entry_id));
+    const queryString = params.toString();
+    return fetchApi<{ logs: import('../types').DecisionLogEntry[] }>(
+      `/log${queryString ? `?${queryString}` : ''}`
+    );
+  },
 
-  exportUrl: () => `${API_BASE}/log/export`,
+  exportUrl: (filters?: {
+    category?: string;
+    action_type?: string;
+    from_date?: string;
+    to_date?: string;
+  }) => {
+    const params = new URLSearchParams();
+    if (filters?.category) params.append('category', filters.category);
+    if (filters?.action_type) params.append('action_type', filters.action_type);
+    if (filters?.from_date) params.append('from_date', filters.from_date);
+    if (filters?.to_date) params.append('to_date', filters.to_date);
+    const queryString = params.toString();
+    return `${API_BASE}/log/export${queryString ? `?${queryString}` : ''}`;
+  },
 };
 
 // Analytics API
@@ -164,5 +222,70 @@ export const portalApi = {
         method: 'POST',
         body: JSON.stringify({ accept, rejection_reason: reason }),
       }
+    ),
+
+  // Feature 9: Confirm interest
+  confirmInterest: (accessCode: string, otherRegistrations?: string[]) =>
+    fetchApi<{ entry: import('../types').WaitlistEntry; message: string }>(
+      `/portal/${accessCode}/confirm-interest`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ other_registrations: otherRegistrations }),
+      }
+    ),
+
+  // Feature 4: Simulate preference change
+  simulate: (accessCode: string, newDays: string[]) =>
+    fetchApi<import('../types').SimulationResult>(
+      `/portal/${accessCode}/simulate`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ new_days: newDays }),
+      }
+    ),
+};
+
+// Import/Export API (Feature 7)
+export const importExportApi = {
+  exportWaitlist: () => `${API_BASE}/export/waitlist`,
+
+  getImportTemplate: () => `${API_BASE}/import/template`,
+
+  importWaitlist: async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const headers: HeadersInit = {};
+    if (authToken) {
+      headers['Authorization'] = `Bearer ${authToken}`;
+    }
+
+    const response = await fetch(`${API_BASE}/import/waitlist`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Import failed' }));
+      throw new Error(error.error || 'Import failed');
+    }
+
+    return response.json() as Promise<import('../types').ImportResult>;
+  },
+};
+
+// Seed/Demo API (Feature 10)
+export const seedApi = {
+  loadDemo: () =>
+    fetchApi<{ success: boolean; message: string; created: { entries: number; spots: number } }>(
+      '/seed/demo',
+      { method: 'POST' }
+    ),
+
+  reset: () =>
+    fetchApi<{ success: boolean; message: string }>(
+      '/seed/reset',
+      { method: 'POST' }
     ),
 };

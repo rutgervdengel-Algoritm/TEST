@@ -13,6 +13,7 @@ const schema = `
 CREATE TABLE IF NOT EXISTS organizations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
+  type TEXT DEFAULT 'KDV', -- KDV or BSO
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -24,16 +25,24 @@ CREATE TABLE IF NOT EXISTS waitlist_entries (
   org_id INTEGER NOT NULL,
   parent_name TEXT NOT NULL,
   parent_email TEXT,
+  parent_phone TEXT,
   child_name TEXT NOT NULL,
   child_birthdate DATE,
   preferred_days TEXT NOT NULL, -- JSON array like ["MA","WO","VR"]
   desired_start_date DATE NOT NULL,
   notes TEXT,
-  status TEXT DEFAULT 'waiting', -- waiting, matched, accepted, removed
+  status TEXT DEFAULT 'waiting', -- waiting, matched, accepted, removed, pending_confirmation, expired, archived
   access_code TEXT UNIQUE NOT NULL,
   priority_factors JSON, -- {"has_sibling": true, "single_parent": false, "custom": ""}
+  -- Feature 9: Interest confirmation
+  last_confirmed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  confirmation_status TEXT DEFAULT 'active', -- active, pending_confirmation, expired, archived
+  -- Feature 9: Multi-waitlist detection
+  other_registrations TEXT, -- JSON array of other daycare names
+  -- Metadata
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  archived_at DATETIME,
   FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE
 );
 
@@ -45,6 +54,7 @@ CREATE TABLE IF NOT EXISTS priority_rules (
   rule_type TEXT NOT NULL, -- 'registration_date', 'sibling', 'single_parent', 'custom'
   weight_percentage INTEGER NOT NULL DEFAULT 0,
   description TEXT,
+  is_active INTEGER DEFAULT 1,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE
 );
@@ -76,15 +86,18 @@ CREATE TABLE IF NOT EXISTS matches (
   FOREIGN KEY (entry_id) REFERENCES waitlist_entries(id) ON DELETE CASCADE
 );
 
--- Decision log for audit trail
+-- Decision log for audit trail (Feature 5: Enhanced)
 CREATE TABLE IF NOT EXISTS decision_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   org_id INTEGER NOT NULL,
-  action_type TEXT NOT NULL, -- 'entry_added', 'entry_updated', 'entry_removed', 'spot_created', 'proposal_sent', 'proposal_accepted', 'proposal_rejected', 'rule_updated'
+  action_type TEXT NOT NULL, -- 'entry_added', 'entry_updated', 'entry_removed', 'spot_created', 'proposal_sent', 'proposal_accepted', 'proposal_rejected', 'rule_updated', 'interest_confirmed', 'entry_expired', 'entry_archived', 'import', 'export'
+  category TEXT DEFAULT 'general', -- inschrijving, matching, regelwijziging, archivering, import_export, system
   description TEXT NOT NULL,
   related_entry_id INTEGER,
   related_spot_id INTEGER,
   related_match_id INTEGER,
+  employee_name TEXT, -- Feature 5: Who performed action
+  reason TEXT, -- Feature 5: Optional reason for decision
   metadata JSON,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE
@@ -93,16 +106,51 @@ CREATE TABLE IF NOT EXISTS decision_log (
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_entries_org ON waitlist_entries(org_id);
 CREATE INDEX IF NOT EXISTS idx_entries_status ON waitlist_entries(status);
+CREATE INDEX IF NOT EXISTS idx_entries_confirmation_status ON waitlist_entries(confirmation_status);
 CREATE INDEX IF NOT EXISTS idx_entries_access_code ON waitlist_entries(access_code);
+CREATE INDEX IF NOT EXISTS idx_entries_last_confirmed ON waitlist_entries(last_confirmed_at);
 CREATE INDEX IF NOT EXISTS idx_spots_org ON available_spots(org_id);
 CREATE INDEX IF NOT EXISTS idx_matches_spot ON matches(spot_id);
 CREATE INDEX IF NOT EXISTS idx_matches_entry ON matches(entry_id);
 CREATE INDEX IF NOT EXISTS idx_log_org ON decision_log(org_id);
+CREATE INDEX IF NOT EXISTS idx_log_category ON decision_log(category);
+CREATE INDEX IF NOT EXISTS idx_log_action_type ON decision_log(action_type);
+CREATE INDEX IF NOT EXISTS idx_log_created_at ON decision_log(created_at);
 `;
 
 // Execute schema
 db.exec(schema);
 
-console.log('✅ Database initialized successfully at:', dbPath);
+// Add new columns if they don't exist (for existing databases)
+const migrations = [
+  // Feature 9: Interest confirmation columns
+  `ALTER TABLE waitlist_entries ADD COLUMN last_confirmed_at DATETIME DEFAULT CURRENT_TIMESTAMP`,
+  `ALTER TABLE waitlist_entries ADD COLUMN confirmation_status TEXT DEFAULT 'active'`,
+  `ALTER TABLE waitlist_entries ADD COLUMN other_registrations TEXT`,
+  `ALTER TABLE waitlist_entries ADD COLUMN archived_at DATETIME`,
+  `ALTER TABLE waitlist_entries ADD COLUMN parent_phone TEXT`,
+  // Feature 5: Decision log enhancements
+  `ALTER TABLE decision_log ADD COLUMN category TEXT DEFAULT 'general'`,
+  `ALTER TABLE decision_log ADD COLUMN employee_name TEXT`,
+  `ALTER TABLE decision_log ADD COLUMN reason TEXT`,
+  // Organization type
+  `ALTER TABLE organizations ADD COLUMN type TEXT DEFAULT 'KDV'`,
+  // Priority rules active flag
+  `ALTER TABLE priority_rules ADD COLUMN is_active INTEGER DEFAULT 1`,
+];
+
+for (const migration of migrations) {
+  try {
+    db.exec(migration);
+  } catch (e) {
+    // Column already exists, ignore
+  }
+}
+
+// Update existing entries to have confirmation_status if null
+db.exec(`UPDATE waitlist_entries SET confirmation_status = 'active' WHERE confirmation_status IS NULL`);
+db.exec(`UPDATE waitlist_entries SET last_confirmed_at = created_at WHERE last_confirmed_at IS NULL`);
+
+console.log('Database initialized successfully at:', dbPath);
 
 db.close();
