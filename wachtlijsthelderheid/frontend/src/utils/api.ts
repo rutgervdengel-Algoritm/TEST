@@ -278,7 +278,20 @@ export const importExportApi = {
 // Seed/Demo API (Feature 10)
 export const seedApi = {
   loadDemo: () =>
-    fetchApi<{ success: boolean; message: string; created: { entries: number; spots: number } }>(
+    fetchApi<{
+      success: boolean;
+      message: string;
+      created?: { entries: number; spots: number };
+      stats?: {
+        total: number;
+        active: number;
+        pending: number;
+        expired: number;
+        archived: number;
+        withSibling: number;
+        withOtherRegistrations: number;
+      };
+    }>(
       '/seed/demo',
       { method: 'POST' }
     ),

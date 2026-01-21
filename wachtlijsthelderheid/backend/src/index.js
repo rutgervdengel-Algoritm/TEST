@@ -1414,6 +1414,10 @@ app.post('/api/seed/demo', authMiddleware, (req, res) => {
     res.json({
       success: true,
       message: `${entries.length} demo inschrijvingen toegevoegd`,
+      created: {
+        entries: entries.length,
+        spots: 0
+      },
       stats: {
         total: entries.length,
         active: entries.filter(e => e.confirmation_status === 'active').length,

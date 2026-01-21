@@ -142,7 +142,7 @@ export default function ImportExport() {
 
     try {
       const result = await seedApi.loadDemo();
-      setDemoSuccess(`Demo data geladen: ${result.created.entries} inschrijvingen, ${result.created.spots} plekken`);
+      setDemoSuccess(result.message || `Demo data geladen: ${result.created?.entries || 0} inschrijvingen`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Demo data laden mislukt');
     } finally {
