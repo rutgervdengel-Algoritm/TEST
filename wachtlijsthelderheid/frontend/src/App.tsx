@@ -15,6 +15,7 @@ import Matches from './pages/Matches';
 import DecisionLog from './pages/DecisionLog';
 import Analytics from './pages/Analytics';
 import ParentPortal from './pages/ParentPortal';
+import ParentDashboard from './pages/ParentDashboard';
 import ImportExport from './pages/ImportExport';
 
 // Auth Context
@@ -109,7 +110,13 @@ export default function App() {
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/portal" element={<ParentPortal />} />
+
+        {/* Parent portal routes */}
+        <Route path="/mijn-inschrijvingen" element={<ParentDashboard />} />
+        <Route path="/portaal" element={<ParentPortal />} />
+        <Route path="/portaal/:accessCode" element={<ParentPortal />} />
+        {/* Legacy routes (redirect) */}
+        <Route path="/portal" element={<Navigate to="/portaal" replace />} />
         <Route path="/portal/:accessCode" element={<ParentPortal />} />
 
         {/* Protected routes */}

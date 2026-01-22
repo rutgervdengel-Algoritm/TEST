@@ -206,6 +206,10 @@ export const portalApi = {
   get: (accessCode: string) =>
     fetchApi<import('../types').PortalData>(`/portal/${accessCode}`),
 
+  // Get all entries by email (multi-organization view)
+  getByEmail: (email: string) =>
+    fetchApi<import('../types').PortalMultiData>(`/portal/by-email/${encodeURIComponent(email)}`),
+
   updatePreferences: (
     accessCode: string,
     data: { preferred_days?: string[]; desired_start_date?: string; notes?: string }

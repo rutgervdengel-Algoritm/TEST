@@ -741,6 +741,92 @@ app.get('/api/matches', authMiddleware, (req, res) => {
 
 // ============ PARENT PORTAL ROUTES (NO AUTH) ============
 
+// Get all entries by email (Multi-organization overview)
+app.get('/api/portal/by-email/:email', (req, res) => {
+  try {
+    const email = req.params.email.toLowerCase();
+
+    // Find all entries with this email across all organizations
+    const entries = db.prepare(`
+      SELECT we.*, o.name as org_name, o.type as org_type
+      FROM waitlist_entries we
+      JOIN organizations o ON we.org_id = o.id
+      WHERE LOWER(we.parent_email) = ?
+      AND we.status != 'removed'
+      AND (we.confirmation_status != 'archived' OR we.confirmation_status IS NULL)
+      ORDER BY we.created_at DESC
+    `).all(email);
+
+    if (entries.length === 0) {
+      return res.status(404).json({ error: 'Geen inschrijvingen gevonden voor dit e-mailadres' });
+    }
+
+    // Enrich each entry with position and confirmation info
+    const enrichedEntries = entries.map(entry => {
+      const position = calculateWaitlistPosition(entry.id);
+
+      // Calculate confirmation info
+      const lastConfirmed = new Date(entry.last_confirmed_at || entry.created_at);
+      const now = new Date();
+      const daysSinceConfirmation = Math.floor((now.getTime() - lastConfirmed.getTime()) / (1000 * 60 * 60 * 24));
+      const daysUntilExpiry = Math.max(0, 30 - daysSinceConfirmation);
+
+      // Determine confirmation status
+      let confirmationStatus = entry.confirmation_status || 'active';
+      if (daysSinceConfirmation >= 60) {
+        confirmationStatus = 'expired';
+      } else if (daysSinceConfirmation >= 30) {
+        confirmationStatus = 'pending_confirmation';
+      }
+
+      // Check for pending matches
+      const pendingMatches = db.prepare(`
+        SELECT COUNT(*) as count FROM matches
+        WHERE entry_id = ? AND status = 'proposed'
+      `).get(entry.id).count;
+
+      return {
+        id: entry.id,
+        accessCode: entry.access_code,
+        childName: entry.child_name,
+        parentName: entry.parent_name,
+        organization: {
+          id: entry.org_id,
+          name: entry.org_name,
+          type: entry.org_type
+        },
+        preferredDays: JSON.parse(entry.preferred_days || '[]'),
+        desiredStartDate: entry.desired_start_date,
+        status: entry.status,
+        position: {
+          current: position.position,
+          total: position.total,
+          range: position.positionRange,
+          matchChance: position.matchChance
+        },
+        confirmation: {
+          status: confirmationStatus,
+          lastConfirmed: entry.last_confirmed_at || entry.created_at,
+          daysSinceConfirmation,
+          daysUntilExpiry,
+          needsConfirmation: daysSinceConfirmation >= 30
+        },
+        pendingMatches,
+        createdAt: entry.created_at
+      };
+    });
+
+    res.json({
+      email,
+      entries: enrichedEntries,
+      totalEntries: enrichedEntries.length
+    });
+  } catch (error) {
+    console.error('Portal by-email error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Get entry by access code (Feature 1, 2, 3: enhanced with position range and rule breakdown)
 app.get('/api/portal/:accessCode', (req, res) => {
   try {

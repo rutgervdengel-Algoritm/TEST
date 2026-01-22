@@ -107,7 +107,7 @@ export default function ParentPortal() {
   function handleLookup(e: React.FormEvent) {
     e.preventDefault();
     if (accessCode.trim()) {
-      navigate(`/portal/${accessCode.trim().toUpperCase()}`);
+      navigate(`/portaal/${accessCode.trim().toUpperCase()}`);
     }
   }
 
@@ -255,10 +255,21 @@ export default function ParentPortal() {
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-              <Link to="/login" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                Beheerder? Log hier in
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-center text-sm text-gray-500 mb-3">
+                Meerdere inschrijvingen?
+              </p>
+              <Link
+                to="/mijn-inschrijvingen"
+                className="block w-full text-center py-2 px-4 border border-primary-200 rounded-lg text-primary-600 hover:bg-primary-50 font-medium text-sm mb-4"
+              >
+                Bekijk al mijn inschrijvingen
               </Link>
+              <div className="text-center">
+                <Link to="/login" className="text-sm text-gray-500 hover:text-gray-700">
+                  Beheerder? Log hier in
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -274,34 +285,47 @@ export default function ParentPortal() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+              <Link
+                to="/mijn-inschrijvingen"
+                className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
+              >
                 <span className="text-white font-bold">WH</span>
-              </div>
+              </Link>
               <div>
                 <h1 className="font-semibold text-gray-900">{data.organization}</h1>
-                <p className="text-sm text-gray-500">Wachtlijst portaal</p>
+                <p className="text-sm text-gray-500">
+                  {data.organizationType === 'BSO' ? 'Buitenschoolse opvang' : 'Kinderdagverblijf'}
+                </p>
               </div>
             </div>
-            <button
-              onClick={() => navigate('/portal')}
-              className="text-sm text-gray-500 hover:text-gray-700"
-            >
-              Uitloggen
-            </button>
+            <div className="flex items-center gap-4">
+              <Link
+                to="/mijn-inschrijvingen"
+                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+              >
+                Alle inschrijvingen
+              </Link>
+              <button
+                onClick={() => navigate('/portaal')}
+                className="text-sm text-gray-500 hover:text-gray-700"
+              >
+                Uitloggen
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Feature 9: Confirmation banner */}
-        {data.confirmationNeeded && (
+        {/* Feature 9: Confirmation banner - using confirmationInfo */}
+        {data.confirmationInfo?.confirmationNeeded && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
             <div className="flex items-start gap-3">
               <span className="text-yellow-600 mt-0.5">{Icons.warning}</span>
               <div className="flex-1">
                 <h3 className="font-medium text-yellow-800">Bevestig uw interesse</h3>
                 <p className="text-sm text-yellow-700 mt-1">
-                  Uw inschrijving verloopt over {data.daysUntilExpiry} dagen.
+                  Uw inschrijving verloopt binnenkort.
                   Bevestig dat u nog steeds geinteresseerd bent om op de wachtlijst te blijven.
                 </p>
                 <button
@@ -311,6 +335,29 @@ export default function ParentPortal() {
                   Interesse bevestigen
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation status banner - show when active */}
+        {data.confirmationInfo && !data.confirmationInfo.confirmationNeeded && data.confirmationInfo.status === 'active' && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-green-600">{Icons.check}</span>
+                <div>
+                  <h3 className="font-medium text-green-800">Inschrijving actief</h3>
+                  <p className="text-sm text-green-700">
+                    Verloopt over {Math.max(0, 30 - data.confirmationInfo.daysSinceConfirmation)} dagen
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowConfirmModal(true)}
+                className="text-sm text-green-700 hover:text-green-800 font-medium"
+              >
+                Nu vernieuwen
+              </button>
             </div>
           </div>
         )}
@@ -859,21 +906,6 @@ export default function ParentPortal() {
             </div>
           </div>
         </div>
-
-        {/* Feature 9: Confirm button if not urgent but available */}
-        {!data.confirmationNeeded && data.entry.confirmation_status === 'active' && (
-          <div className="mt-6">
-            <button
-              onClick={() => setShowConfirmModal(true)}
-              className="w-full p-4 bg-white rounded-lg border border-gray-200 text-center hover:border-primary-300 transition-colors"
-            >
-              <span className="text-sm text-gray-600">
-                Interesse nog steeds actueel?{' '}
-                <span className="text-primary-600 font-medium">Bevestig hier</span>
-              </span>
-            </button>
-          </div>
-        )}
 
         {/* Timeline */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-6">

@@ -258,12 +258,57 @@ export interface ImportResult {
 export interface PortalData {
   entry: WaitlistEntry;
   organization: string;
+  organizationType?: string;
   position: WaitlistPosition;
   pendingMatches: Array<Match & { days: Day[] }>;
   timeline: DecisionLogEntry[];
   // Feature 9: Confirmation info
+  confirmationInfo?: {
+    lastConfirmed: string;
+    daysSinceConfirmation: number;
+    confirmationNeeded: boolean;
+    status: ConfirmationStatus;
+  };
   confirmationNeeded?: boolean;
   daysUntilExpiry?: number;
+}
+
+// Portal entry summary (for multi-organization view)
+export interface PortalEntrySummary {
+  id: number;
+  accessCode: string;
+  childName: string;
+  parentName: string;
+  organization: {
+    id: number;
+    name: string;
+    type: string;
+  };
+  preferredDays: Day[];
+  desiredStartDate: string;
+  status: string;
+  position: {
+    current: number;
+    total: number;
+    range?: PositionRange;
+    matchChance: 'high' | 'medium' | 'low';
+  };
+  confirmation: {
+    status: ConfirmationStatus;
+    lastConfirmed: string;
+    daysSinceConfirmation: number;
+    daysUntilExpiry: number;
+    needsConfirmation: boolean;
+  };
+  pendingMatches: number;
+  createdAt: string;
+}
+
+// Multi-organization portal data
+export interface PortalMultiData {
+  email: string;
+  entries: PortalEntrySummary[];
+  totalEntries: number;
 }
 
 // Auth context
