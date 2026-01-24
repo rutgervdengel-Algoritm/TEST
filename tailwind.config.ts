@@ -52,7 +52,7 @@ const config: Config = {
         },
         background: {
           DEFAULT: '#FFFFFF',
-          secondary: '#F5F3F7',
+          secondary: '#F3F0F7', // More lavender/purple tinted
           tertiary: '#F8F6FA',
         },
         badge: {

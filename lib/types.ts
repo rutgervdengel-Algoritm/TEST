@@ -22,6 +22,9 @@ export interface QuoteFormData {
 export interface Provider {
   id: string;
   name: string;
+  logo?: string; // Emoji or icon for demo
+  rating?: number; // Star rating (e.g., 7.1)
+  reviewCount?: number; // Number of reviews (e.g., 446)
   basePremiumDog: number;
   basePremiumCat: number;
   coverageMultipliers: {

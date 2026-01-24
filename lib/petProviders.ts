@@ -4,6 +4,9 @@ export const providers: Provider[] = [
   {
     id: 'ohra',
     name: 'OHRA',
+    logo: '🛡️',
+    rating: 7.1,
+    reviewCount: 446,
     basePremiumDog: 28.5,
     basePremiumCat: 22.0,
     coverageMultipliers: {
@@ -53,6 +56,9 @@ export const providers: Provider[] = [
   {
     id: 'figo',
     name: 'Figo Pet',
+    logo: '🐾',
+    rating: 7.5,
+    reviewCount: 3391,
     basePremiumDog: 32.0,
     basePremiumCat: 24.5,
     coverageMultipliers: {
@@ -102,6 +108,9 @@ export const providers: Provider[] = [
   {
     id: 'unive',
     name: 'Univé',
+    logo: '🏠',
+    rating: 7.3,
+    reviewCount: 892,
     basePremiumDog: 29.5,
     basePremiumCat: 23.0,
     coverageMultipliers: {

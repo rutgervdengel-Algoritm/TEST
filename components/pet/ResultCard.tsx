@@ -45,48 +45,66 @@ export function ResultCard({ quote }: ResultCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-all p-6 border border-border">
-        {/* Top Badge (Independer style) */}
+      <div className="relative">
+        {/* Top Badge - Outside card */}
         {topBadge && (
-          <div className="mb-4 -mt-2 -mx-2">
-            <span className="inline-block px-3 py-1.5 text-xs font-semibold rounded-lg bg-badge-blue text-badge-blue-dark">
+          <div className="mb-2">
+            <span className="inline-block px-3 py-1.5 text-xs font-semibold rounded-md bg-badge-blue text-badge-blue-dark">
               {topBadge}
             </span>
           </div>
         )}
 
-        {/* Header with badges */}
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-xl font-semibold text-text-primary mb-2">
-              {provider.name}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {provider.badges.map((badge, index) => (
-                <span
-                  key={index}
-                  className={`inline-block px-3 py-1 text-xs font-medium rounded-full border ${getBadgeColor(
-                    badge
-                  )}`}
-                >
-                  {badge}
-                </span>
-              ))}
+        <div className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-all p-6 border border-border">
+          {/* Header with logo and rating */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start gap-3 flex-1">
+              {/* Logo */}
+              {provider.logo && (
+                <div className="text-4xl flex-shrink-0">{provider.logo}</div>
+              )}
+
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-text-primary mb-1">
+                  {provider.name}
+                </h3>
+
+                {/* Star Rating */}
+                {provider.rating && (
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-orange-500 text-sm">⭐</span>
+                    <span className="font-bold text-text-primary">{provider.rating}</span>
+                    {provider.reviewCount && (
+                      <span className="text-xs text-text-secondary">({provider.reviewCount})</span>
+                    )}
+                  </div>
+                )}
+
+                {/* Badges */}
+                <div className="flex flex-wrap gap-2">
+                  {provider.badges.map((badge, index) => (
+                    <span
+                      key={index}
+                      className={`inline-block px-3 py-1 text-xs font-medium rounded-full border ${getBadgeColor(
+                        badge
+                      )}`}
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Premium */}
-        <div className="bg-background-secondary rounded-xl p-4 mb-6">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-text-primary">
-              €{monthlyPremium.toFixed(2)}
+        {/* Premium - Independer style with LARGE number */}
+        <div className="flex items-center justify-end mb-6">
+          <div className="text-right">
+            <div className="text-5xl font-extrabold text-text-primary leading-none">
+              €{monthlyPremium.toFixed(2).replace('.', ',')}
             </div>
-            <div className="text-sm text-text-secondary mt-1">
+            <div className="text-xs text-text-secondary mt-1">
               per maand
-            </div>
-            <div className="text-xs text-text-secondary mt-0.5">
-              €{yearlyPremium.toFixed(2)} per jaar
             </div>
           </div>
         </div>
@@ -115,18 +133,30 @@ export function ResultCard({ quote }: ResultCardProps) {
 
         {/* CTAs */}
         <div className="space-y-3">
-          <Button className="w-full" size="lg">
-            Vraag aan
-          </Button>
-          <Button
-            variant="ghost"
-            className="w-full flex items-center justify-center gap-2"
-            size="sm"
-          >
-            <span>Polisvoorwaarden</span>
-            <ExternalLink className="w-3 h-3" />
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              size="lg"
+              className="flex-1"
+              onClick={() => setShowDetails(true)}
+            >
+              + Meer info
+            </Button>
+            <Button className="flex-1" size="lg">
+              Vraag aan
+            </Button>
+          </div>
+
+          {/* Vergelijk checkbox - Independer style */}
+          <label className="flex items-center gap-2 cursor-pointer py-2">
+            <input
+              type="checkbox"
+              className="w-4 h-4 rounded border-2 border-border text-primary focus:ring-2 focus:ring-primary"
+            />
+            <span className="text-sm text-text-secondary">Vergelijk</span>
+          </label>
         </div>
+      </div>
       </div>
 
       <ProviderDetail quote={quote} open={showDetails} onOpenChange={setShowDetails} />

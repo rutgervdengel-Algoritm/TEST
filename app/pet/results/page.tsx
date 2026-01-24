@@ -6,6 +6,7 @@ import { QuoteFormData } from '@/lib/types';
 import { calculateAllQuotes, sortQuotes } from '@/lib/petPricing';
 import { Filters, FilterState } from '@/components/pet/Filters';
 import { ResultCard } from '@/components/pet/ResultCard';
+import { YourDataCard } from '@/components/pet/YourDataCard';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Info, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -144,20 +145,16 @@ function ResultsPageContent() {
               <ArrowLeft className="w-4 h-4" />
               Terug naar aanvraag
             </Link>
-            <h1 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">
               Resultaten voor jou
             </h1>
 
-            {/* Tabs - Independer style */}
-            <div className="flex gap-3 mb-4">
-              <button className="px-6 py-3 bg-primary text-white font-semibold rounded-t-lg text-sm">
+            {/* Tab - Independer style (only Aanbevolen) */}
+            <div className="mb-4">
+              <div className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-t-lg text-sm">
                 Aanbevolen
                 <span className="ml-2 text-xs opacity-90">De beste voor jou</span>
-              </button>
-              <button className="px-6 py-3 bg-white text-text-primary font-semibold rounded-t-lg text-sm border border-border hover:bg-background-secondary transition-colors">
-                Alle ({allQuotes.length})
-                <span className="ml-2 text-xs text-text-secondary">Vanaf {minPrice.toFixed(0)},40</span>
-              </button>
+              </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
@@ -202,30 +199,16 @@ function ResultsPageContent() {
           </div>
         )}
 
-        {/* Important Notice */}
-        <div className="bg-yellow-50 border-b border-yellow-200">
-          <div className="max-w-container mx-auto px-4 py-4">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-yellow-700 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-yellow-900">
-                  Let op wachttijden en uitsluitingen
-                </p>
-                <p className="text-sm text-yellow-800 mt-1">
-                  Controleer altijd de voorwaarden en wachttijden voordat je een verzekering
-                  afsluit. Pre-existente aandoeningen worden vaak niet gedekt.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content */}
         <main className="max-w-container mx-auto px-4 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters - Desktop Sticky */}
             <aside className="lg:w-80 flex-shrink-0">
               <div className="lg:sticky lg:top-8">
+                {/* Jouw gegevens card */}
+                <YourDataCard formData={formData} onEdit={handleEditQuote} />
+
+                {/* Filters */}
                 <div className="bg-white rounded-2xl shadow-card p-6">
                   <Filters
                     filters={filters}
