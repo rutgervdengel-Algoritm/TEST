@@ -16,7 +16,7 @@ export function ResultCard({ quote }: ResultCardProps) {
 
   const getBadgeColor = (badge: string) => {
     if (badge.includes('Aanrader') || badge.includes('Laagste')) {
-      return 'bg-accent/10 text-accent border-accent/20';
+      return 'bg-success/10 text-success border-success/20';
     }
     if (badge.includes('Populair')) {
       return 'bg-yellow-50 text-yellow-700 border-yellow-200';
@@ -27,9 +27,34 @@ export function ResultCard({ quote }: ResultCardProps) {
     return 'bg-gray-100 text-gray-700 border-gray-200';
   };
 
+  // Determine top badge based on provider badges
+  const getTopBadge = () => {
+    if (provider.badges.includes('Aanrader')) {
+      return 'Goedkoopste en beste keuze';
+    }
+    if (provider.badges.includes('Beste dekking')) {
+      return 'Beste met ruime vergoeding';
+    }
+    if (provider.badges.includes('Populair')) {
+      return 'Hoge app waardering';
+    }
+    return null;
+  };
+
+  const topBadge = getTopBadge();
+
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-shadow p-6 border border-border">
+      <div className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-all p-6 border border-border">
+        {/* Top Badge (Independer style) */}
+        {topBadge && (
+          <div className="mb-4 -mt-2 -mx-2">
+            <span className="inline-block px-3 py-1.5 text-xs font-semibold rounded-lg bg-badge-blue text-badge-blue-dark">
+              {topBadge}
+            </span>
+          </div>
+        )}
+
         {/* Header with badges */}
         <div className="flex items-start justify-between mb-4">
           <div>
@@ -71,7 +96,7 @@ export function ResultCard({ quote }: ResultCardProps) {
           <ul className="space-y-2">
             {provider.highlights.slice(0, 4).map((highlight, index) => (
               <li key={index} className="flex items-start gap-2 text-sm">
-                <Check className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+                <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                 <span className="text-text-secondary">{highlight}</span>
               </li>
             ))}
@@ -82,16 +107,16 @@ export function ResultCard({ quote }: ResultCardProps) {
         <div className="mb-6">
           <button
             onClick={() => setShowDetails(true)}
-            className="text-sm text-primary hover:underline font-medium"
+            className="text-sm text-primary hover:underline font-semibold"
           >
-            Bekijk details
+            + Meer info
           </button>
         </div>
 
         {/* CTAs */}
         <div className="space-y-3">
           <Button className="w-full" size="lg">
-            Ga verder
+            Vraag aan
           </Button>
           <Button
             variant="ghost"

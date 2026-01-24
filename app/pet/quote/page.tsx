@@ -11,7 +11,7 @@ function QuotePageContent() {
           <nav className="text-sm text-text-secondary mb-4">
             <span>Huisdierenverzekering</span>
           </nav>
-          <h1 className="text-3xl md:text-4xl font-semibold text-text-primary mb-3">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary mb-3">
             Vergelijk huisdierenverzekeringen
           </h1>
           <p className="text-lg text-text-secondary max-w-2xl">
@@ -25,8 +25,8 @@ function QuotePageContent() {
         <div className="max-w-container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-accent" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <h3 className="font-semibold text-text-primary text-sm">Binnen 1 minuut</h3>
@@ -36,8 +36,8 @@ function QuotePageContent() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                <ShieldCheck className="w-5 h-5 text-accent" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <h3 className="font-semibold text-text-primary text-sm">Geen verplichting</h3>
@@ -47,8 +47,8 @@ function QuotePageContent() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                <Lock className="w-5 h-5 text-accent" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Lock className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <h3 className="font-semibold text-text-primary text-sm">
@@ -66,7 +66,7 @@ function QuotePageContent() {
       {/* Main Content */}
       <main className="max-w-container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-card p-6 md:p-8">
+          <div className="bg-white rounded-card shadow-card p-6 md:p-8">
             <QuoteForm />
           </div>
         </div>

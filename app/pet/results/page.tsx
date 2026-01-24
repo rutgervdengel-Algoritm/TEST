@@ -124,7 +124,7 @@ function ResultsPageContent() {
     return (
       <div className="min-h-screen bg-background-secondary flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-text-secondary">Aanbiedingen laden...</p>
         </div>
       </div>
@@ -144,10 +144,23 @@ function ResultsPageContent() {
               <ArrowLeft className="w-4 h-4" />
               Terug naar aanvraag
             </Link>
-            <h1 className="text-3xl md:text-4xl font-semibold text-text-primary mb-2">
-              {filteredQuotes.length} huisdierenverzekering{filteredQuotes.length !== 1 ? 'en' : ''} gevonden
+            <h1 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+              Resultaten voor jou
             </h1>
-            <div className="flex flex-wrap items-center gap-2 text-text-secondary">
+
+            {/* Tabs - Independer style */}
+            <div className="flex gap-3 mb-4">
+              <button className="px-6 py-3 bg-primary text-white font-semibold rounded-t-lg text-sm">
+                Aanbevolen
+                <span className="ml-2 text-xs opacity-90">De beste voor jou</span>
+              </button>
+              <button className="px-6 py-3 bg-white text-text-primary font-semibold rounded-t-lg text-sm border border-border hover:bg-background-secondary transition-colors">
+                Alle ({allQuotes.length})
+                <span className="ml-2 text-xs text-text-secondary">Vanaf {minPrice.toFixed(0)},40</span>
+              </button>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
               <span>
                 Gebaseerd op: {formData.petType === 'dog' ? 'Hond' : 'Kat'}, {formData.breed},{' '}
                 {formData.age} jaar, {formData.postalCode}
