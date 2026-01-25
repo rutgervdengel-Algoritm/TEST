@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 // Get token from memory (will be set by auth context)
 let authToken: string | null = null;
