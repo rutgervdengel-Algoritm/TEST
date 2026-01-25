@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { CalculatedQuote } from '@/lib/types';
-import { Check, ExternalLink } from 'lucide-react';
+import { Check, Info as InfoIcon } from 'lucide-react';
 import { ProviderDetail } from './ProviderDetail';
 
 interface ResultCardProps {
@@ -13,19 +13,6 @@ interface ResultCardProps {
 export function ResultCard({ quote }: ResultCardProps) {
   const [showDetails, setShowDetails] = useState(false);
   const { provider, monthlyPremium, yearlyPremium } = quote;
-
-  const getBadgeColor = (badge: string) => {
-    if (badge.includes('Aanrader') || badge.includes('Laagste')) {
-      return 'bg-success/10 text-success border-success/20';
-    }
-    if (badge.includes('Populair')) {
-      return 'bg-yellow-50 text-yellow-700 border-yellow-200';
-    }
-    if (badge.includes('Beste')) {
-      return 'bg-primary/10 text-primary border-primary/20';
-    }
-    return 'bg-gray-100 text-gray-700 border-gray-200';
-  };
 
   // Determine top badge based on provider badges
   const getTopBadge = () => {
@@ -43,6 +30,16 @@ export function ResultCard({ quote }: ResultCardProps) {
 
   const topBadge = getTopBadge();
 
+  // Get provider parent company (mock data)
+  const getProviderInfo = () => {
+    const infoMap: Record<string, string> = {
+      'OHRA': 'OHRA is een verzekeringsmaatschappij van Achmea',
+      'Figo Pet': 'Figo Pet is een gespecialiseerde dierenverzekering',
+      'Univé': 'Univé is een coöperatieve verzekeraar',
+    };
+    return infoMap[provider.name] || '';
+  };
+
   return (
     <>
       <div className="relative">
@@ -55,23 +52,39 @@ export function ResultCard({ quote }: ResultCardProps) {
           </div>
         )}
 
-        <div className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-all p-6 border border-border">
-          {/* Header with logo and rating */}
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-start gap-3 flex-1">
-              {/* Logo */}
-              {provider.logo && (
-                <div className="text-4xl flex-shrink-0">{provider.logo}</div>
-              )}
+        <div className="bg-white rounded-card shadow-card hover:shadow-card-hover transition-all border border-border relative">
+          {/* Vergelijk checkbox - Top Left */}
+          <div className="absolute top-4 left-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 rounded border-2 border-border text-primary focus:ring-2 focus:ring-primary"
+              />
+              <span className="text-xs text-text-secondary">Vergelijk</span>
+            </label>
+          </div>
 
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-text-primary mb-1">
-                  {provider.name}
-                </h3>
+          <div className="p-6 pt-12">
+            {/* 2-Column Layout */}
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+
+              {/* LEFT COLUMN - Provider Info */}
+              <div className="flex-1 space-y-4">
+                {/* Logo + Name */}
+                <div className="flex items-start gap-3">
+                  {provider.logo && (
+                    <div className="text-4xl flex-shrink-0">{provider.logo}</div>
+                  )}
+                  <div>
+                    <h3 className="text-xl font-semibold text-text-primary">
+                      {provider.name}
+                    </h3>
+                  </div>
+                </div>
 
                 {/* Star Rating */}
                 {provider.rating && (
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2">
                     <span className="text-orange-500 text-sm">⭐</span>
                     <span className="font-bold text-text-primary">{provider.rating}</span>
                     {provider.reviewCount && (
@@ -80,83 +93,78 @@ export function ResultCard({ quote }: ResultCardProps) {
                   </div>
                 )}
 
-                {/* Badges */}
-                <div className="flex flex-wrap gap-2">
-                  {provider.badges.map((badge, index) => (
-                    <span
-                      key={index}
-                      className={`inline-block px-3 py-1 text-xs font-medium rounded-full border ${getBadgeColor(
-                        badge
-                      )}`}
-                    >
-                      {badge}
-                    </span>
+                {/* Info Items - Text format like Independer */}
+                <div className="space-y-2 text-sm">
+                  {provider.highlights.slice(0, 3).map((highlight, index) => (
+                    <div key={index} className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-text-secondary">
+                        {highlight.includes(':') ? (
+                          <>
+                            {highlight.split(':')[0]}:{' '}
+                            <span className="font-semibold text-text-primary underline decoration-success decoration-2">
+                              {highlight.split(':')[1]?.trim()}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="font-semibold text-text-primary underline decoration-success decoration-2">
+                            {highlight}
+                          </span>
+                        )}
+                      </span>
+                    </div>
                   ))}
+
+                  {/* App Rating as text item */}
+                  {provider.rating && (
+                    <div className="text-text-secondary text-sm">
+                      App waardering:{' '}
+                      <span className="font-semibold text-text-primary underline decoration-success decoration-2">
+                        {provider.rating} / 5
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Provider Info Line */}
+                {getProviderInfo() && (
+                  <div className="flex items-start gap-2 bg-badge-blue/30 rounded-md p-2 text-xs">
+                    <InfoIcon className="w-3 h-3 text-badge-blue-dark mt-0.5 flex-shrink-0" />
+                    <span className="text-badge-blue-dark">{getProviderInfo()}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* RIGHT COLUMN - Price + Buttons */}
+              <div className="lg:w-64 flex-shrink-0 space-y-4">
+                {/* Price Display */}
+                <div className="text-right lg:text-right">
+                  <div className="text-4xl lg:text-5xl font-extrabold text-text-primary leading-none">
+                    €{monthlyPremium.toFixed(2).replace('.', ',')}
+                  </div>
+                  <div className="text-[10px] text-text-secondary mt-1">
+                    per maand
+                  </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="space-y-2">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => setShowDetails(true)}
+                  >
+                    + Meer info
+                  </Button>
+                  <Button className="w-full" size="lg">
+                    Vraag aan
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
-
-        {/* Premium - Independer style with LARGE number */}
-        <div className="flex items-center justify-end mb-6">
-          <div className="text-right">
-            <div className="text-5xl font-extrabold text-text-primary leading-none">
-              €{monthlyPremium.toFixed(2).replace('.', ',')}
-            </div>
-            <div className="text-xs text-text-secondary mt-1">
-              per maand
-            </div>
-          </div>
         </div>
-
-        {/* Highlights */}
-        <div className="mb-6">
-          <ul className="space-y-2">
-            {provider.highlights.slice(0, 4).map((highlight, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm">
-                <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
-                <span className="text-text-secondary">{highlight}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Details Link */}
-        <div className="mb-6">
-          <button
-            onClick={() => setShowDetails(true)}
-            className="text-sm text-primary hover:underline font-semibold"
-          >
-            + Meer info
-          </button>
-        </div>
-
-        {/* CTAs */}
-        <div className="space-y-3">
-          <div className="flex gap-3">
-            <Button
-              variant="secondary"
-              size="lg"
-              className="flex-1"
-              onClick={() => setShowDetails(true)}
-            >
-              + Meer info
-            </Button>
-            <Button className="flex-1" size="lg">
-              Vraag aan
-            </Button>
-          </div>
-
-          {/* Vergelijk checkbox - Independer style */}
-          <label className="flex items-center gap-2 cursor-pointer py-2">
-            <input
-              type="checkbox"
-              className="w-4 h-4 rounded border-2 border-border text-primary focus:ring-2 focus:ring-primary"
-            />
-            <span className="text-sm text-text-secondary">Vergelijk</span>
-          </label>
-        </div>
-      </div>
       </div>
 
       <ProviderDetail quote={quote} open={showDetails} onOpenChange={setShowDetails} />

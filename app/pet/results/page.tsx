@@ -7,6 +7,7 @@ import { calculateAllQuotes, sortQuotes } from '@/lib/petPricing';
 import { Filters, FilterState } from '@/components/pet/Filters';
 import { ResultCard } from '@/components/pet/ResultCard';
 import { YourDataCard } from '@/components/pet/YourDataCard';
+import { EigenRisicoSection } from '@/components/pet/EigenRisicoSection';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Info, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -135,6 +136,33 @@ function ResultsPageContent() {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-background-secondary">
+        {/* Navigation Bar */}
+        <nav className="bg-white border-b border-border py-3">
+          <div className="max-w-container mx-auto px-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 text-sm">
+                <Link href="/pet/quote" className="text-text-secondary hover:text-primary">
+                  Gegevens
+                </Link>
+                <span className="text-text-secondary">—</span>
+                <span className="text-primary font-semibold">Resultaat</span>
+                <span className="text-text-secondary">—</span>
+                <span className="text-text-secondary">Aanvragen</span>
+              </div>
+              <div className="flex items-center gap-4 text-sm">
+                <button className="flex items-center gap-2 text-text-secondary hover:text-primary">
+                  <span>💬</span>
+                  <span>Stel je vraag</span>
+                </button>
+                <button className="flex items-center gap-2 text-text-secondary hover:text-primary">
+                  <span>👤</span>
+                  <span>Inloggen</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
         {/* Header */}
         <header className="bg-white border-b border-border">
           <div className="max-w-container mx-auto px-4 py-6">
@@ -207,6 +235,15 @@ function ResultsPageContent() {
               <div className="lg:sticky lg:top-8">
                 {/* Jouw gegevens card */}
                 <YourDataCard formData={formData} onEdit={handleEditQuote} />
+
+                {/* Eigen risico section */}
+                <EigenRisicoSection
+                  selectedDeductible={formData.deductible}
+                  onDeductibleChange={(value) => {
+                    // In a real app, this would update the formData and recalculate
+                    console.log('Deductible changed to:', value);
+                  }}
+                />
 
                 {/* Filters */}
                 <div className="bg-white rounded-2xl shadow-card p-6">
