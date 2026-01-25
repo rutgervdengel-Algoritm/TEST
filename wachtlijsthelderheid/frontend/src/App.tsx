@@ -83,7 +83,7 @@ export default function App() {
       const response = await authApi.me();
       setAuthState(prev => ({
         ...prev,
-        organization: response.organization,
+        organization: response.organization as Organization,
       }));
     } catch {
       logout();
