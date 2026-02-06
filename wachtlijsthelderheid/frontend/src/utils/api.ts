@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = 'https://test-production-621f.up.railway.app/api';
 
 // Get token from memory (will be set by auth context)
 let authToken: string | null = null;
