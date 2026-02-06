@@ -1,8 +1,0 @@
-{
-  "buildCommand": "cd wachtlijsthelderheid/frontend && npm install && npm run build",
-  "outputDirectory": "wachtlijsthelderheid/frontend/dist",
-  "framework": "vite",
-  "env": {
-    "VITE_API_URL": "https://test-production-621f.up.railway.app/api"
-  }
-}
