@@ -1,0 +1,94 @@
+name: CI - Regression Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wachtlijsthelderheid/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'wachtlijsthelderheid/**'
+
+jobs:
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wachtlijsthelderheid/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: wachtlijsthelderheid/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type check
+        run: npm run typecheck
+
+      - name: Build for production
+        run: npm run build
+
+      - name: Run build tests
+        run: npm test
+
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wachtlijsthelderheid/backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: wachtlijsthelderheid/backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Initialize database
+        run: npm run init-db
+
+      - name: Start server and run tests
+        run: |
+          npm start &
+          sleep 5
+          npm test
+        env:
+          PORT: 3001
+          API_URL: http://localhost:3001
+
+  summary:
+    name: Test Summary
+    needs: [frontend-tests, backend-tests]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.frontend-tests.result }}" == "success" ] && [ "${{ needs.backend-tests.result }}" == "success" ]; then
+            echo "All tests passed!"
+            exit 0
+          else
+            echo "Some tests failed"
+            echo "Frontend: ${{ needs.frontend-tests.result }}"
+            echo "Backend: ${{ needs.backend-tests.result }}"
+            exit 1
+          fi
