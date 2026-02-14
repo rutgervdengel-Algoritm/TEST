@@ -11,6 +11,7 @@ const {
   simulatePreferenceChange,
   checkRulesFairness
 } = require('./matching');
+const parentRoutes = require('./parentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -1542,6 +1543,9 @@ app.post('/api/seed/reset', authMiddleware, (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Parent routes (ouder standalone mode)
+app.use('/api/parent', parentRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -14,6 +14,11 @@ let testOrgId = null;
 let testEntryId = null;
 let testAccessCode = null;
 
+// Parent standalone test state
+let parentToken = null;
+let testParentId = null;
+let testStandaloneRegId = null;
+
 // Helper function for API calls
 async function apiCall(method, endpoint, body = null, token = null) {
   return new Promise((resolve, reject) => {
@@ -194,6 +199,197 @@ const tests = [
     run: async () => {
       const res = await apiCall('GET', '/api/entries');
       assert.strictEqual(res.status, 401, 'Should reject without token');
+    },
+  },
+  // ===== PARENT STANDALONE TESTS =====
+  {
+    name: 'Parent - Register new parent account',
+    run: async () => {
+      const uniqueEmail = `parent-${Date.now()}@test.nl`;
+      const res = await apiCall('POST', '/api/parent/register', {
+        email: uniqueEmail,
+        password: 'ouder123',
+        name: 'Test Ouder',
+        phone: '06-12345678',
+      });
+      assert.strictEqual(res.status, 200, `Expected 200, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.ok(res.body.token, 'Should return auth token');
+      assert.ok(res.body.user, 'Should return user');
+      assert.strictEqual(res.body.user.name, 'Test Ouder', 'Name should match');
+      parentToken = res.body.token;
+      testParentId = res.body.user.id;
+    },
+  },
+  {
+    name: 'Parent - Login with credentials',
+    run: async () => {
+      // First register a new user to test login
+      const uniqueEmail = `parent-login-${Date.now()}@test.nl`;
+      await apiCall('POST', '/api/parent/register', {
+        email: uniqueEmail,
+        password: 'login123',
+        name: 'Login Test',
+      });
+
+      const res = await apiCall('POST', '/api/parent/login', {
+        email: uniqueEmail,
+        password: 'login123',
+      });
+      assert.strictEqual(res.status, 200, 'Should login successfully');
+      assert.ok(res.body.token, 'Should return token');
+    },
+  },
+  {
+    name: 'Parent - Get current user (me)',
+    run: async () => {
+      const res = await apiCall('GET', '/api/parent/me', null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should return current user');
+      assert.ok(res.body.user, 'Should have user');
+      assert.strictEqual(res.body.user.id, testParentId, 'Should return correct user');
+    },
+  },
+  {
+    name: 'Parent - Create standalone registration',
+    run: async () => {
+      const res = await apiCall('POST', '/api/parent/registrations', {
+        organization_name: 'Test Kinderdagverblijf De Zonnetjes',
+        organization_email: 'info@dezonnetjes.nl',
+        organization_phone: '020-1234567',
+        organization_address: 'Teststraat 123, Amsterdam',
+        child_name: 'Emma',
+        child_birthdate: '2024-03-15',
+        preferred_days: ['MA', 'DI', 'DO'],
+        desired_start_date: '2026-09-01',
+        registration_date: '2025-01-15',
+        notes: 'Test inschrijving via regressietest',
+        status: 'waiting',
+      }, parentToken);
+      assert.strictEqual(res.status, 200, `Expected 200, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.ok(res.body.registration, 'Should return registration');
+      assert.strictEqual(res.body.registration.child_name, 'Emma', 'Child name should match');
+      testStandaloneRegId = res.body.registration.id;
+    },
+  },
+  {
+    name: 'Parent - Get all registrations',
+    run: async () => {
+      const res = await apiCall('GET', '/api/parent/registrations', null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should return registrations');
+      assert.ok(Array.isArray(res.body.registrations), 'Should return array');
+      assert.ok(res.body.registrations.length > 0, 'Should have at least one registration');
+    },
+  },
+  {
+    name: 'Parent - Get single registration',
+    run: async () => {
+      const res = await apiCall('GET', `/api/parent/registrations/${testStandaloneRegId}`, null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should return registration');
+      assert.strictEqual(res.body.registration.id, testStandaloneRegId, 'Should return correct registration');
+      assert.ok(Array.isArray(res.body.emails), 'Should include emails array');
+    },
+  },
+  {
+    name: 'Parent - Update registration',
+    run: async () => {
+      const res = await apiCall('PUT', `/api/parent/registrations/${testStandaloneRegId}`, {
+        notes: 'Bijgewerkte notities',
+        preferred_days: ['MA', 'WO', 'VR'],
+      }, parentToken);
+      assert.strictEqual(res.status, 200, 'Should update registration');
+      assert.strictEqual(res.body.registration.notes, 'Bijgewerkte notities', 'Notes should be updated');
+    },
+  },
+  {
+    name: 'Parent - Get email preview',
+    run: async () => {
+      const res = await apiCall('GET', `/api/parent/registrations/${testStandaloneRegId}/email-preview`, null, parentToken);
+      assert.strictEqual(res.status, 200, `Should return email preview, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.ok(res.body.to, 'Should have recipient');
+      assert.ok(res.body.subject, 'Should have subject');
+      assert.ok(res.body.body, 'Should have body');
+    },
+  },
+  {
+    name: 'Parent - Send confirmation (preview mode)',
+    run: async () => {
+      const res = await apiCall('POST', `/api/parent/registrations/${testStandaloneRegId}/confirm`, null, parentToken);
+      assert.strictEqual(res.status, 200, `Expected 200, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.ok(res.body.message, 'Should return message');
+      assert.ok(res.body.email, 'Should return email info');
+    },
+  },
+  {
+    name: 'Parent - Update email template',
+    run: async () => {
+      const customTemplate = 'Beste {organisatie},\n\nHierbij bevestig ik mijn inschrijving voor {kind_naam}.\n\nMet vriendelijke groet';
+      const res = await apiCall('PUT', `/api/parent/registrations/${testStandaloneRegId}/template`, {
+        template: customTemplate,
+      }, parentToken);
+      assert.strictEqual(res.status, 200, `Should update template, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.strictEqual(res.body.template, customTemplate, 'Template should match');
+    },
+  },
+  {
+    name: 'Parent - Get dashboard stats',
+    run: async () => {
+      const res = await apiCall('GET', '/api/parent/dashboard', null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should return dashboard');
+      assert.ok(res.body.registrations, 'Should have registrations stats');
+      assert.ok(typeof res.body.registrations.total === 'number', 'Should have total count');
+      assert.ok(typeof res.body.needsConfirmation === 'number', 'Should have needsConfirmation count');
+    },
+  },
+  {
+    name: 'Parent - Link access code (invalid code)',
+    run: async () => {
+      const res = await apiCall('POST', `/api/parent/registrations/${testStandaloneRegId}/link`, {
+        accessCode: 'WL-INVALID',
+      }, parentToken);
+      // Should fail with invalid code
+      assert.strictEqual(res.status, 404, 'Should reject invalid access code');
+    },
+  },
+  {
+    name: 'Parent - Get email history',
+    run: async () => {
+      const res = await apiCall('GET', `/api/parent/registrations/${testStandaloneRegId}/emails`, null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should return email history');
+      assert.ok(Array.isArray(res.body.emails), 'Should return array');
+      // Should have at least one email from earlier confirmation test
+      assert.ok(res.body.emails.length > 0, 'Should have at least one email');
+    },
+  },
+  {
+    name: 'Parent - Delete registration',
+    run: async () => {
+      // Create a new registration to delete
+      const createRes = await apiCall('POST', '/api/parent/registrations', {
+        organization_name: 'Te Verwijderen KDV',
+        child_name: 'Test Kind',
+      }, parentToken);
+      const deleteId = createRes.body.registration.id;
+
+      const res = await apiCall('DELETE', `/api/parent/registrations/${deleteId}`, null, parentToken);
+      assert.strictEqual(res.status, 200, 'Should delete registration');
+
+      // Verify it's gone
+      const verifyRes = await apiCall('GET', `/api/parent/registrations/${deleteId}`, null, parentToken);
+      assert.strictEqual(verifyRes.status, 404, 'Should not find deleted registration');
+    },
+  },
+  {
+    name: 'Parent - Reject without token',
+    run: async () => {
+      const res = await apiCall('GET', '/api/parent/registrations');
+      assert.strictEqual(res.status, 401, 'Should reject without token');
+    },
+  },
+  {
+    name: 'Parent - Reject with org token',
+    run: async () => {
+      // Try to access parent routes with organization token
+      const res = await apiCall('GET', '/api/parent/registrations', null, authToken);
+      assert.strictEqual(res.status, 401, 'Should reject organization token');
     },
   },
 ];

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import type { Organization, AuthState } from './types';
 import { authApi, setAuthToken } from './utils/api';
 
-// Pages
+// Pages - Organization
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -17,6 +17,12 @@ import Analytics from './pages/Analytics';
 import ParentPortal from './pages/ParentPortal';
 import ParentDashboard from './pages/ParentDashboard';
 import ImportExport from './pages/ImportExport';
+
+// Pages - Parent Standalone
+import ParentLogin from './pages/ParentLogin';
+import ParentDashboardPage from './pages/ParentDashboardPage';
+import ParentRegistrationForm from './pages/ParentRegistrationForm';
+import ParentRegistrationDetail from './pages/ParentRegistrationDetail';
 
 // Auth Context
 interface AuthContextType extends AuthState {
@@ -111,13 +117,20 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Parent portal routes */}
+        {/* Parent portal routes (organization-linked) */}
         <Route path="/mijn-inschrijvingen" element={<ParentDashboard />} />
         <Route path="/portaal" element={<ParentPortal />} />
         <Route path="/portaal/:accessCode" element={<ParentPortal />} />
         {/* Legacy routes (redirect) */}
         <Route path="/portal" element={<Navigate to="/portaal" replace />} />
         <Route path="/portal/:accessCode" element={<ParentPortal />} />
+
+        {/* Parent Standalone routes (independent parent accounts) */}
+        <Route path="/ouder/login" element={<ParentLogin />} />
+        <Route path="/ouder/dashboard" element={<ParentDashboardPage />} />
+        <Route path="/ouder/inschrijving/nieuw" element={<ParentRegistrationForm />} />
+        <Route path="/ouder/inschrijving/:id" element={<ParentRegistrationDetail />} />
+        <Route path="/ouder/inschrijving/:id/bewerken" element={<ParentRegistrationForm />} />
 
         {/* Protected routes */}
         <Route path="/" element={

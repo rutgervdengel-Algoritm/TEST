@@ -103,6 +103,56 @@ CREATE TABLE IF NOT EXISTS decision_log (
   FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE
 );
 
+-- Parent users (ouder accounts - standalone)
+CREATE TABLE IF NOT EXISTS parent_users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  phone TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Standalone registrations (niet-gekoppelde inschrijvingen)
+CREATE TABLE IF NOT EXISTS standalone_registrations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  parent_user_id INTEGER NOT NULL,
+  organization_name TEXT NOT NULL,
+  organization_email TEXT,
+  organization_address TEXT,
+  organization_phone TEXT,
+  child_name TEXT NOT NULL,
+  child_birthdate DATE,
+  preferred_days TEXT, -- JSON array like ["MA","WO","VR"]
+  desired_start_date DATE,
+  registration_date DATE,
+  notes TEXT,
+  status TEXT DEFAULT 'waiting', -- waiting, offered, accepted, rejected
+  email_template TEXT,
+  last_confirmation_sent DATETIME,
+  -- Koppeling met organisatie (NULL = standalone, gevuld = gekoppeld)
+  linked_entry_id INTEGER,
+  linked_org_id INTEGER,
+  linked_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (parent_user_id) REFERENCES parent_users(id) ON DELETE CASCADE,
+  FOREIGN KEY (linked_entry_id) REFERENCES waitlist_entries(id) ON DELETE SET NULL,
+  FOREIGN KEY (linked_org_id) REFERENCES organizations(id) ON DELETE SET NULL
+);
+
+-- Confirmation emails log
+CREATE TABLE IF NOT EXISTS confirmation_emails (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  registration_id INTEGER NOT NULL,
+  sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  recipient_email TEXT NOT NULL,
+  subject TEXT,
+  body TEXT,
+  status TEXT DEFAULT 'sent', -- sent, failed, preview
+  FOREIGN KEY (registration_id) REFERENCES standalone_registrations(id) ON DELETE CASCADE
+);
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_entries_org ON waitlist_entries(org_id);
 CREATE INDEX IF NOT EXISTS idx_entries_status ON waitlist_entries(status);
@@ -116,6 +166,10 @@ CREATE INDEX IF NOT EXISTS idx_log_org ON decision_log(org_id);
 CREATE INDEX IF NOT EXISTS idx_log_category ON decision_log(category);
 CREATE INDEX IF NOT EXISTS idx_log_action_type ON decision_log(action_type);
 CREATE INDEX IF NOT EXISTS idx_log_created_at ON decision_log(created_at);
+CREATE INDEX IF NOT EXISTS idx_parent_users_email ON parent_users(email);
+CREATE INDEX IF NOT EXISTS idx_standalone_reg_parent ON standalone_registrations(parent_user_id);
+CREATE INDEX IF NOT EXISTS idx_standalone_reg_linked ON standalone_registrations(linked_entry_id);
+CREATE INDEX IF NOT EXISTS idx_confirmation_emails_reg ON confirmation_emails(registration_id);
 `;
 
 // Execute schema
@@ -137,6 +191,8 @@ const migrations = [
   `ALTER TABLE organizations ADD COLUMN type TEXT DEFAULT 'KDV'`,
   // Priority rules active flag
   `ALTER TABLE priority_rules ADD COLUMN is_active INTEGER DEFAULT 1`,
+  // Parent user linking
+  `ALTER TABLE waitlist_entries ADD COLUMN parent_user_id INTEGER`,
 ];
 
 for (const migration of migrations) {

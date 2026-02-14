@@ -306,3 +306,154 @@ export const seedApi = {
       { method: 'POST' }
     ),
 };
+
+// ============================================
+// PARENT API (Ouder Standalone Mode)
+// ============================================
+
+export interface ParentUser {
+  id: number;
+  email: string;
+  name: string;
+  phone: string | null;
+  created_at?: string;
+}
+
+export interface StandaloneRegistration {
+  id: number;
+  parent_user_id: number;
+  organization_name: string;
+  organization_email: string | null;
+  organization_address: string | null;
+  organization_phone: string | null;
+  child_name: string;
+  child_birthdate: string | null;
+  preferred_days: string[];
+  desired_start_date: string | null;
+  registration_date: string | null;
+  notes: string | null;
+  status: 'waiting' | 'offered' | 'accepted' | 'rejected';
+  email_template: string | null;
+  last_confirmation_sent: string | null;
+  linked_entry_id: number | null;
+  linked_org_id: number | null;
+  linked_at: string | null;
+  created_at: string;
+  updated_at: string;
+  // Computed fields
+  isLinked?: boolean;
+  confirmationNeeded?: boolean;
+  last_sent?: string;
+  send_count?: number;
+}
+
+export interface ConfirmationEmail {
+  id: number;
+  registration_id: number;
+  sent_at: string;
+  recipient_email: string;
+  subject: string;
+  body: string;
+  status: 'sent' | 'failed' | 'preview';
+}
+
+export interface ParentDashboardStats {
+  registrations: {
+    total: number;
+    waiting: number;
+    offered: number;
+    accepted: number;
+    linked: number;
+  };
+  emails: {
+    total_emails: number;
+  };
+  needsConfirmation: number;
+}
+
+export const parentApi = {
+  // Auth
+  register: (data: { email: string; password: string; name: string; phone?: string }) =>
+    fetchApi<{ token: string; user: ParentUser }>(
+      '/parent/register',
+      { method: 'POST', body: JSON.stringify(data) }
+    ),
+
+  login: (email: string, password: string) =>
+    fetchApi<{ token: string; user: ParentUser }>(
+      '/parent/login',
+      { method: 'POST', body: JSON.stringify({ email, password }) }
+    ),
+
+  me: () =>
+    fetchApi<{ user: ParentUser }>('/parent/me'),
+
+  updateProfile: (data: { name?: string; phone?: string; currentPassword?: string; newPassword?: string }) =>
+    fetchApi<{ user: ParentUser }>(
+      '/parent/me',
+      { method: 'PUT', body: JSON.stringify(data) }
+    ),
+
+  // Registrations
+  getRegistrations: () =>
+    fetchApi<{ registrations: StandaloneRegistration[] }>('/parent/registrations'),
+
+  getRegistration: (id: number) =>
+    fetchApi<{ registration: StandaloneRegistration; emails: ConfirmationEmail[] }>(`/parent/registrations/${id}`),
+
+  createRegistration: (data: Partial<StandaloneRegistration>) =>
+    fetchApi<{ registration: StandaloneRegistration }>(
+      '/parent/registrations',
+      { method: 'POST', body: JSON.stringify(data) }
+    ),
+
+  updateRegistration: (id: number, data: Partial<StandaloneRegistration>) =>
+    fetchApi<{ registration: StandaloneRegistration }>(
+      `/parent/registrations/${id}`,
+      { method: 'PUT', body: JSON.stringify(data) }
+    ),
+
+  deleteRegistration: (id: number) =>
+    fetchApi<{ success: boolean }>(
+      `/parent/registrations/${id}`,
+      { method: 'DELETE' }
+    ),
+
+  // Email templates
+  updateTemplate: (id: number, template: string) =>
+    fetchApi<{ success: boolean; template: string }>(
+      `/parent/registrations/${id}/template`,
+      { method: 'PUT', body: JSON.stringify({ template }) }
+    ),
+
+  resetTemplate: (id: number) =>
+    fetchApi<{ success: boolean; template: string }>(
+      `/parent/registrations/${id}/template/reset`,
+      { method: 'POST' }
+    ),
+
+  getEmailPreview: (id: number) =>
+    fetchApi<{ to: string; subject: string; body: string; template: string }>(
+      `/parent/registrations/${id}/email-preview`
+    ),
+
+  sendConfirmation: (id: number) =>
+    fetchApi<{ success: boolean; message: string; email: { to: string; subject: string; body: string } }>(
+      `/parent/registrations/${id}/confirm`,
+      { method: 'POST' }
+    ),
+
+  getEmailHistory: (id: number) =>
+    fetchApi<{ emails: ConfirmationEmail[] }>(`/parent/registrations/${id}/emails`),
+
+  // Link access code
+  linkAccessCode: (id: number, accessCode: string) =>
+    fetchApi<{ success: boolean; message: string; linkedEntry: { id: number; organization: string; accessCode: string } }>(
+      `/parent/registrations/${id}/link`,
+      { method: 'POST', body: JSON.stringify({ accessCode }) }
+    ),
+
+  // Dashboard
+  getDashboard: () =>
+    fetchApi<ParentDashboardStats>('/parent/dashboard'),
+};
