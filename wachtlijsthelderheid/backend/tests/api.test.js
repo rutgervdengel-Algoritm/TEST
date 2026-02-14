@@ -302,8 +302,8 @@ const tests = [
   {
     name: 'Parent - Get email preview',
     run: async () => {
-      const res = await apiCall('GET', `/api/parent/email-preview/${testStandaloneRegId}`, null, parentToken);
-      assert.strictEqual(res.status, 200, 'Should return email preview');
+      const res = await apiCall('GET', `/api/parent/registrations/${testStandaloneRegId}/email-preview`, null, parentToken);
+      assert.strictEqual(res.status, 200, `Should return email preview, got ${res.status}: ${JSON.stringify(res.body)}`);
       assert.ok(res.body.to, 'Should have recipient');
       assert.ok(res.body.subject, 'Should have subject');
       assert.ok(res.body.body, 'Should have body');
@@ -312,7 +312,7 @@ const tests = [
   {
     name: 'Parent - Send confirmation (preview mode)',
     run: async () => {
-      const res = await apiCall('POST', `/api/parent/confirm/${testStandaloneRegId}`, null, parentToken);
+      const res = await apiCall('POST', `/api/parent/registrations/${testStandaloneRegId}/confirm`, null, parentToken);
       assert.strictEqual(res.status, 200, `Expected 200, got ${res.status}: ${JSON.stringify(res.body)}`);
       assert.ok(res.body.message, 'Should return message');
       assert.ok(res.body.email, 'Should return email info');
@@ -325,8 +325,8 @@ const tests = [
       const res = await apiCall('PUT', `/api/parent/registrations/${testStandaloneRegId}/template`, {
         template: customTemplate,
       }, parentToken);
-      assert.strictEqual(res.status, 200, 'Should update template');
-      assert.strictEqual(res.body.registration.email_template, customTemplate, 'Template should match');
+      assert.strictEqual(res.status, 200, `Should update template, got ${res.status}: ${JSON.stringify(res.body)}`);
+      assert.strictEqual(res.body.template, customTemplate, 'Template should match');
     },
   },
   {
