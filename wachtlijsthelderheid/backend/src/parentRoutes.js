@@ -506,6 +506,8 @@ router.get('/registrations/:id/email-preview', parentAuthMiddleware, (req, res) 
 // Send confirmation (currently just logs/saves - no actual sending)
 router.post('/registrations/:id/confirm', parentAuthMiddleware, (req, res) => {
   try {
+    const { customBody } = req.body || {};
+
     const registration = db.prepare(`
       SELECT sr.*, pu.name as parent_name
       FROM standalone_registrations sr
@@ -534,7 +536,8 @@ router.post('/registrations/:id/confirm', parentAuthMiddleware, (req, res) => {
 
     const lines = filledTemplate.split('\n');
     const subject = lines[0].replace('Onderwerp: ', '');
-    const body = lines.slice(2).join('\n');
+    // Use customBody if provided, otherwise use the generated body from template
+    const body = customBody || lines.slice(2).join('\n');
 
     // Log the email (Phase 1: preview only, no actual sending)
     db.prepare(`

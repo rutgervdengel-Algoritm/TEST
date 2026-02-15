@@ -437,10 +437,10 @@ export const parentApi = {
       `/parent/registrations/${id}/email-preview`
     ),
 
-  sendConfirmation: (id: number) =>
+  sendConfirmation: (id: number, customBody?: string) =>
     fetchApi<{ success: boolean; message: string; email: { to: string; subject: string; body: string } }>(
       `/parent/registrations/${id}/confirm`,
-      { method: 'POST' }
+      { method: 'POST', body: JSON.stringify({ customBody }) }
     ),
 
   getEmailHistory: (id: number) =>
