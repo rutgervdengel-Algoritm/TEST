@@ -14,6 +14,7 @@ export default function ParentRegistrationDetail() {
   // Email preview
   const [showPreview, setShowPreview] = useState(false);
   const [preview, setPreview] = useState<{ to: string; subject: string; body: string } | null>(null);
+  const [editedBody, setEditedBody] = useState('');
   const [loadingPreview, setLoadingPreview] = useState(false);
 
   // Template editor
@@ -60,6 +61,7 @@ export default function ParentRegistrationDetail() {
       setLoadingPreview(true);
       const result = await parentApi.getEmailPreview(parseInt(id));
       setPreview(result);
+      setEditedBody(result.body);
       setShowPreview(true);
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Preview laden mislukt');
@@ -71,7 +73,7 @@ export default function ParentRegistrationDetail() {
   const handleSendConfirmation = async () => {
     if (!id) return;
     try {
-      const result = await parentApi.sendConfirmation(parseInt(id));
+      const result = await parentApi.sendConfirmation(parseInt(id), editedBody);
       alert(result.message);
       loadRegistration(parseInt(id));
       setShowPreview(false);
@@ -324,9 +326,12 @@ export default function ParentRegistrationDetail() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-500">Bericht</label>
-                  <pre className="mt-1 text-gray-900 whitespace-pre-wrap font-sans text-sm bg-gray-50 p-4 rounded">
-                    {preview.body}
-                  </pre>
+                  <textarea
+                    value={editedBody}
+                    onChange={(e) => setEditedBody(e.target.value)}
+                    rows={12}
+                    className="mt-1 w-full text-gray-900 text-sm bg-gray-50 p-4 rounded border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-y"
+                  />
                 </div>
               </div>
 
