@@ -933,10 +933,12 @@ app.post('/api/portal/:accessCode/simulate', (req, res) => {
       return res.status(404).json({ error: 'Ongeldige toegangscode' });
     }
 
-    const { preferred_days, desired_start_date } = req.body;
+    // Accept both 'new_days' (from frontend) and 'preferred_days' for backwards compatibility
+    const { new_days, preferred_days, desired_start_date } = req.body;
+    const daysToSimulate = new_days || preferred_days;
 
     const simulation = simulatePreferenceChange(entry.id, {
-      preferred_days,
+      preferred_days: daysToSimulate,
       desired_start_date
     });
 
