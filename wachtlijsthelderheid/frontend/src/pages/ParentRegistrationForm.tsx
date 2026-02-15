@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { parentApi, setAuthToken, StandaloneRegistration } from '../utils/api';
+import {
+  ArrowLeft, Save, Building2, Mail, Phone, MapPin,
+  Baby, Calendar, Clock, FileText, CheckCircle
+} from 'lucide-react';
 
 const DAYS = ['MA', 'DI', 'WO', 'DO', 'VR'];
 const STATUS_OPTIONS = [
-  { value: 'waiting', label: 'Wachtend' },
-  { value: 'offered', label: 'Aangeboden' },
-  { value: 'accepted', label: 'Geaccepteerd' },
-  { value: 'rejected', label: 'Afgewezen' }
+  { value: 'waiting', label: 'Wachtend', icon: Clock },
+  { value: 'offered', label: 'Aangeboden', icon: CheckCircle },
+  { value: 'accepted', label: 'Geaccepteerd', icon: CheckCircle },
+  { value: 'rejected', label: 'Afgewezen', icon: CheckCircle }
 ];
 
 export default function ParentRegistrationForm() {
@@ -69,9 +73,11 @@ export default function ParentRegistrationForm() {
     }
   };
 
-  const handleDayToggle = (day: string) => {
+  const toggleDay = (day: string) => {
     setPreferredDays(prev =>
-      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+      prev.includes(day)
+        ? prev.filter(d => d !== day)
+        : [...prev, day]
     );
   };
 
@@ -110,17 +116,22 @@ export default function ParentRegistrationForm() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-600">Laden...</div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="max-w-3xl mx-auto px-4 py-4">
-          <Link to="/ouder/dashboard" className="text-teal-600 hover:text-teal-800 text-sm">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-4 md:px-6 py-4">
+          <Link
+            to="/ouder/dashboard"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors duration-200"
+          >
+            <ArrowLeft className="w-4 h-4" />
             Terug naar overzicht
           </Link>
           <h1 className="text-xl font-bold text-gray-900 mt-2">
@@ -129,115 +140,174 @@ export default function ParentRegistrationForm() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-4 md:px-6 py-8">
+        {/* Error */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-error-50 border border-error-100 text-error-600 px-4 py-3 rounded-sm mb-6">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
-          {/* Organization info */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Organisatie gegevens</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Naam kinderdagverblijf / BSO *
-                </label>
-                <input
-                  type="text"
-                  value={organizationName}
-                  onChange={(e) => setOrganizationName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  required
-                />
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Organization Section */}
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                <Building2 className="w-5 h-5 text-primary-600" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email organisatie
-                </label>
-                <input
-                  type="email"
-                  value={organizationEmail}
-                  onChange={(e) => setOrganizationEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Voor bevestigingsmail"
-                />
+                <h2 className="text-lg font-semibold text-gray-900">Organisatie</h2>
+                <p className="text-sm text-gray-600">Gegevens van het kinderdagverblijf</p>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Telefoon organisatie
-                </label>
-                <input
-                  type="tel"
-                  value={organizationPhone}
-                  onChange={(e) => setOrganizationPhone(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Organization Name */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Adres / Locatie
+                  Naam kinderdagverblijf <span className="text-error-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  value={organizationAddress}
-                  onChange={(e) => setOrganizationAddress(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Building2 className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={organizationName}
+                    onChange={(e) => setOrganizationName(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Bijv. Kinderdagverblijf De Zonnetjes"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    value={organizationEmail}
+                    onChange={(e) => setOrganizationEmail(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="info@kdv.nl"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Nodig voor bevestigingsmails</p>
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Telefoon
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    value={organizationPhone}
+                    onChange={(e) => setOrganizationPhone(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="020-1234567"
+                  />
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Adres
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <MapPin className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={organizationAddress}
+                    onChange={(e) => setOrganizationAddress(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Straat 123, 1234 AB Plaats"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Child info */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Kind gegevens</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Child Section */}
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-secondary-100 rounded-full flex items-center justify-center">
+                <Baby className="w-5 h-5 text-secondary-600" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Kind gegevens</h2>
+                <p className="text-sm text-gray-600">Informatie over je kind</p>
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Child Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Naam kind *
+                  Naam kind <span className="text-error-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  value={childName}
-                  onChange={(e) => setChildName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  required
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Baby className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={childName}
+                    onChange={(e) => setChildName(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Voornaam"
+                    required
+                  />
+                </div>
               </div>
+
+              {/* Birthdate */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Geboortedatum
                 </label>
-                <input
-                  type="date"
-                  value={childBirthdate}
-                  onChange={(e) => setChildBirthdate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="date"
+                    value={childBirthdate}
+                    onChange={(e) => setChildBirthdate(e.target.value)}
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
               </div>
-            </div>
-          </div>
 
-          {/* Preferences */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Voorkeuren</h2>
-            <div className="space-y-4">
-              <div>
+              {/* Preferred Days */}
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gewenste dagen
                 </label>
-                <div className="flex gap-2">
-                  {DAYS.map((day) => (
+                <div className="flex flex-wrap gap-2">
+                  {DAYS.map(day => (
                     <button
                       key={day}
                       type="button"
-                      onClick={() => handleDayToggle(day)}
-                      className={`px-4 py-2 rounded-md border ${
+                      onClick={() => toggleDay(day)}
+                      className={`px-4 py-2 rounded-sm font-medium text-sm transition-all duration-200 ${
                         preferredDays.includes(day)
-                          ? 'bg-teal-600 text-white border-teal-600'
-                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                          ? 'bg-primary-500 text-white shadow-sm'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       {day}
@@ -246,46 +316,82 @@ export default function ParentRegistrationForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Gewenste startdatum
-                  </label>
+              {/* Desired Start Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Gewenste startdatum
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar className="w-5 h-5 text-gray-400" />
+                  </div>
                   <input
                     type="date"
                     value={desiredStartDate}
                     onChange={(e) => setDesiredStartDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Inschrijfdatum
-                  </label>
+              </div>
+
+              {/* Registration Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Inschrijfdatum
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar className="w-5 h-5 text-gray-400" />
+                  </div>
                   <input
                     type="date"
                     value={registrationDate}
                     onChange={(e) => setRegistrationDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="h-11 w-full pl-10 pr-4 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
               </div>
+            </div>
+          </div>
 
+          {/* Status & Notes Section */}
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-success-100 rounded-full flex items-center justify-center">
+                <FileText className="w-5 h-5 text-success-600" />
+              </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <h2 className="text-lg font-semibold text-gray-900">Status & Notities</h2>
+                <p className="text-sm text-gray-600">Aanvullende informatie</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {/* Status */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Status
                 </label>
-                <select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                >
-                  {STATUS_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {STATUS_OPTIONS.map(opt => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setStatus(opt.value)}
+                      className={`px-4 py-3 rounded-sm font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                        status === opt.value
+                          ? 'bg-primary-500 text-white shadow-sm'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      <opt.icon className="w-4 h-4" />
+                      {opt.label}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
 
+              {/* Notes */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Notities
@@ -293,29 +399,36 @@ export default function ParentRegistrationForm() {
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Bijzonderheden, allergieën, etc."
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-sm border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-y"
+                  placeholder="Eventuele opmerkingen of bijzonderheden..."
                 />
               </div>
             </div>
           </div>
 
           {/* Submit */}
-          <div className="flex gap-4 pt-4">
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-50"
-            >
-              {saving ? 'Opslaan...' : isEdit ? 'Wijzigingen opslaan' : 'Inschrijving toevoegen'}
-            </button>
+          <div className="flex justify-end gap-3">
             <Link
               to="/ouder/dashboard"
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              className="px-6 py-3 rounded-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all duration-200"
             >
               Annuleren
             </Link>
+            <button
+              type="submit"
+              disabled={saving}
+              className="bg-primary-500 text-white px-6 py-3 rounded-sm font-medium hover:bg-primary-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-2"
+            >
+              {saving ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <Save className="w-5 h-5" />
+                  {isEdit ? 'Wijzigingen opslaan' : 'Inschrijving toevoegen'}
+                </>
+              )}
+            </button>
           </div>
         </form>
       </main>
