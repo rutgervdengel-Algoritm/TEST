@@ -287,4 +287,10 @@ async function seed() {
   console.log('\n✅ Database seeded successfully!');
 }
 
-seed().catch(console.error);
+// Export for use in initDb.js auto-seed
+module.exports = { seed };
+
+// Run directly if called as main script
+if (require.main === module) {
+  seed().catch(console.error);
+}

@@ -207,6 +207,21 @@ for (const migration of migrations) {
 db.exec(`UPDATE waitlist_entries SET confirmation_status = 'active' WHERE confirmation_status IS NULL`);
 db.exec(`UPDATE waitlist_entries SET last_confirmed_at = created_at WHERE last_confirmed_at IS NULL`);
 
-console.log('Database initialized successfully at:', dbPath);
+// Auto-seed: check if database is empty, if so run seed
+const orgCount = db.prepare('SELECT COUNT(*) as count FROM organizations').get().count;
 
-db.close();
+if (orgCount === 0) {
+  console.log('Database is empty, auto-seeding with demo data...');
+  db.close();
+
+  const { seed } = require('./seed');
+  seed().then(() => {
+    console.log('Database initialized and seeded successfully at:', dbPath);
+  }).catch((err) => {
+    console.error('Auto-seed failed:', err);
+    process.exit(1);
+  });
+} else {
+  console.log('Database initialized successfully at:', dbPath, `(${orgCount} organizations found, skipping seed)`);
+  db.close();
+}

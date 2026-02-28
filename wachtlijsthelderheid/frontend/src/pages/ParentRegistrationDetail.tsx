@@ -295,7 +295,7 @@ export default function ParentRegistrationDetail() {
           <div className="bg-green-50 border border-green-200 rounded-lg p-6">
             <h2 className="font-semibold text-green-900 mb-2">Gekoppeld aan organisatie</h2>
             <p className="text-green-800 text-sm mb-4">
-              Deze inschrijving is gekoppeld aan een organisatie die WachtlijstHelderheid gebruikt.
+              Deze inschrijving is gekoppeld aan een organisatie die Wait gebruikt.
               Je kunt nu je positie, kansen en meer bekijken in het ouder portaal.
             </p>
             <Link

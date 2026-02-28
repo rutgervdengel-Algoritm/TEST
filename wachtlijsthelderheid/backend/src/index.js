@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
@@ -15,11 +16,60 @@ const parentRoutes = require('./parentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const JWT_SECRET = process.env.JWT_SECRET || 'wachtlijst-helderheid-secret-key-change-in-production';
 
-// Middleware
-app.use(cors());
+// Fix #1: JWT_SECRET moet via environment variable, geen hardcoded fallback
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is required. Set it before starting the server.');
+  console.error('Example: JWT_SECRET=my-secure-random-key-here npm start');
+  process.exit(1);
+}
+
+// Fix #4: CORS configureren met specifieke origin i.p.v. volledig open
+const DEFAULT_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://test-eight-eta-45.vercel.app'
+];
+const ALLOWED_ORIGINS = process.env.CORS_ORIGINS
+  ? [...DEFAULT_ORIGINS, ...process.env.CORS_ORIGINS.split(',').map(s => s.trim())]
+  : DEFAULT_ORIGINS;
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Sta requests zonder origin toe (bijv. Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 app.use(express.json({ limit: '10mb' })); // Increased for CSV imports
+
+// Fix #3: Rate limiting op auth endpoints (brute force bescherming)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minuten
+  max: 15, // max 15 pogingen per window
+  message: { error: 'Te veel pogingen, probeer het over 15 minuten opnieuw' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Fix #5: Rate limiting op portal endpoints (access code brute force bescherming)
+const portalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minuten
+  max: 30, // max 30 requests per window (ouders moeten normaal kunnen gebruiken)
+  message: { error: 'Te veel verzoeken, probeer het over 15 minuten opnieuw' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Pas rate limiters toe op specifieke route-groepen
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
+app.use('/api/portal', portalLimiter);
 
 // Generate unique access code
 function generateAccessCode() {

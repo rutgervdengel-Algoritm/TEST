@@ -377,7 +377,7 @@ export default function ParentDashboardPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="flex-shrink-0 w-5 h-5 bg-primary-200 rounded-full flex items-center justify-center text-xs font-medium text-primary-700">3</span>
-              Als een organisatie WachtlijstHelderheid gaat gebruiken, ontvang je een toegangscode
+              Als een organisatie Wait gaat gebruiken, ontvang je een toegangscode
             </li>
             <li className="flex items-start gap-2">
               <span className="flex-shrink-0 w-5 h-5 bg-primary-200 rounded-full flex items-center justify-center text-xs font-medium text-primary-700">4</span>
