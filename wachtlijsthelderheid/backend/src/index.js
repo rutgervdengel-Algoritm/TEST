@@ -26,9 +26,14 @@ if (!JWT_SECRET) {
 }
 
 // Fix #4: CORS configureren met specifieke origin i.p.v. volledig open
+const DEFAULT_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://test-eight-eta-45.vercel.app'
+];
 const ALLOWED_ORIGINS = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(',').map(s => s.trim())
-  : ['http://localhost:3000', 'http://localhost:5173'];
+  ? [...DEFAULT_ORIGINS, ...process.env.CORS_ORIGINS.split(',').map(s => s.trim())]
+  : DEFAULT_ORIGINS;
 
 app.use(cors({
   origin: function (origin, callback) {
