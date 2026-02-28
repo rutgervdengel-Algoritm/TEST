@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 
@@ -62,12 +63,41 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
     </svg>
   ),
+  // Hamburger menu icon
+  menu: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  ),
+  // Close icon
+  close: (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  ),
 };
 
 export default function Layout({ children, title }: LayoutProps) {
   const { organization, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Sluit sidebar bij route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  // Sluit sidebar bij resize naar desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -87,8 +117,22 @@ export default function Layout({ children, title }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Mobile overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar - fixed left, full height */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-sidebar z-30 flex flex-col">
+      <aside className={`
+        fixed inset-y-0 left-0 w-64 bg-sidebar z-30 flex flex-col
+        transform transition-transform duration-200 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:translate-x-0
+      `}>
         {/* Header met logo */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
           <Link to="/" className="flex items-center gap-3">
@@ -98,10 +142,20 @@ export default function Layout({ children, title }: LayoutProps) {
             </div>
             <span className="font-semibold text-white text-lg tracking-tight">Wait</span>
           </Link>
-          {/* Sandbox badge */}
-          <span className="bg-amber-400 text-amber-900 text-xs font-medium px-2 py-0.5 rounded">
-            Sandbox
-          </span>
+          <div className="flex items-center gap-2">
+            {/* Sandbox badge */}
+            <span className="bg-amber-400 text-amber-900 text-xs font-medium px-2 py-0.5 rounded">
+              Sandbox
+            </span>
+            {/* Close button - mobile only */}
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden p-1.5 text-gray-400 hover:text-white hover:bg-sidebar-light rounded-lg"
+              aria-label="Sluit menu"
+            >
+              {Icons.close}
+            </button>
+          </div>
         </div>
 
         {/* Organisatie info */}
@@ -156,17 +210,25 @@ export default function Layout({ children, title }: LayoutProps) {
         </div>
       </aside>
 
-      {/* Main content - offset by sidebar width */}
-      <main className="ml-64 min-h-screen">
+      {/* Main content - offset by sidebar width on desktop */}
+      <main className="md:ml-64 min-h-screen">
         {/* Sticky header */}
-        {title && (
-          <header className="h-16 bg-white border-b border-gray-200 flex items-center px-8 sticky top-0 z-20">
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 md:px-8 sticky top-0 z-10">
+          {/* Hamburger menu button - mobile only */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden p-2 -ml-2 mr-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+            aria-label="Open menu"
+          >
+            {Icons.menu}
+          </button>
+          {title && (
             <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
-          </header>
-        )}
+          )}
+        </header>
 
         {/* Content area */}
-        <div className="p-8">
+        <div className="p-4 md:p-8">
           {children}
         </div>
       </main>
