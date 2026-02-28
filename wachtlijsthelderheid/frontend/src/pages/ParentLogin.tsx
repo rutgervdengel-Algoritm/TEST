@@ -58,7 +58,7 @@ export default function ParentLogin() {
               <User className="w-8 h-8 text-primary-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">
-              WachtlijstHelderheid
+              Wait
             </h1>
             <p className="text-gray-600 mt-2 text-base">
               {isRegister ? 'Maak een ouder account aan' : 'Inloggen als ouder'}

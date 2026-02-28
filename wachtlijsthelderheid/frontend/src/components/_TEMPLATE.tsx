@@ -1,5 +1,5 @@
 /**
- * Component Template - WachtlijstHelderheid
+ * Component Template - Wait
  *
  * Gebruik dit als startpunt voor nieuwe componenten.
  * Kopieer, hernoem, en pas aan.

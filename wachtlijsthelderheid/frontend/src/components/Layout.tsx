@@ -6,26 +6,26 @@ interface LayoutProps {
   title?: string;
 }
 
-// SVG Icons as components
+// Clean SVG Icons
 const Icons = {
   dashboard: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
     </svg>
   ),
   waitlist: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
   ),
   newSpot: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
   ),
   matches: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   ),
   rules: (
@@ -35,7 +35,7 @@ const Icons = {
   ),
   log: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
     </svg>
   ),
   analytics: (
@@ -45,7 +45,7 @@ const Icons = {
   ),
   importExport: (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
     </svg>
   ),
   logout: (
@@ -77,52 +77,63 @@ export default function Layout({ children, title }: LayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-sidebar z-30">
+      <aside className="fixed inset-y-0 left-0 w-64 bg-sidebar z-30 flex flex-col">
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-sidebar-light">
+        <div className="h-16 flex items-center px-5 border-b border-sidebar-border">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-9 h-9 bg-primary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">WH</span>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-white text-sm">WachtlijstHelderheid</span>
-            </div>
+            <span className="font-semibold text-white text-lg tracking-tight">Wait</span>
           </Link>
         </div>
 
-        {/* Organization name */}
-        <div className="px-5 py-4 border-b border-sidebar-light">
+        {/* Organization info */}
+        <div className="px-5 py-4 border-b border-sidebar-border">
           <p className="text-white font-medium text-sm truncate">{organization?.name}</p>
-          <p className="text-gray-400 text-xs truncate">{organization?.type === 'BSO' ? 'Buitenschoolse opvang' : 'Kinderdagverblijf'}</p>
+          <p className="text-gray-400 text-xs truncate mt-0.5">
+            {organization?.type === 'BSO' ? 'Buitenschoolse opvang' : 'Kinderdagverblijf'}
+          </p>
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 space-y-1">
-          {navItems.map(item => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={location.pathname === item.path ? 'nav-item-active' : 'nav-item-inactive'}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </Link>
-          ))}
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+          {navItems.map(item => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+                  ${isActive
+                    ? 'bg-primary-500/15 text-primary-400'
+                    : 'text-gray-400 hover:bg-sidebar-light hover:text-white'
+                  }
+                `}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* User info */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-sidebar-light">
+        {/* User section */}
+        <div className="p-4 border-t border-sidebar-border">
           <div className="flex items-center justify-between">
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-xs text-gray-400 truncate">
                 {organization?.email}
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-sidebar-light transition-colors"
+              className="ml-2 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-sidebar-light transition-colors"
               title="Uitloggen"
             >
               {Icons.logout}
@@ -135,10 +146,8 @@ export default function Layout({ children, title }: LayoutProps) {
       <main className="pl-64">
         {/* Header */}
         {title && (
-          <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
-            </div>
+          <header className="h-16 bg-white border-b border-gray-200 flex items-center px-8 sticky top-0 z-20">
+            <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
           </header>
         )}
 
