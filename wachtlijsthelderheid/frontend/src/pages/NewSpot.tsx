@@ -262,24 +262,27 @@ export default function NewSpot() {
                       expandedCandidate === candidate.entry.id ? null : candidate.entry.id
                     )}
                   >
-                    <div className="flex items-center gap-4">
-                      {/* Rank */}
-                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                        {index + 1}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      <div className="flex items-center gap-4 flex-1">
+                        {/* Rank */}
+                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium shrink-0">
+                          {index + 1}
+                        </div>
+
+                        {/* Score circle */}
+                        <div className={`${getScoreClass(candidate.percentage)} shrink-0`}>
+                          {candidate.percentage}%
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-gray-900">{candidate.entry.child_name}</h3>
+                          <p className="text-sm text-gray-500">{candidate.entry.parent_name}</p>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{candidate.summary}</p>
+                        </div>
                       </div>
 
-                      {/* Score circle */}
-                      <div className={getScoreClass(candidate.percentage)}>
-                        {candidate.percentage}%
-                      </div>
-
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900">{candidate.entry.child_name}</h3>
-                        <p className="text-sm text-gray-500">{candidate.entry.parent_name}</p>
-                        <p className="text-sm text-gray-600 mt-1">{candidate.summary}</p>
-                      </div>
-
+                      <div className="flex items-center gap-4 justify-between sm:justify-end">
                       {/* Days comparison */}
                       <div className="hidden md:flex gap-1">
                         {DAYS.map(day => {
@@ -321,7 +324,7 @@ export default function NewSpot() {
 
                       {/* Expand icon */}
                       <svg
-                        className={`w-5 h-5 text-gray-400 transition-transform ${
+                        className={`w-5 h-5 text-gray-400 transition-transform shrink-0 ${
                           expandedCandidate === candidate.entry.id ? 'rotate-180' : ''
                         }`}
                         fill="none"
@@ -330,6 +333,7 @@ export default function NewSpot() {
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
+                      </div>
                     </div>
                   </div>
 

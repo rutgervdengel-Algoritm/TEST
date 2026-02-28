@@ -47,7 +47,7 @@ export default function Matches() {
   return (
     <Layout title="Matches">
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <button
           onClick={() => setFilter(filter === 'proposed' ? 'all' : 'proposed')}
           className={`card p-4 text-center transition-all ${filter === 'proposed' ? 'ring-2 ring-blue-500' : ''}`}
@@ -104,50 +104,54 @@ export default function Matches() {
           {filteredMatches.map(match => (
             <div key={match.id} className="card">
               <div className="card-body">
-                <div className="flex items-center gap-4">
-                  {/* Status icon */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg ${
-                    match.status === 'accepted' ? 'bg-green-100 text-green-600' :
-                    match.status === 'rejected' ? 'bg-red-100 text-red-600' :
-                    'bg-blue-100 text-blue-600'
-                  }`}>
-                    {match.status === 'accepted' ? 'OK' :
-                     match.status === 'rejected' ? 'X' : '...'}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-medium text-gray-900">{match.child_name}</h3>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-sm text-gray-500">{match.parent_name}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    {/* Status icon */}
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg shrink-0 ${
+                      match.status === 'accepted' ? 'bg-green-100 text-green-600' :
+                      match.status === 'rejected' ? 'bg-red-100 text-red-600' :
+                      'bg-blue-100 text-blue-600'
+                    }`}>
+                      {match.status === 'accepted' ? 'OK' :
+                       match.status === 'rejected' ? 'X' : '...'}
                     </div>
-                    <p className="text-sm text-gray-600">
-                      Plek: {match.spot_days?.join(', ')} vanaf{' '}
-                      {match.start_date && new Date(match.start_date).toLocaleDateString('nl-NL')}
-                    </p>
-                    {match.rejection_reason && (
-                      <p className="text-sm text-red-600 mt-1">
-                        Reden afwijzing: {match.rejection_reason}
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <h3 className="font-medium text-gray-900">{match.child_name}</h3>
+                        <span className="text-gray-400 hidden sm:inline">•</span>
+                        <span className="text-sm text-gray-500">{match.parent_name}</span>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        Plek: {match.spot_days?.join(', ')} vanaf{' '}
+                        {match.start_date && new Date(match.start_date).toLocaleDateString('nl-NL')}
                       </p>
-                    )}
+                      {match.rejection_reason && (
+                        <p className="text-sm text-red-600 mt-1">
+                          Reden afwijzing: {match.rejection_reason}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Score */}
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold ${
-                    match.match_score >= 70 ? 'bg-green-100 text-green-700' :
-                    match.match_score >= 40 ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-red-100 text-red-700'
-                  }`}>
-                    {Math.round(match.match_score)}%
-                  </div>
+                  <div className="flex items-center gap-4 justify-between sm:justify-end">
+                    {/* Score */}
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold shrink-0 ${
+                      match.match_score >= 70 ? 'bg-green-100 text-green-700' :
+                      match.match_score >= 40 ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
+                    }`}>
+                      {Math.round(match.match_score)}%
+                    </div>
 
-                  {/* Status badge */}
-                  <div>
-                    <StatusBadge status={match.status} />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {new Date(match.proposed_at).toLocaleDateString('nl-NL')}
-                    </p>
+                    {/* Status badge */}
+                    <div className="text-right">
+                      <StatusBadge status={match.status} />
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(match.proposed_at).toLocaleDateString('nl-NL')}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
