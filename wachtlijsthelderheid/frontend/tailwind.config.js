@@ -53,12 +53,12 @@ export default {
           600: '#d97706',
           900: '#92400e',
         },
-        // Dark sidebar colors
+        // Dark teal sidebar colors - Tink style
         sidebar: {
-          DEFAULT: '#111827',  // gray-900
-          light: '#1f2937',    // gray-800
-          dark: '#030712',     // gray-950
-          border: '#374151',   // gray-700
+          DEFAULT: '#0d3331',  // Dark teal
+          light: '#134e4a',    // Lighter teal for hover
+          dark: '#082624',     // Darker teal
+          border: '#1a5c56',   // Teal border
         }
       },
       fontFamily: {
