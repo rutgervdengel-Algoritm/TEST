@@ -17,120 +17,151 @@ function Stars({ count = 5 }: { count?: number }) {
   );
 }
 
+const testimonials = [
+  {
+    quote:
+      'Sinds WachtlijstHelderheid krijgen we 80% minder telefoontjes. Ik had niet verwacht dat het zo\'n groot verschil zou maken.',
+    name: 'Marieke van Dam',
+    role: 'Manager BSO De Springplank',
+    initials: 'MvD',
+    type: 'opvang' as const,
+  },
+  {
+    quote:
+      'Setup duurde letterlijk 5 minuten. De import van onze Excel ging perfect.',
+    name: 'Tom Jansen',
+    role: 'Eigenaar KDV De Blokkendoos',
+    initials: 'TJ',
+    type: 'opvang' as const,
+  },
+  {
+    quote:
+      'Ouders zijn zo blij dat ze eindelijk weten waar ze staan. Veel minder frustratie bij ons team.',
+    name: 'Lisa de Vries',
+    role: 'Leidinggevende BSO Het Boshuis',
+    initials: 'LdV',
+    type: 'opvang' as const,
+  },
+];
+
+const parentTestimonials = [
+  {
+    quote:
+      'Eindelijk weet ik waar ik sta! Het systeem stuurt automatisch updates naar de opvang. Ik hoef niets meer te doen.',
+    name: 'Laura',
+    role: 'Moeder uit Utrecht',
+    initials: 'L',
+  },
+  {
+    quote:
+      'Bij 4 opvangen tegelijk op de wachtlijst, en alles overzichtelijk in een dashboard. De automatische emails zijn geniaal.',
+    name: 'Mark & Sophie',
+    role: 'Ouders uit Den Haag',
+    initials: 'MS',
+  },
+];
+
 export default function Testimonials() {
   return (
     <section className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.h2
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold text-center mb-16 text-gray-900"
+          className="text-center mb-16"
         >
-          Wat klanten zeggen
-        </motion.h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Wat onze gebruikers zeggen
+          </h2>
+          <p className="text-lg text-gray-600">
+            Opvangorganisaties en ouders over hun ervaring
+          </p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Featured testimonial - spans 2 cols */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-2 bg-white rounded-md shadow-sm overflow-hidden"
-          >
-            <div className="grid md:grid-cols-2 gap-0">
-              {/* Video placeholder */}
-              <div className="relative bg-gray-200 aspect-video flex items-center justify-center">
-                <button className="bg-white/90 rounded-full w-16 h-16 shadow-lg flex items-center justify-center hover:bg-white transition-colors">
-                  <Play size={28} className="text-primary-600 ml-1" />
-                </button>
-              </div>
-              <div className="p-8 flex flex-col justify-center">
-                <Stars />
-                <p className="text-lg text-gray-700 mt-4 leading-relaxed">
-                  &ldquo;Sinds WachtlijstHelderheid krijgen we 80% minder
-                  telefoontjes. Ik had niet verwacht dat het zo&apos;n groot
-                  verschil zou maken.&rdquo;
-                </p>
-                <div className="flex items-center gap-3 mt-6">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold text-sm">
-                    MvD
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    &mdash; Marieke van Dam, Manager BSO De Springplank
-                  </p>
+        {/* Featured testimonial with video */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-white rounded-lg shadow-sm overflow-hidden mb-8"
+        >
+          <div className="grid md:grid-cols-2 gap-0">
+            <div className="relative bg-gray-200 aspect-video flex items-center justify-center">
+              <button className="bg-white/90 rounded-full w-16 h-16 shadow-lg flex items-center justify-center hover:bg-white transition-colors">
+                <Play size={28} className="text-primary-600 ml-1" />
+              </button>
+            </div>
+            <div className="p-8 flex flex-col justify-center">
+              <Stars />
+              <p className="text-lg text-gray-700 mt-4 leading-relaxed">
+                &ldquo;Sinds WachtlijstHelderheid krijgen we 80% minder
+                telefoontjes. Ouders zijn blij, wij zijn blij. Win-win.&rdquo;
+              </p>
+              <div className="flex items-center gap-3 mt-6">
+                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold text-sm">
+                  MvD
                 </div>
+                <p className="text-sm text-gray-600">
+                  Marieke van Dam, Manager BSO De Springplank
+                </p>
               </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Testimonial 2 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="bg-white rounded-md p-6 shadow-sm"
-          >
-            <Stars />
-            <p className="text-gray-700 mt-4">
-              &ldquo;Setup duurde letterlijk 5 minuten. De import van onze Excel
-              ging perfect.&rdquo;
-            </p>
-            <div className="flex items-center gap-3 mt-6">
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold text-sm">
-                TJ
+        {/* Opvang testimonials */}
+        <div className="grid md:grid-cols-3 gap-6 mb-6">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-white rounded-lg p-6 shadow-sm border border-gray-200"
+            >
+              <Stars />
+              <p className="text-gray-700 mt-4">&ldquo;{t.quote}&rdquo;</p>
+              <div className="flex items-center gap-3 mt-6">
+                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold text-sm">
+                  {t.initials}
+                </div>
+                <p className="text-sm text-gray-600">
+                  {t.name}, {t.role}
+                </p>
               </div>
-              <p className="text-sm text-gray-600">
-                &mdash; Tom Jansen, Eigenaar KDV De Blokkendoos
-              </p>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
+        </div>
 
-          {/* Testimonial 3 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-white rounded-md p-6 shadow-sm"
-          >
-            <Stars />
-            <p className="text-gray-700 mt-4">
-              &ldquo;Ouders zijn zo blij dat ze eindelijk weten waar ze staan.
-              Veel minder frustratie.&rdquo;
-            </p>
-            <div className="flex items-center gap-3 mt-6">
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold text-sm">
-                LdV
+        {/* Parent testimonials */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {parentTestimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="border-l-4 border-secondary-500 bg-white rounded-lg p-6 shadow-sm"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-block text-xs font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded-full">
+                  Ouder
+                </span>
               </div>
-              <p className="text-sm text-gray-600">
-                &mdash; Lisa de Vries, Leidinggevende BSO Het Boshuis
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Testimonial 4 - Parent (different style) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="md:col-span-2 border-l-4 border-secondary-500 bg-white rounded-md p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="inline-block text-xs font-medium bg-secondary-100 text-secondary-800 px-2 py-1 rounded">
-                Ouder
-              </span>
-            </div>
-            <p className="text-gray-700">
-              &ldquo;Eindelijk weet ik waar ik sta! Geen wekelijks gebel meer
-              nodig.&rdquo;
-            </p>
-            <p className="text-sm text-gray-600 mt-4">
-              &mdash; Laura, moeder uit Utrecht
-            </p>
-          </motion.div>
+              <p className="text-gray-700">&ldquo;{t.quote}&rdquo;</p>
+              <div className="flex items-center gap-3 mt-4">
+                <div className="w-10 h-10 rounded-full bg-secondary-100 flex items-center justify-center text-secondary-600 font-semibold text-sm">
+                  {t.initials}
+                </div>
+                <p className="text-sm text-gray-600">
+                  {t.name}, {t.role}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

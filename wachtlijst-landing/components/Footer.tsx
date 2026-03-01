@@ -4,19 +4,19 @@ const columns = [
   {
     title: 'Product',
     links: [
+      { label: 'Voor Opvang', href: '#opvang' },
+      { label: 'Voor Ouders', href: '#ouders' },
       { label: 'Features', href: '#features' },
       { label: 'Prijzen', href: '#pricing' },
-      { label: 'Demo', href: '#' },
-      { label: 'Roadmap', href: '#' },
     ],
   },
   {
     title: 'Bedrijf',
     links: [
       { label: 'Over ons', href: '#' },
-      { label: 'Contact', href: '#contact' },
       { label: 'Blog', href: '#' },
       { label: 'Vacatures', href: '#' },
+      { label: 'Contact', href: '#' },
     ],
   },
   {
@@ -81,9 +81,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-gray-800 pt-8 mt-8 flex flex-col sm:flex-row items-center justify-between text-sm">
-          <p>&copy; 2026 WachtlijstHelderheid</p>
+          <p>&copy; 2026 WachtlijstHelderheid. Alle rechten voorbehouden.</p>
+          <p className="mt-2 sm:mt-0 text-gray-500">
+            Gemaakt met zorg voor kinderopvang in Nederland
+          </p>
         </div>
       </div>
     </footer>

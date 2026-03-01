@@ -9,7 +9,11 @@ import {
   Eye,
   Target,
   Bell,
+  Mail,
+  Send,
+  CalendarCheck,
   Smartphone,
+  RefreshCw,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -17,12 +21,13 @@ const tabs = [
   {
     id: 'opvang',
     label: 'Voor Opvanglocaties',
+    color: 'primary' as const,
     features: [
       {
         icon: Clock,
         title: 'Bespaar 12 uur per week',
         description:
-          'Stop met telefoontjes beantwoorden. Ouders zien zelf hun positie.',
+          'Stop met telefoontjes beantwoorden. Ouders zien zelf hun positie in real-time.',
       },
       {
         icon: Zap,
@@ -39,37 +44,63 @@ const tabs = [
       {
         icon: BarChart3,
         title: 'Inzicht in vraagpatronen',
-        description: 'Zie waar de vraag zit. Plan je capaciteit beter.',
+        description:
+          'Zie waar de vraag zit en plan je capaciteit beter met data-gedreven inzichten.',
+      },
+      {
+        icon: Bell,
+        title: 'Ontvang notificaties van ouders',
+        description:
+          'Ouders sturen geautomatiseerde berichten. Jij ontvangt alles netjes in je dashboard.',
+      },
+      {
+        icon: RefreshCw,
+        title: 'Automatische herinneringen',
+        description:
+          'Stel in dat ouders periodiek bevestigen dat ze nog interesse hebben. Houdt je lijst schoon.',
       },
     ],
   },
   {
     id: 'ouders',
     label: 'Voor Ouders',
+    color: 'secondary' as const,
     features: [
       {
         icon: Eye,
         title: 'Altijd duidelijkheid',
         description:
-          'Zie je exacte positie, wie voor je staat, en waarom.',
+          'Zie je exacte positie op de wachtlijst, wie voor je staat en waarom.',
       },
       {
         icon: Target,
         title: 'Match-kans indicator',
         description:
-          'Realistische inschatting of je plek krijgt voor jouw startdatum.',
+          'Realistische inschatting of je een plek krijgt voor jouw gewenste startdatum.',
       },
       {
-        icon: Bell,
-        title: 'Automatische updates',
+        icon: Mail,
+        title: 'Geautomatiseerde emails naar opvang',
         description:
-          'Notificatie bij elke statusverandering. Nooit meer zelf bellen.',
+          'Laat opvanglocaties automatisch weten dat je nog interesse hebt. Geen handwerk.',
+      },
+      {
+        icon: Send,
+        title: 'Notificaties bij statuswijziging',
+        description:
+          'Ontvang direct bericht als je positie verandert of er een plek vrijkomt.',
+      },
+      {
+        icon: CalendarCheck,
+        title: 'Beheer al je inschrijvingen',
+        description:
+          'Overzicht van al je wachtlijsten op een plek. Voeg toe, pauzeer of trek terug.',
       },
       {
         icon: Smartphone,
-        title: 'Toegankelijk overal',
+        title: 'Werkt op elk apparaat',
         description:
-          'Via browser op elk device. Geen app download nodig.',
+          'Via browser op telefoon, tablet of computer. Geen app download nodig.',
       },
     ],
   },
@@ -91,22 +122,26 @@ export default function Features() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Alles wat je nodig hebt
           </h2>
-          <p className="text-gray-600">Voor opvanglocaties en ouders</p>
+          <p className="text-lg text-gray-600">
+            Krachtige tools voor opvanglocaties en ouders
+          </p>
         </motion.div>
 
         {/* Tab buttons */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-sm bg-white shadow-sm p-1">
+          <div className="inline-flex rounded-lg bg-white shadow-sm border border-gray-200 p-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-2 text-sm font-medium rounded-sm transition-colors ${
+                className={`px-5 py-2.5 text-sm font-medium rounded-md transition-colors ${
                   activeTab === tab.id
-                    ? 'bg-primary-600 text-white'
+                    ? tab.color === 'primary'
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-secondary-500 text-white'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -117,23 +152,36 @@ export default function Features() {
         </div>
 
         {/* Feature grid */}
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {currentTab.features.map((feature, i) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white rounded-md p-6 hover:-translate-y-1 hover:shadow-md transition-all"
+              transition={{ delay: i * 0.08 }}
+              className="bg-white rounded-lg p-6 border border-gray-200 hover:-translate-y-1 hover:shadow-md hover:border-primary-300 transition-all"
             >
-              <div className="bg-primary-100 rounded-sm p-3 w-fit">
-                <feature.icon size={24} className="text-primary-600" />
+              <div
+                className={`rounded-lg p-3 w-fit ${
+                  currentTab.color === 'primary'
+                    ? 'bg-primary-100'
+                    : 'bg-secondary-100'
+                }`}
+              >
+                <feature.icon
+                  size={22}
+                  className={
+                    currentTab.color === 'primary'
+                      ? 'text-primary-600'
+                      : 'text-secondary-600'
+                  }
+                />
               </div>
-              <h3 className="text-xl font-semibold mt-4 text-gray-900">
+              <h3 className="text-lg font-semibold mt-4 text-gray-900">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 mt-2">{feature.description}</p>
+              <p className="text-gray-600 mt-2 text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </div>
