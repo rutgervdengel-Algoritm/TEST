@@ -17,18 +17,18 @@ export default function ROICalculator() {
   return (
     <section className="bg-white py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-lg p-8 sm:p-12 border border-gray-200">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-gray-900">
+        <div className="bg-gradient-to-br from-primary-50 to-secondary-50/30 rounded-2xl p-8 sm:p-12 border border-navy-200">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-navy-900">
             Hoeveel bespaar jij?
           </h2>
-          <p className="text-center text-gray-600 mb-10">
+          <p className="text-center text-navy-500 mb-10">
             Bereken je besparing als opvangorganisatie
           </p>
 
           {/* Slider 1 */}
           <div className="mb-8">
             <div className="flex justify-between items-end mb-2">
-              <label className="text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-navy-700">
                 Aantal inschrijvingen op wachtlijst
               </label>
               <span className="text-2xl font-bold text-primary-600">
@@ -44,7 +44,7 @@ export default function ROICalculator() {
               onChange={(e) => setEntries(Number(e.target.value))}
               className="w-full h-2 bg-primary-200 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
+            <div className="flex justify-between text-xs text-navy-400 mt-1">
               <span>10</span>
               <span>500</span>
             </div>
@@ -53,7 +53,7 @@ export default function ROICalculator() {
           {/* Slider 2 */}
           <div className="mb-8">
             <div className="flex justify-between items-end mb-2">
-              <label className="text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-navy-700">
                 Gemiddeld telefoontjes per week
               </label>
               <span className="text-2xl font-bold text-primary-600">
@@ -69,40 +69,40 @@ export default function ROICalculator() {
               onChange={(e) => setCalls(Number(e.target.value))}
               className="w-full h-2 bg-primary-200 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-xs text-gray-400 mt-1">
+            <div className="flex justify-between text-xs text-navy-400 mt-1">
               <span>5</span>
               <span>50</span>
             </div>
           </div>
 
           {/* Result card */}
-          <div className="bg-white rounded-lg p-8 shadow-lg border border-gray-200 mt-8">
-            <p className="text-sm uppercase text-gray-500 tracking-wide font-medium">
+          <div className="bg-white rounded-xl p-8 shadow-lg border border-navy-200 mt-8">
+            <p className="text-sm uppercase text-navy-400 tracking-wide font-medium">
               Je bespaart
             </p>
             <p
               className={`text-4xl sm:text-5xl font-bold my-4 ${
-                costSavedYear > 2000 ? 'text-success-600' : 'text-primary-600'
+                costSavedYear > 2000 ? 'text-primary-600' : 'text-primary-600'
               }`}
             >
               {hoursSavedWeek} uur per week
             </p>
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="text-sm text-navy-500 space-y-1">
               <p>= {hoursSavedMonth} uur per maand</p>
               <p>
                 = &euro;{costSavedYear.toLocaleString('nl-NL')} per jaar aan
                 personeelskosten
               </p>
             </div>
-            <div className="border-t border-gray-100 mt-4 pt-4 text-sm text-gray-600 space-y-1">
+            <div className="border-t border-navy-100 mt-4 pt-4 text-sm text-navy-500 space-y-1">
               <p>WachtlijstHelderheid kost &euro;{monthlyCost}/maand</p>
-              <p className="text-success-600 font-semibold">
+              <p className="text-primary-600 font-semibold">
                 ROI: {roi > 0 ? `${roi}%` : 'n.v.t.'} per jaar
               </p>
             </div>
             <a
               href="#pricing"
-              className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
               Start nu
               <ArrowRight size={18} />

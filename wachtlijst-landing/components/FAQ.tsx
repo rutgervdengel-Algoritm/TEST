@@ -54,12 +54,12 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="bg-gray-50 py-20">
+    <section id="faq" className="bg-navy-50 py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-gray-900">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-navy-900">
           Veelgestelde vragen
         </h2>
-        <p className="text-lg text-gray-600 text-center mb-12">
+        <p className="text-lg text-navy-500 text-center mb-12">
           Antwoorden voor opvangorganisaties en ouders
         </p>
 
@@ -67,7 +67,7 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-xl shadow-sm border border-navy-200 overflow-hidden"
             >
               <button
                 onClick={() => toggle(i)}
@@ -84,11 +84,11 @@ export default function FAQ() {
                       Opvang
                     </span>
                   )}
-                  <span className="font-semibold text-gray-900">{faq.q}</span>
+                  <span className="font-semibold text-navy-900">{faq.q}</span>
                 </div>
                 <ChevronDown
                   size={20}
-                  className={`text-gray-400 flex-shrink-0 transition-transform ${
+                  className={`text-navy-400 flex-shrink-0 transition-transform ${
                     openIndex === i ? 'rotate-180' : ''
                   }`}
                 />
@@ -100,7 +100,7 @@ export default function FAQ() {
                     : 'max-h-0 opacity-0'
                 }`}
               >
-                <p className="px-5 pb-5 text-gray-600 leading-relaxed">
+                <p className="px-5 pb-5 text-navy-500 leading-relaxed">
                   {faq.a}
                 </p>
               </div>

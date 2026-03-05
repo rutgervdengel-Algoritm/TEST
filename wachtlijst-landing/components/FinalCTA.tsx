@@ -33,14 +33,14 @@ export default function FinalCTA() {
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <a
             href="#pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary-600 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary-700 font-semibold rounded-lg hover:bg-primary-50 transition-all shadow-sm hover:shadow-md"
           >
             Start als Opvang
             <ArrowRight size={18} />
           </a>
           <a
             href="#pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary-500 text-white font-medium rounded-lg hover:bg-secondary-600 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary-500 text-white font-semibold rounded-lg hover:bg-secondary-600 transition-all shadow-sm hover:shadow-md"
           >
             Aanmelden als Ouder
             <ArrowRight size={18} />

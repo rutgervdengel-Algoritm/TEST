@@ -24,17 +24,17 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm transition-shadow ${
-        scrolled ? 'shadow-md border-b border-gray-100' : ''
+        scrolled ? 'shadow-md border-b border-navy-100' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+          <a href="#" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-sm">
               <span className="text-white font-bold text-sm">W</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">
+            <span className="text-lg font-bold text-navy-900">
               WachtlijstHelderheid
             </span>
           </a>
@@ -45,20 +45,20 @@ export default function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+                className="text-sm text-navy-500 hover:text-primary-600 transition-colors font-medium"
               >
                 {link.label}
               </a>
             ))}
             <a
               href="#"
-              className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+              className="text-sm text-navy-500 hover:text-primary-600 transition-colors font-medium"
             >
               Login
             </a>
             <a
               href="#pricing"
-              className="inline-flex items-center px-5 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              className="inline-flex items-center px-5 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
               Start Gratis Trial
             </a>
@@ -66,7 +66,7 @@ export default function Navigation() {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 text-gray-600"
+            className="md:hidden p-2 text-navy-600"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
@@ -77,12 +77,12 @@ export default function Navigation() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 pb-4">
+        <div className="md:hidden bg-white border-t border-navy-100 px-4 pb-4">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="block py-3 text-gray-600 hover:text-primary-600"
+              className="block py-3 text-navy-600 hover:text-primary-600 font-medium"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
@@ -90,14 +90,14 @@ export default function Navigation() {
           ))}
           <a
             href="#"
-            className="block py-3 text-gray-600 hover:text-primary-600"
+            className="block py-3 text-navy-600 hover:text-primary-600 font-medium"
             onClick={() => setMobileOpen(false)}
           >
             Login
           </a>
           <a
             href="#pricing"
-            className="mt-2 block w-full text-center px-5 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
+            className="mt-2 block w-full text-center px-5 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-all"
             onClick={() => setMobileOpen(false)}
           >
             Start Gratis Trial

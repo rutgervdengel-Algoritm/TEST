@@ -32,7 +32,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-12">
+    <footer className="bg-navy-900 text-navy-400 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {columns.map((col) => (
@@ -45,7 +45,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm hover:text-white transition-colors"
+                      className="text-sm hover:text-primary-400 transition-colors"
                     >
                       {link.label}
                     </a>
@@ -64,14 +64,14 @@ export default function Footer() {
               <li className="flex items-center gap-3 pt-2">
                 <a
                   href="#"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-primary-400 transition-colors"
                   aria-label="LinkedIn"
                 >
                   <Linkedin size={18} />
                 </a>
                 <a
                   href="#"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-primary-400 transition-colors"
                   aria-label="Twitter"
                 >
                   <Twitter size={18} />
@@ -81,9 +81,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 mt-8 flex flex-col sm:flex-row items-center justify-between text-sm">
+        <div className="border-t border-navy-800 pt-8 mt-8 flex flex-col sm:flex-row items-center justify-between text-sm">
           <p>&copy; 2026 WachtlijstHelderheid. Alle rechten voorbehouden.</p>
-          <p className="mt-2 sm:mt-0 text-gray-500">
+          <p className="mt-2 sm:mt-0 text-navy-500">
             Gemaakt met zorg voor kinderopvang in Nederland
           </p>
         </div>

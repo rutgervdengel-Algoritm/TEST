@@ -52,11 +52,11 @@ export default function ParentsSection() {
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-6">
               Voor Ouders
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-navy-900">
               Nooit meer bellen.{' '}
-              <span className="text-secondary-600">Alles automatisch.</span>
+              <span className="text-secondary-500">Alles automatisch.</span>
             </h2>
-            <p className="text-lg text-gray-600 mt-4">
+            <p className="text-lg text-navy-500 mt-4">
               Beheer je inschrijvingen vanuit een overzicht. Stuur automatisch
               emails en ontvang notificaties zonder zelf iets te doen.
             </p>
@@ -71,12 +71,12 @@ export default function ParentsSection() {
                   transition={{ delay: i * 0.1 }}
                   className="flex gap-4"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center">
+                  <div className="flex-shrink-0 w-10 h-10 bg-secondary-100 rounded-xl flex items-center justify-center">
                     <cap.icon size={20} className="text-secondary-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">{cap.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <h3 className="font-semibold text-navy-900">{cap.title}</h3>
+                    <p className="text-sm text-navy-500 mt-1">
                       {cap.description}
                     </p>
                   </div>
@@ -86,7 +86,7 @@ export default function ParentsSection() {
 
             <a
               href="#pricing"
-              className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-secondary-500 text-white font-medium rounded-lg hover:bg-secondary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
+              className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-secondary-500 text-white font-semibold rounded-lg hover:bg-secondary-600 transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-400"
             >
               Gratis aanmelden als ouder
               <ArrowRight size={18} />
@@ -100,12 +100,12 @@ export default function ParentsSection() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <div className="bg-navy-50 rounded-xl p-6 border border-navy-200">
               {/* Mock header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <p className="text-sm text-gray-500">Welkom terug</p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-sm text-navy-400">Welkom terug</p>
+                  <p className="text-lg font-semibold text-navy-900">
                     Sandra van den Berg
                   </p>
                 </div>
@@ -115,7 +115,7 @@ export default function ParentsSection() {
               </div>
 
               {/* Registrations list */}
-              <p className="text-sm font-medium text-gray-700 mb-3">
+              <p className="text-sm font-medium text-navy-700 mb-3">
                 Mijn inschrijvingen (3)
               </p>
               <div className="space-y-3">
@@ -138,21 +138,21 @@ export default function ParentsSection() {
                     name: 'KDV Zonnestraal',
                     position: '#7',
                     status: 'Email gepland',
-                    statusColor: 'bg-primary-100 text-primary-600',
+                    statusColor: 'bg-primary-100 text-primary-700',
                     lastEmail: 'Morgen automatisch',
                   },
                 ].map((reg) => (
                   <div
                     key={reg.name}
-                    className="bg-white rounded-lg p-4 border border-gray-200"
+                    className="bg-white rounded-xl p-4 border border-navy-200"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-900 text-sm">
+                        <p className="font-medium text-navy-900 text-sm">
                           {reg.name}
                         </p>
                         <div className="flex items-center gap-3 mt-1">
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-navy-400">
                             Positie: {reg.position}
                           </span>
                           <span
@@ -163,7 +163,7 @@ export default function ParentsSection() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <div className="flex items-center gap-1 text-xs text-navy-400">
                           <Clock size={12} />
                           <span>{reg.lastEmail}</span>
                         </div>
@@ -174,16 +174,16 @@ export default function ParentsSection() {
               </div>
 
               {/* Auto-email indicator */}
-              <div className="mt-4 bg-secondary-50 rounded-lg p-4 border border-secondary-200">
+              <div className="mt-4 bg-secondary-50 rounded-xl p-4 border border-secondary-200">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-secondary-100 rounded-full flex items-center justify-center">
                     <Mail size={16} className="text-secondary-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-navy-900">
                       Automatische emails actief
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-navy-500">
                       3 opvanglocaties ontvangen maandelijks een update van jou
                     </p>
                   </div>

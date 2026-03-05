@@ -55,10 +55,10 @@ export default function Solution() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl sm:text-4xl font-bold text-navy-900">
             Zo simpel werkt het
           </h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+          <p className="text-lg text-navy-500 mt-4 max-w-2xl mx-auto">
             In 3 stappen naar volledige transparantie — voor opvang en ouders.
           </p>
         </motion.div>
@@ -78,7 +78,7 @@ export default function Solution() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15 }}
-                  className="bg-white rounded-lg p-6 border border-gray-200 hover:border-primary-300 hover:shadow-md transition-all text-center"
+                  className="bg-white rounded-xl p-6 border border-navy-200 hover:border-primary-300 hover:shadow-md transition-all text-center"
                 >
                   <div className="mx-auto w-14 h-14 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center">
                     <step.icon size={24} />
@@ -86,10 +86,10 @@ export default function Solution() {
                   <div className="inline-flex items-center justify-center w-6 h-6 bg-primary-600 text-white rounded-full text-xs font-bold mt-3">
                     {step.num}
                   </div>
-                  <h3 className="text-lg font-semibold mt-3 text-gray-900">
+                  <h3 className="text-lg font-semibold mt-3 text-navy-900">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 mt-2 text-sm">{step.description}</p>
+                  <p className="text-navy-500 mt-2 text-sm">{step.description}</p>
                 </motion.div>
 
                 {i < opvangSteps.length - 1 && (
@@ -117,18 +117,18 @@ export default function Solution() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15 }}
-                  className="bg-white rounded-lg p-6 border border-gray-200 hover:border-secondary-300 hover:shadow-md transition-all text-center"
+                  className="bg-white rounded-xl p-6 border border-navy-200 hover:border-secondary-300 hover:shadow-md transition-all text-center"
                 >
                   <div className="mx-auto w-14 h-14 bg-secondary-100 text-secondary-600 rounded-full flex items-center justify-center">
                     <step.icon size={24} />
                   </div>
-                  <div className="inline-flex items-center justify-center w-6 h-6 bg-secondary-600 text-white rounded-full text-xs font-bold mt-3">
+                  <div className="inline-flex items-center justify-center w-6 h-6 bg-secondary-500 text-white rounded-full text-xs font-bold mt-3">
                     {step.num}
                   </div>
-                  <h3 className="text-lg font-semibold mt-3 text-gray-900">
+                  <h3 className="text-lg font-semibold mt-3 text-navy-900">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 mt-2 text-sm">{step.description}</p>
+                  <p className="text-navy-500 mt-2 text-sm">{step.description}</p>
                 </motion.div>
 
                 {i < ouderSteps.length - 1 && (
