@@ -92,13 +92,13 @@ export default function NewSpot() {
       {step === 'input' ? (
         <div className="max-w-xl">
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Plek details</h2>
-              <p className="text-sm text-gray-500">Vul de beschikbare plek in om de beste matches te vinden</p>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Plek details</h2>
+              <p className="text-sm text-navy-400 mt-1">Vul de beschikbare plek in om de beste matches te vinden</p>
             </div>
             <div className="card-body">
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                <div className="mb-4 p-3 bg-terracotta-50 border border-terracotta-200 text-terracotta-700 rounded-xl text-sm">
                   {error}
                 </div>
               )}
@@ -118,7 +118,7 @@ export default function NewSpot() {
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-navy-400 mt-2">
                     Geselecteerd: {selectedDays.length > 0 ? selectedDays.join(', ') : 'Geen'}
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export default function NewSpot() {
               setSentProposals(new Set());
               setEmailPreview(null);
             }}
-            className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center gap-1 text-sm text-forest-500 hover:text-forest-700 mb-6 font-semibold"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -176,14 +176,14 @@ export default function NewSpot() {
 
           {/* Spot summary */}
           {spot && (
-            <div className="card p-4 bg-green-50 border-green-200 mb-6">
+            <div className="card p-4 bg-teal-50 border-teal-200 mb-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <span className="text-xl font-bold text-green-600">P</span>
+                <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
+                  <span className="text-xl font-bold text-teal-600">P</span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-green-900">Plek beschikbaar</h3>
-                  <p className="text-sm text-green-700">
+                  <h3 className="font-semibold text-teal-800">Plek beschikbaar</h3>
+                  <p className="text-sm text-teal-600">
                     {spot.days.join(', ')} vanaf {new Date(spot.start_date).toLocaleDateString('nl-NL')}
                   </p>
                 </div>
@@ -193,14 +193,14 @@ export default function NewSpot() {
 
           {/* Email preview modal */}
           {emailPreview && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-xl max-w-lg w-full animate-fade-in">
+            <div className="fixed inset-0 bg-forest-900/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl max-w-lg w-full animate-fade-in">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Voorstel verstuurd</h3>
+                    <h3 className="text-lg font-serif font-bold text-forest-600">Voorstel verstuurd</h3>
                     <button
                       onClick={() => setEmailPreview(null)}
-                      className="p-1 text-gray-400 hover:text-gray-600"
+                      className="p-1 text-navy-300 hover:text-navy-600"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -208,13 +208,13 @@ export default function NewSpot() {
                     </button>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                    <p className="text-gray-500 mb-1">Aan: {emailPreview.to}</p>
-                    <p className="text-gray-500 mb-3">Onderwerp: {emailPreview.subject}</p>
-                    <pre className="whitespace-pre-wrap text-gray-700 font-sans">{emailPreview.body}</pre>
+                  <div className="bg-cream-100 rounded-xl p-4 text-sm">
+                    <p className="text-navy-400 mb-1">Aan: {emailPreview.to}</p>
+                    <p className="text-navy-400 mb-3">Onderwerp: {emailPreview.subject}</p>
+                    <pre className="whitespace-pre-wrap text-navy-600 font-sans">{emailPreview.body}</pre>
                   </div>
 
-                  <p className="text-xs text-gray-500 mt-4">
+                  <p className="text-xs text-navy-400 mt-4">
                     * In de MVP worden emails niet daadwerkelijk verstuurd. Dit is een preview van hoe de email eruit zou zien.
                   </p>
 
@@ -232,7 +232,7 @@ export default function NewSpot() {
           {/* Candidates */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-serif font-bold text-forest-600">
                 Top {candidates.length} matches
               </h2>
               {sentProposals.size > 0 && (
@@ -244,7 +244,7 @@ export default function NewSpot() {
 
             {candidates.length === 0 ? (
               <div className="card p-8 text-center">
-                <p className="text-gray-500">
+                <p className="text-navy-400">
                   {sentProposals.size > 0
                     ? 'Alle kandidaten hebben een voorstel ontvangen'
                     : 'Geen geschikte kandidaten gevonden'}
@@ -255,9 +255,9 @@ export default function NewSpot() {
               </div>
             ) : (
               candidates.map((candidate, index) => (
-                <div key={candidate.entry.id} className="card">
+                <div key={candidate.entry.id} className="card p-0 overflow-hidden">
                   <div
-                    className="card-body cursor-pointer"
+                    className="p-6 cursor-pointer"
                     onClick={() => setExpandedCandidate(
                       expandedCandidate === candidate.entry.id ? null : candidate.entry.id
                     )}
@@ -265,7 +265,7 @@ export default function NewSpot() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                       <div className="flex items-center gap-4 flex-1">
                         {/* Rank */}
-                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium shrink-0">
+                        <div className="w-8 h-8 bg-cream-200 rounded-full flex items-center justify-center text-forest-600 font-medium shrink-0">
                           {index + 1}
                         </div>
 
@@ -276,9 +276,9 @@ export default function NewSpot() {
 
                         {/* Info */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-gray-900">{candidate.entry.child_name}</h3>
-                          <p className="text-sm text-gray-500">{candidate.entry.parent_name}</p>
-                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{candidate.summary}</p>
+                          <h3 className="font-semibold text-forest-600">{candidate.entry.child_name}</h3>
+                          <p className="text-sm text-navy-400">{candidate.entry.parent_name}</p>
+                          <p className="text-sm text-navy-500 mt-1 line-clamp-2">{candidate.summary}</p>
                         </div>
                       </div>
 
@@ -293,14 +293,14 @@ export default function NewSpot() {
                           return (
                             <div
                               key={day.value}
-                              className={`w-8 h-8 rounded text-xs font-medium flex items-center justify-center ${
+                              className={`w-8 h-8 rounded-lg text-xs font-medium flex items-center justify-center ${
                                 isMatch
-                                  ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
+                                  ? 'bg-teal-100 text-teal-700 ring-2 ring-teal-500'
                                   : isSpotDay
-                                  ? 'bg-blue-100 text-blue-700'
+                                  ? 'bg-forest-100 text-forest-600'
                                   : isWantedDay
-                                  ? 'bg-yellow-100 text-yellow-700'
-                                  : 'bg-gray-100 text-gray-400'
+                                  ? 'bg-terracotta-100 text-terracotta-600'
+                                  : 'bg-cream-200 text-navy-300'
                               }`}
                               title={`${day.label}: ${isMatch ? 'Match!' : isSpotDay ? 'Beschikbaar' : isWantedDay ? 'Gewenst' : 'Niet relevant'}`}
                             >
@@ -324,7 +324,7 @@ export default function NewSpot() {
 
                       {/* Expand icon */}
                       <svg
-                        className={`w-5 h-5 text-gray-400 transition-transform shrink-0 ${
+                        className={`w-5 h-5 text-navy-300 transition-transform shrink-0 ${
                           expandedCandidate === candidate.entry.id ? 'rotate-180' : ''
                         }`}
                         fill="none"
@@ -339,46 +339,46 @@ export default function NewSpot() {
 
                   {/* Expanded details */}
                   {expandedCandidate === candidate.entry.id && (
-                    <div className="px-6 pb-6 pt-0 border-t border-gray-100 mt-4">
-                      <h4 className="font-medium text-gray-900 mb-4 pt-4">Score berekening</h4>
+                    <div className="px-6 pb-6 pt-0 border-t border-cream-200 mt-0">
+                      <h4 className="font-semibold text-forest-600 mb-4 pt-4">Score berekening</h4>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Days score */}
-                        <div className="bg-gray-50 rounded-lg p-4">
+                        <div className="bg-cream-50 rounded-xl p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-700">Dagen match</span>
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm font-medium text-forest-500">Dagen match</span>
+                            <span className="text-sm font-bold text-forest-600">
                               {candidate.breakdown.days.score}/{candidate.breakdown.days.maxScore}
                             </span>
                           </div>
-                          <div className="h-2 bg-gray-200 rounded-full">
+                          <div className="h-2 bg-cream-200 rounded-full">
                             <div
-                              className="h-2 bg-primary-500 rounded-full"
+                              className="h-2 bg-teal-500 rounded-full"
                               style={{ width: `${(candidate.breakdown.days.score / candidate.breakdown.days.maxScore) * 100}%` }}
                             />
                           </div>
-                          <p className="text-xs text-gray-500 mt-2">
+                          <p className="text-xs text-navy-400 mt-2">
                             {candidate.breakdown.days.explanation}
                           </p>
                         </div>
 
                         {/* Priority score */}
-                        <div className="bg-gray-50 rounded-lg p-4">
+                        <div className="bg-cream-50 rounded-xl p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-700">Prioriteit</span>
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm font-medium text-forest-500">Prioriteit</span>
+                            <span className="text-sm font-bold text-forest-600">
                               {candidate.breakdown.priority.score}/{candidate.breakdown.priority.maxScore}
                             </span>
                           </div>
-                          <div className="h-2 bg-gray-200 rounded-full">
+                          <div className="h-2 bg-cream-200 rounded-full">
                             <div
-                              className="h-2 bg-primary-500 rounded-full"
+                              className="h-2 bg-teal-500 rounded-full"
                               style={{ width: `${(candidate.breakdown.priority.score / candidate.breakdown.priority.maxScore) * 100}%` }}
                             />
                           </div>
                           <div className="mt-2 space-y-1">
                             {candidate.breakdown.priority.breakdown.map((item, i) => (
-                              <p key={i} className="text-xs text-gray-500">
+                              <p key={i} className="text-xs text-navy-400">
                                 {item.ruleName}: {item.score.toFixed(1)}/{item.maxScore.toFixed(1)} pt
                               </p>
                             ))}
@@ -386,20 +386,20 @@ export default function NewSpot() {
                         </div>
 
                         {/* Start date score */}
-                        <div className="bg-gray-50 rounded-lg p-4">
+                        <div className="bg-cream-50 rounded-xl p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-700">Startdatum</span>
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm font-medium text-forest-500">Startdatum</span>
+                            <span className="text-sm font-bold text-forest-600">
                               {candidate.breakdown.startDate.score}/{candidate.breakdown.startDate.maxScore}
                             </span>
                           </div>
-                          <div className="h-2 bg-gray-200 rounded-full">
+                          <div className="h-2 bg-cream-200 rounded-full">
                             <div
-                              className="h-2 bg-primary-500 rounded-full"
+                              className="h-2 bg-teal-500 rounded-full"
                               style={{ width: `${(candidate.breakdown.startDate.score / candidate.breakdown.startDate.maxScore) * 100}%` }}
                             />
                           </div>
-                          <p className="text-xs text-gray-500 mt-2">
+                          <p className="text-xs text-navy-400 mt-2">
                             {candidate.breakdown.startDate.explanation}
                           </p>
                         </div>
@@ -408,31 +408,31 @@ export default function NewSpot() {
                       {/* Entry details */}
                       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="text-gray-500">Gewenste dagen:</span>{' '}
-                          <span className="text-gray-900">{candidate.entry.preferred_days.join(', ')}</span>
+                          <span className="text-navy-400">Gewenste dagen:</span>{' '}
+                          <span className="text-forest-600">{candidate.entry.preferred_days.join(', ')}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Gewenste start:</span>{' '}
-                          <span className="text-gray-900">
+                          <span className="text-navy-400">Gewenste start:</span>{' '}
+                          <span className="text-forest-600">
                             {new Date(candidate.entry.desired_start_date).toLocaleDateString('nl-NL')}
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Ingeschreven:</span>{' '}
-                          <span className="text-gray-900">
+                          <span className="text-navy-400">Ingeschreven:</span>{' '}
+                          <span className="text-forest-600">
                             {new Date(candidate.entry.created_at).toLocaleDateString('nl-NL')}
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Toegangscode:</span>{' '}
-                          <span className="text-gray-900 font-mono">{candidate.entry.access_code}</span>
+                          <span className="text-navy-400">Toegangscode:</span>{' '}
+                          <span className="text-forest-600 font-mono">{candidate.entry.access_code}</span>
                         </div>
                       </div>
 
                       {candidate.entry.notes && (
-                        <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
-                          <span className="text-sm font-medium text-yellow-800">Opmerking: </span>
-                          <span className="text-sm text-yellow-700">{candidate.entry.notes}</span>
+                        <div className="mt-4 p-3 bg-terracotta-50 rounded-xl">
+                          <span className="text-sm font-medium text-terracotta-700">Opmerking: </span>
+                          <span className="text-sm text-terracotta-600">{candidate.entry.notes}</span>
                         </div>
                       )}
                     </div>

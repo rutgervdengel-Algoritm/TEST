@@ -21,7 +21,6 @@ export default function EntryForm() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  // Form state
   const [parentName, setParentName] = useState('');
   const [parentEmail, setParentEmail] = useState('');
   const [childName, setChildName] = useState('');
@@ -115,7 +114,7 @@ export default function EntryForm() {
     return (
       <Layout title={isEditing ? 'Inschrijving bewerken' : 'Nieuwe inschrijving'}>
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta-500"></div>
         </div>
       </Layout>
     );
@@ -124,7 +123,7 @@ export default function EntryForm() {
   return (
     <Layout title={isEditing ? 'Inschrijving bewerken' : 'Nieuwe inschrijving'}>
       <div className="max-w-2xl">
-        <Link to="/waitlist" className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 mb-6">
+        <Link to="/waitlist" className="inline-flex items-center gap-1 text-sm text-forest-500 hover:text-forest-700 mb-6 font-semibold">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -133,37 +132,34 @@ export default function EntryForm() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+            <div className="p-4 bg-terracotta-50 border border-terracotta-200 text-terracotta-700 rounded-xl">
               {error}
             </div>
           )}
 
-          {/* Feature 6: Access code with QR code display */}
           {isEditing && accessCode && (
-            <div className="card p-4 bg-primary-50 border-primary-200">
+            <div className="card p-4 bg-teal-50 border-teal-200">
               <div className="flex items-start gap-6">
-                {/* QR Code */}
                 <div className="flex-shrink-0">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(
                       `${window.location.origin}/portal/${accessCode}`
                     )}`}
                     alt={`QR code voor ${accessCode}`}
-                    className="w-[120px] h-[120px] rounded-lg border border-primary-200"
+                    className="w-[120px] h-[120px] rounded-xl border border-teal-200"
                   />
                 </div>
-                {/* Info */}
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-primary-800">Toegangscode ouder portal</p>
-                  <p className="text-xl font-mono font-bold text-primary-900 mt-1">{accessCode}</p>
-                  <p className="text-xs text-primary-600 mt-2">
+                  <p className="text-sm font-medium text-teal-700">Toegangscode ouder portal</p>
+                  <p className="text-xl font-mono font-bold text-teal-800 mt-1">{accessCode}</p>
+                  <p className="text-xs text-teal-600 mt-2">
                     Scan de QR-code of gebruik de code om in te loggen op het ouderportaal.
                   </p>
                   <div className="flex gap-2 mt-3">
                     <button
                       type="button"
                       onClick={() => navigator.clipboard.writeText(accessCode)}
-                      className="btn-secondary text-sm flex items-center gap-1"
+                      className="btn-outline text-sm flex items-center gap-1"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -173,7 +169,7 @@ export default function EntryForm() {
                     <button
                       type="button"
                       onClick={() => navigator.clipboard.writeText(`${window.location.origin}/portal/${accessCode}`)}
-                      className="btn-secondary text-sm flex items-center gap-1"
+                      className="btn-outline text-sm flex items-center gap-1"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -192,11 +188,11 @@ export default function EntryForm() {
                                 <title>Toegangscode - ${accessCode}</title>
                                 <style>
                                   body { font-family: system-ui, sans-serif; text-align: center; padding: 40px; }
-                                  h1 { font-size: 18px; color: #333; margin-bottom: 20px; }
+                                  h1 { font-size: 18px; color: #2D5A4A; margin-bottom: 20px; }
                                   .qr { margin: 20px auto; }
-                                  .code { font-family: monospace; font-size: 28px; font-weight: bold; margin: 20px 0; }
-                                  .info { color: #666; font-size: 14px; max-width: 300px; margin: 0 auto; }
-                                  .url { font-size: 12px; color: #999; margin-top: 20px; word-break: break-all; }
+                                  .code { font-family: monospace; font-size: 28px; font-weight: bold; margin: 20px 0; color: #2D5A4A; }
+                                  .info { color: #6B6155; font-size: 14px; max-width: 300px; margin: 0 auto; }
+                                  .url { font-size: 12px; color: #9E9182; margin-top: 20px; word-break: break-all; }
                                 </style>
                               </head>
                               <body>
@@ -212,7 +208,7 @@ export default function EntryForm() {
                           printWindow.print();
                         }
                       }}
-                      className="btn-secondary text-sm flex items-center gap-1"
+                      className="btn-outline text-sm flex items-center gap-1"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -227,10 +223,10 @@ export default function EntryForm() {
 
           {/* Parent info */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Gegevens ouder/verzorger</h2>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Gegevens ouder/verzorger</h2>
             </div>
-            <div className="card-body space-y-4">
+            <div className="p-6 space-y-4">
               <div>
                 <label htmlFor="parentName" className="label">Naam ouder/verzorger *</label>
                 <input
@@ -253,17 +249,17 @@ export default function EntryForm() {
                   className="input"
                   placeholder="email@voorbeeld.nl"
                 />
-                <p className="text-xs text-gray-500 mt-1">Voor het versturen van notificaties</p>
+                <p className="text-xs text-navy-400 mt-1">Voor het versturen van notificaties</p>
               </div>
             </div>
           </div>
 
           {/* Child info */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Gegevens kind</h2>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Gegevens kind</h2>
             </div>
-            <div className="card-body space-y-4">
+            <div className="p-6 space-y-4">
               <div>
                 <label htmlFor="childName" className="label">Naam kind *</label>
                 <input
@@ -291,10 +287,10 @@ export default function EntryForm() {
 
           {/* Preferences */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Voorkeuren</h2>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Voorkeuren</h2>
             </div>
-            <div className="card-body space-y-4">
+            <div className="p-6 space-y-4">
               <div>
                 <label className="label">Gewenste dagen *</label>
                 <div className="flex gap-2 flex-wrap">
@@ -309,7 +305,7 @@ export default function EntryForm() {
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-navy-400 mt-2">
                   Geselecteerd: {preferredDays.length > 0 ? preferredDays.join(', ') : 'Geen'}
                 </p>
               </div>
@@ -340,21 +336,21 @@ export default function EntryForm() {
 
           {/* Priority factors */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Prioriteitscriteria</h2>
-              <p className="text-sm text-gray-500">Deze factoren beïnvloeden de positie op de wachtlijst</p>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Prioriteitscriteria</h2>
+              <p className="text-sm text-navy-400 mt-1">Deze factoren beïnvloeden de positie op de wachtlijst</p>
             </div>
-            <div className="card-body space-y-4">
+            <div className="p-6 space-y-4">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={hasSibling}
                   onChange={(e) => setHasSibling(e.target.checked)}
-                  className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  className="w-5 h-5 rounded border-cream-300 text-teal-600 focus:ring-teal-500"
                 />
                 <div>
-                  <p className="font-medium text-gray-900">Broertje/zusje op locatie</p>
-                  <p className="text-sm text-gray-500">Er is al een kind van dit gezin ingeschreven</p>
+                  <p className="font-medium text-forest-600">Broertje/zusje op locatie</p>
+                  <p className="text-sm text-navy-400">Er is al een kind van dit gezin ingeschreven</p>
                 </div>
               </label>
 
@@ -363,11 +359,11 @@ export default function EntryForm() {
                   type="checkbox"
                   checked={singleParent}
                   onChange={(e) => setSingleParent(e.target.checked)}
-                  className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  className="w-5 h-5 rounded border-cream-300 text-teal-600 focus:ring-teal-500"
                 />
                 <div>
-                  <p className="font-medium text-gray-900">Alleenstaand ouder</p>
-                  <p className="text-sm text-gray-500">Eenoudergezin</p>
+                  <p className="font-medium text-forest-600">Alleenstaand ouder</p>
+                  <p className="text-sm text-navy-400">Eenoudergezin</p>
                 </div>
               </label>
 
@@ -387,7 +383,7 @@ export default function EntryForm() {
 
           {/* Submit */}
           <div className="flex gap-3">
-            <Link to="/waitlist" className="btn-secondary">
+            <Link to="/waitlist" className="btn-outline">
               Annuleren
             </Link>
             <button type="submit" disabled={saving} className="btn-primary">

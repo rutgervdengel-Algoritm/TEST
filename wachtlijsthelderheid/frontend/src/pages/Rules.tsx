@@ -22,11 +22,6 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   ),
-  info: (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  ),
 };
 
 export default function Rules() {
@@ -36,7 +31,6 @@ export default function Rules() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Feature 8: Fairness check state
   const [fairnessCheck, setFairnessCheck] = useState<FairnessCheck | null>(null);
   const [loadingFairness, setLoadingFairness] = useState(false);
   const [showFairnessDetails, setShowFairnessDetails] = useState(false);
@@ -58,7 +52,6 @@ export default function Rules() {
     }
   }
 
-  // Feature 8: Load fairness check
   async function loadFairnessCheck() {
     setLoadingFairness(true);
     try {
@@ -96,7 +89,6 @@ export default function Rules() {
     setSuccess('');
   }
 
-  // Feature 8: Toggle rule active status
   function toggleRuleActive(index: number) {
     setRules(prev => prev.map((rule, i) =>
       i === index ? { ...rule, is_active: !rule.is_active } : rule
@@ -110,7 +102,6 @@ export default function Rules() {
     setError('');
     setSuccess('');
 
-    // Validate
     if (totalWeight !== 100) {
       setError(`Totale weging moet 100% zijn (momenteel: ${totalWeight}%)`);
       return;
@@ -129,7 +120,6 @@ export default function Rules() {
       const response = await rulesApi.update(rules);
       setRules(response.rules);
       setSuccess('Regels succesvol opgeslagen');
-      // Reload fairness check after saving
       loadFairnessCheck();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kon regels niet opslaan');
@@ -142,7 +132,7 @@ export default function Rules() {
     return (
       <Layout title="Prioriteitsregels">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta-500"></div>
         </div>
       </Layout>
     );
@@ -152,39 +142,38 @@ export default function Rules() {
     <Layout title="Prioriteitsregels">
       <div className="max-w-3xl">
         {/* Info card */}
-        <div className="card p-4 bg-blue-50 border-blue-200 mb-6">
+        <div className="card p-4 bg-forest-50 border-forest-200 mb-6">
           <div>
-            <h3 className="font-medium text-blue-900">Hoe werken prioriteitsregels?</h3>
-            <p className="text-sm text-blue-800 mt-1">
+            <h3 className="font-semibold text-forest-700">Hoe werken prioriteitsregels?</h3>
+            <p className="text-sm text-forest-600 mt-1">
               Prioriteitsregels bepalen de volgorde op de wachtlijst. Elke regel heeft een percentage
               dat aangeeft hoeveel gewicht deze regel heeft in de totale score. Het totaal moet 100% zijn.
             </p>
           </div>
         </div>
 
-        {/* Feature 8: Fairness warnings */}
+        {/* Fairness warnings */}
         {fairnessCheck && !loadingFairness && (
-          <div className={`card mb-6 ${fairnessCheck.isBalanced ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
-            <div className="card-body">
+          <div className={`card mb-6 ${fairnessCheck.isBalanced ? 'bg-teal-50 border-teal-200' : 'bg-terracotta-50 border-terracotta-200'}`}>
+            <div className="p-6">
               <div className="flex items-start gap-3">
-                <span className={fairnessCheck.isBalanced ? 'text-green-600' : 'text-yellow-600'}>
+                <span className={fairnessCheck.isBalanced ? 'text-teal-600' : 'text-terracotta-600'}>
                   {fairnessCheck.isBalanced ? Icons.check : Icons.warning}
                 </span>
                 <div className="flex-1">
-                  <h3 className={`font-medium ${fairnessCheck.isBalanced ? 'text-green-800' : 'text-yellow-800'}`}>
+                  <h3 className={`font-semibold ${fairnessCheck.isBalanced ? 'text-teal-700' : 'text-terracotta-700'}`}>
                     {fairnessCheck.isBalanced ? 'Regels zijn gebalanceerd' : 'Aandachtspunten bij huidige regels'}
                   </h3>
 
-                  {/* Warnings */}
                   {fairnessCheck.warnings.length > 0 && (
                     <div className="mt-2 space-y-2">
                       {fairnessCheck.warnings.map((warning, idx) => (
                         <div
                           key={idx}
-                          className={`p-2 rounded text-sm ${
+                          className={`p-2 rounded-xl text-sm ${
                             warning.severity === 'critical'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-terracotta-100 text-terracotta-800'
+                              : 'bg-terracotta-100/50 text-terracotta-700'
                           }`}
                         >
                           <strong>{warning.ruleName}:</strong> {warning.message}
@@ -193,13 +182,12 @@ export default function Rules() {
                     </div>
                   )}
 
-                  {/* Suggestions */}
                   {fairnessCheck.suggestions.length > 0 && (
                     <div className="mt-3">
-                      <p className={`text-sm font-medium ${fairnessCheck.isBalanced ? 'text-green-700' : 'text-yellow-700'}`}>
+                      <p className={`text-sm font-medium ${fairnessCheck.isBalanced ? 'text-teal-600' : 'text-terracotta-600'}`}>
                         Suggesties:
                       </p>
-                      <ul className="mt-1 text-sm text-gray-600 list-disc list-inside">
+                      <ul className="mt-1 text-sm text-navy-500 list-disc list-inside">
                         {fairnessCheck.suggestions.map((suggestion, idx) => (
                           <li key={idx}>{suggestion}</li>
                         ))}
@@ -207,27 +195,25 @@ export default function Rules() {
                     </div>
                   )}
 
-                  {/* Toggle details */}
                   <button
                     onClick={() => setShowFairnessDetails(!showFairnessDetails)}
-                    className={`mt-3 text-sm font-medium ${fairnessCheck.isBalanced ? 'text-green-600' : 'text-yellow-600'}`}
+                    className={`mt-3 text-sm font-semibold ${fairnessCheck.isBalanced ? 'text-teal-600' : 'text-terracotta-600'}`}
                   >
                     {showFairnessDetails ? 'Verberg details' : 'Toon impact analyse'}
                   </button>
 
-                  {/* Details */}
                   {showFairnessDetails && fairnessCheck.affectedAnalysis && (
-                    <div className="mt-3 p-3 bg-white rounded-lg border border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                    <div className="mt-3 p-3 bg-white rounded-xl border border-cream-300">
+                      <h4 className="text-sm font-medium text-forest-600 mb-2">
                         Impact op wachtlijst ({fairnessCheck.affectedAnalysis.totalEntries} inschrijvingen)
                       </h4>
                       <div className="space-y-2">
                         {Object.entries(fairnessCheck.affectedAnalysis.byRuleType).map(([type, info]) => (
                           <div key={type} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">
+                            <span className="text-navy-500">
                               {RULE_TYPES.find(r => r.value === type)?.label || type}
                             </span>
-                            <span className="font-medium text-gray-900">
+                            <span className="font-medium text-forest-600">
                               {info.count} ({info.percentage}%)
                             </span>
                           </div>
@@ -242,13 +228,13 @@ export default function Rules() {
         )}
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+          <div className="mb-6 p-4 bg-terracotta-50 border border-terracotta-200 text-terracotta-700 rounded-xl">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+          <div className="mb-6 p-4 bg-teal-50 border border-teal-200 text-teal-700 rounded-xl">
             {success}
           </div>
         )}
@@ -258,22 +244,20 @@ export default function Rules() {
           {rules.map((rule, index) => (
             <div
               key={index}
-              className={`card ${rule.is_active === false ? 'opacity-60 bg-gray-50' : ''}`}
+              className={`card ${rule.is_active === false ? 'opacity-60 bg-cream-50' : ''}`}
             >
-              <div className="card-body">
+              <div className="p-6">
                 <div className="flex items-start gap-4">
-                  {/* Number and active toggle */}
                   <div className="flex flex-col items-center gap-2">
-                    <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center text-gray-400">
+                    <div className="w-6 h-6 bg-cream-200 rounded-lg flex items-center justify-center text-navy-400 text-sm">
                       {index + 1}
                     </div>
-                    {/* Feature 8: Active toggle */}
                     <button
                       onClick={() => toggleRuleActive(index)}
-                      className={`w-6 h-6 rounded flex items-center justify-center ${
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center ${
                         rule.is_active !== false
-                          ? 'bg-green-100 text-green-600'
-                          : 'bg-gray-200 text-gray-400'
+                          ? 'bg-teal-100 text-teal-600'
+                          : 'bg-cream-200 text-navy-300'
                       }`}
                       title={rule.is_active !== false ? 'Actief - klik om te deactiveren' : 'Inactief - klik om te activeren'}
                     >
@@ -342,9 +326,8 @@ export default function Rules() {
                     <div>
                       <div className="flex items-center justify-between mb-1">
                         <label className="label mb-0">Weging: {rule.weight_percentage}%</label>
-                        {/* Feature 8: Warning for extreme weights */}
                         {rule.weight_percentage > 60 && rule.is_active !== false && (
-                          <span className="text-xs text-yellow-600 flex items-center gap-1">
+                          <span className="text-xs text-terracotta-600 flex items-center gap-1">
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01" />
                             </svg>
@@ -358,10 +341,10 @@ export default function Rules() {
                         max="100"
                         value={rule.weight_percentage}
                         onChange={(e) => updateRule(index, { weight_percentage: parseInt(e.target.value) })}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600"
+                        className="w-full h-2 bg-cream-200 rounded-full appearance-none cursor-pointer accent-teal-500"
                         disabled={rule.is_active === false}
                       />
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <div className="flex justify-between text-xs text-navy-400 mt-1">
                         <span>0%</span>
                         <span>50%</span>
                         <span>100%</span>
@@ -369,10 +352,9 @@ export default function Rules() {
                     </div>
                   </div>
 
-                  {/* Delete button */}
                   <button
                     onClick={() => removeRule(index)}
-                    className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100"
+                    className="p-2 text-navy-300 hover:text-terracotta-600 rounded-lg hover:bg-cream-100"
                     title="Verwijderen"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -385,32 +367,29 @@ export default function Rules() {
           ))}
         </div>
 
-        {/* Add rule button */}
         <button
           onClick={addRule}
-          className="btn-secondary w-full mb-6"
+          className="btn-outline w-full mb-6"
         >
           + Regel toevoegen
         </button>
 
-        {/* Total indicator */}
-        <div className={`card p-4 mb-6 ${totalWeight === 100 ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
+        <div className={`card p-4 mb-6 ${totalWeight === 100 ? 'bg-teal-50 border-teal-200' : 'bg-terracotta-50 border-terracotta-200'}`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className={`font-medium ${totalWeight === 100 ? 'text-green-800' : 'text-yellow-800'}`}>
+              <p className={`font-semibold ${totalWeight === 100 ? 'text-teal-700' : 'text-terracotta-700'}`}>
                 Totale weging (actieve regels)
               </p>
-              <p className={`text-sm ${totalWeight === 100 ? 'text-green-600' : 'text-yellow-600'}`}>
+              <p className={`text-sm ${totalWeight === 100 ? 'text-teal-600' : 'text-terracotta-600'}`}>
                 {totalWeight === 100 ? 'Correct! Totaal is 100%' : `Totaal moet 100% zijn`}
               </p>
             </div>
-            <div className={`text-3xl font-bold ${totalWeight === 100 ? 'text-green-700' : 'text-yellow-700'}`}>
+            <div className={`text-3xl font-bold ${totalWeight === 100 ? 'text-teal-700' : 'text-terracotta-700'}`}>
               {totalWeight}%
             </div>
           </div>
         </div>
 
-        {/* Save button */}
         <button
           onClick={handleSave}
           disabled={saving || totalWeight !== 100}
@@ -421,11 +400,11 @@ export default function Rules() {
 
         {/* Preview */}
         <div className="card mt-8">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900">Preview: Score berekening</h2>
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Preview: Score berekening</h2>
           </div>
-          <div className="card-body">
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="p-6">
+            <p className="text-sm text-navy-500 mb-4">
               Zo wordt de prioriteitsscore (max 40 punten) berekend:
             </p>
             <div className="space-y-2">
@@ -435,17 +414,17 @@ export default function Rules() {
                   <div key={index} className="flex items-center gap-4">
                     <div className="flex-1">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-700">{rule.rule_name || 'Naamloze regel'}</span>
-                        <span className="text-gray-500">{rule.weight_percentage}%</span>
+                        <span className="text-forest-600">{rule.rule_name || 'Naamloze regel'}</span>
+                        <span className="text-navy-400">{rule.weight_percentage}%</span>
                       </div>
-                      <div className="h-2 bg-gray-100 rounded-full mt-1">
+                      <div className="h-2 bg-cream-200 rounded-full mt-1">
                         <div
-                          className="h-2 bg-primary-500 rounded-full"
+                          className="h-2 bg-teal-500 rounded-full"
                           style={{ width: `${rule.weight_percentage}%` }}
                         />
                       </div>
                     </div>
-                    <div className="text-sm font-medium text-gray-900 w-20 text-right">
+                    <div className="text-sm font-medium text-forest-600 w-20 text-right">
                       max {maxPoints.toFixed(1)} pt
                     </div>
                   </div>

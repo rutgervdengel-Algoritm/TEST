@@ -7,68 +7,104 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Teal/turquoise primary - inspired by Tink
-        primary: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',  // Main primary (teal)
-          600: '#0d9488',  // Primary hover
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
+        // Cream - Achtergrondkleuren (warm, uitnodigend)
+        cream: {
+          50: '#FDFBF7',   // Card achtergronden licht
+          100: '#F7F3EC',  // Pagina-achtergrond, navbar, secties
+          200: '#F0EADF',  // Hover-achtergronden
+          300: '#E8DFD0',  // Borders, scheidingslijnen
+          400: '#DDD2C0',
+          500: '#D1C4AD',
         },
-        secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+        // Forest - Primaire kleur (vertrouwen, professioneel)
+        forest: {
+          50: '#EDF3F1',
+          100: '#D4E2DD',
+          200: '#A8C5BA',
+          300: '#7DA898',
+          400: '#517B6E',
+          500: '#2D5A4A',   // Primaire tekst, headings, navigatie
+          600: '#264D3F',   // Hover states, section titles
+          700: '#1E3F33',   // Donkere accenten
+          800: '#173028',
+          900: '#10221D',
         },
+        // Terracotta - CTA kleur (warmte, actie)
+        terracotta: {
+          50: '#FDF5F0',
+          100: '#FAEADE',
+          200: '#F3D1B8',
+          300: '#ECB892',
+          400: '#D9956A',
+          500: '#C67B4B',   // CTA-knoppen, primaire actieknoppen
+          600: '#B56A3B',   // Hover state van CTA-knoppen
+          700: '#955530',
+          800: '#754325',
+          900: '#5A331D',
+        },
+        // Teal - Accent kleur (frisheid, succes)
+        teal: {
+          50: '#EEF7F5',
+          100: '#D5EDEA',
+          200: '#ABDBD4',
+          300: '#82C9BF',
+          400: '#6BB8AD',
+          500: '#5BA89D',   // Decoratieve accenten, succes-indicatoren
+          600: '#4D8E84',   // Positieve percentages, status-indicators
+          700: '#3E736B',
+          800: '#305952',
+          900: '#213F3A',
+        },
+        // Navy - Tekst tinten
+        navy: {
+          50: '#F7F3EC',
+          100: '#F0EADF',
+          200: '#E0D6C8',
+          300: '#C5B8A5',
+          400: '#9E9182',   // Labels, subtekst, meta-informatie
+          500: '#6B6155',   // Body tekst, paragrafen, subtitels
+          600: '#514A40',
+          700: '#3A352E',   // Donkere tekst
+          800: '#2A2621',
+          900: '#1A1815',
+        },
+        // Semantic colors
         success: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          500: '#10b981',
-          600: '#059669',
-          900: '#065f46',
+          50: '#EEF7F5',
+          100: '#D5EDEA',
+          500: '#5BA89D',
+          600: '#4D8E84',
         },
         error: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          500: '#ef4444',
-          600: '#dc2626',
-          900: '#991b1b',
+          50: '#FDF5F0',
+          100: '#FAEADE',
+          500: '#C67B4B',
+          600: '#B56A3B',
         },
         warning: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          500: '#f59e0b',
-          600: '#d97706',
-          900: '#92400e',
+          50: '#FDF5F0',
+          100: '#FAEADE',
+          500: '#D9956A',
+          600: '#C67B4B',
         },
-        // Dark teal sidebar colors - Tink style
+        // Sidebar - Forest based
         sidebar: {
-          DEFAULT: '#0d3331',  // Dark teal
-          light: '#134e4a',    // Lighter teal for hover
-          dark: '#082624',     // Darker teal
-          border: '#1a5c56',   // Teal border
+          DEFAULT: '#2D5A4A',  // Forest 500
+          light: '#3A6B5A',    // Lighter for hover
+          dark: '#1E3F33',     // Forest 700
+          border: '#517B6E',   // Forest 400
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['DM Serif Display', 'Georgia', 'serif'],
       },
       borderRadius: {
         'sm': '6px',
         'md': '8px',
         'lg': '12px',
         'xl': '16px',
+        '2xl': '20px',
       },
     },
   },

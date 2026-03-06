@@ -49,13 +49,11 @@ export default function ImportExport() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState('');
 
-  // Feature 10: Demo data state
   const [loadingDemo, setLoadingDemo] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [demoSuccess, setDemoSuccess] = useState('');
 
-  // Export waitlist
   function handleExport() {
     const token = getAuthToken();
     const url = importExportApi.exportWaitlist();
@@ -76,7 +74,6 @@ export default function ImportExport() {
       });
   }
 
-  // Download template
   function handleDownloadTemplate() {
     const token = getAuthToken();
     const url = importExportApi.getImportTemplate();
@@ -97,7 +94,6 @@ export default function ImportExport() {
       });
   }
 
-  // Handle file selection
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
@@ -112,7 +108,6 @@ export default function ImportExport() {
     }
   }
 
-  // Import file
   async function handleImport() {
     if (!selectedFile) return;
 
@@ -134,7 +129,6 @@ export default function ImportExport() {
     }
   }
 
-  // Feature 10: Load demo data
   async function handleLoadDemo() {
     setLoadingDemo(true);
     setError('');
@@ -150,7 +144,6 @@ export default function ImportExport() {
     }
   }
 
-  // Feature 10: Reset all data
   async function handleReset() {
     setResetting(true);
     setError('');
@@ -170,17 +163,16 @@ export default function ImportExport() {
   return (
     <Layout title="Import / Export">
       <div className="max-w-4xl">
-        {/* Error/Success messages */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg flex items-center gap-3">
-            <span className="text-red-500">{Icons.warning}</span>
+          <div className="mb-6 p-4 bg-terracotta-50 border border-terracotta-200 text-terracotta-700 rounded-xl flex items-center gap-3">
+            <span className="text-terracotta-500">{Icons.warning}</span>
             {error}
           </div>
         )}
 
         {demoSuccess && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg flex items-center gap-3">
-            <span className="text-green-500">{Icons.check}</span>
+          <div className="mb-6 p-4 bg-teal-50 border border-teal-200 text-teal-700 rounded-xl flex items-center gap-3">
+            <span className="text-teal-500">{Icons.check}</span>
             {demoSuccess}
           </div>
         )}
@@ -188,14 +180,14 @@ export default function ImportExport() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Export section */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg flex items-center gap-2">
                 {Icons.download}
                 Exporteren
               </h2>
             </div>
-            <div className="card-body">
-              <p className="text-sm text-gray-600 mb-4">
+            <div className="p-6">
+              <p className="text-sm text-navy-500 mb-4">
                 Download de complete wachtlijst als CSV bestand. Dit bestand kan worden
                 geopend in Excel of Google Sheets.
               </p>
@@ -209,27 +201,27 @@ export default function ImportExport() {
 
           {/* Import section */}
           <div className="card">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg flex items-center gap-2">
                 {Icons.upload}
                 Importeren
               </h2>
             </div>
-            <div className="card-body">
-              <p className="text-sm text-gray-600 mb-4">
+            <div className="p-6">
+              <p className="text-sm text-navy-500 mb-4">
                 Importeer inschrijvingen vanuit een CSV bestand. Download eerst de template
                 om te zien welke kolommen nodig zijn.
               </p>
 
               <button
                 onClick={handleDownloadTemplate}
-                className="btn-secondary w-full flex items-center justify-center gap-2 mb-4"
+                className="btn-outline w-full flex items-center justify-center gap-2 mb-4"
               >
                 {Icons.file}
                 Download template
               </button>
 
-              <div className="border-2 border-dashed border-gray-200 rounded-lg p-4">
+              <div className="border-2 border-dashed border-cream-300 rounded-xl p-4 hover:border-forest-300 transition-colors">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -242,8 +234,8 @@ export default function ImportExport() {
                   htmlFor="csv-upload"
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  <span className="text-gray-400 mb-2">{Icons.upload}</span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-navy-300 mb-2">{Icons.upload}</span>
+                  <span className="text-sm text-navy-500">
                     {selectedFile ? selectedFile.name : 'Klik om CSV te selecteren'}
                   </span>
                 </label>
@@ -275,32 +267,31 @@ export default function ImportExport() {
         {/* Import result */}
         {importResult && (
           <div className="card mt-6">
-            <div className="card-header">
-              <h2 className="font-semibold text-gray-900">Import resultaat</h2>
+            <div className="card-header bg-cream-50">
+              <h2 className="font-serif font-bold text-forest-600 text-lg">Import resultaat</h2>
             </div>
-            <div className="card-body">
+            <div className="p-6">
               <div className="grid grid-cols-3 gap-4 mb-4">
-                <div className="p-4 bg-green-50 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-green-700">{importResult.imported}</p>
-                  <p className="text-sm text-green-600">Geimporteerd</p>
+                <div className="p-4 bg-teal-50 rounded-xl text-center">
+                  <p className="text-2xl font-bold text-teal-700">{importResult.imported}</p>
+                  <p className="text-sm text-teal-600">Geimporteerd</p>
                 </div>
-                <div className="p-4 bg-yellow-50 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-yellow-700">{importResult.skipped}</p>
-                  <p className="text-sm text-yellow-600">Overgeslagen</p>
+                <div className="p-4 bg-terracotta-50 rounded-xl text-center">
+                  <p className="text-2xl font-bold text-terracotta-600">{importResult.skipped}</p>
+                  <p className="text-sm text-terracotta-500">Overgeslagen</p>
                 </div>
-                <div className="p-4 bg-red-50 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-red-700">{importResult.errors.length}</p>
-                  <p className="text-sm text-red-600">Fouten</p>
+                <div className="p-4 bg-terracotta-100 rounded-xl text-center">
+                  <p className="text-2xl font-bold text-terracotta-700">{importResult.errors.length}</p>
+                  <p className="text-sm text-terracotta-600">Fouten</p>
                 </div>
               </div>
 
-              {/* Duplicates */}
               {importResult.duplicates.length > 0 && (
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Duplicaten gevonden:</h3>
-                  <div className="bg-yellow-50 rounded-lg p-3 max-h-40 overflow-y-auto">
+                  <h3 className="text-sm font-medium text-forest-600 mb-2">Duplicaten gevonden:</h3>
+                  <div className="bg-terracotta-50 rounded-xl p-3 max-h-40 overflow-y-auto">
                     {importResult.duplicates.map((dup, idx) => (
-                      <p key={idx} className="text-sm text-yellow-700">
+                      <p key={idx} className="text-sm text-terracotta-600">
                         Rij {dup.row}: {dup.reason} (bestaand ID: {dup.existingId})
                       </p>
                     ))}
@@ -308,13 +299,12 @@ export default function ImportExport() {
                 </div>
               )}
 
-              {/* Errors */}
               {importResult.errors.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Fouten:</h3>
-                  <div className="bg-red-50 rounded-lg p-3 max-h-40 overflow-y-auto">
+                  <h3 className="text-sm font-medium text-forest-600 mb-2">Fouten:</h3>
+                  <div className="bg-terracotta-100 rounded-xl p-3 max-h-40 overflow-y-auto">
                     {importResult.errors.map((err, idx) => (
-                      <p key={idx} className="text-sm text-red-700">
+                      <p key={idx} className="text-sm text-terracotta-700">
                         Rij {err.row}: {err.error}
                       </p>
                     ))}
@@ -325,16 +315,16 @@ export default function ImportExport() {
           </div>
         )}
 
-        {/* Feature 10: Demo data section */}
+        {/* Demo data section */}
         <div className="card mt-6">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg flex items-center gap-2">
               {Icons.database}
               Demo & Test Data
             </h2>
           </div>
-          <div className="card-body">
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="p-6">
+            <p className="text-sm text-navy-500 mb-4">
               Laad voorbeelddata om de applicatie te testen, of reset alle data om opnieuw te beginnen.
             </p>
 
@@ -342,11 +332,11 @@ export default function ImportExport() {
               <button
                 onClick={handleLoadDemo}
                 disabled={loadingDemo}
-                className="btn-secondary flex items-center justify-center gap-2"
+                className="btn-outline flex items-center justify-center gap-2"
               >
                 {loadingDemo ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-forest-600"></div>
                     Laden...
                   </>
                 ) : (
@@ -366,8 +356,8 @@ export default function ImportExport() {
               </button>
             </div>
 
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-700">
+            <div className="mt-4 p-3 bg-forest-50 border border-forest-200 rounded-xl">
+              <p className="text-sm text-forest-700">
                 <strong>Demo data bevat:</strong> 25 realistische Nederlandse inschrijvingen met
                 gevarieerde voorkeuren, prioriteiten en bevestigingsstatussen voor het testen van
                 alle functionaliteiten.
@@ -378,23 +368,23 @@ export default function ImportExport() {
 
         {/* Reset confirmation modal */}
         {showResetConfirm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-md w-full animate-fade-in">
+          <div className="fixed inset-0 bg-forest-900/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full animate-fade-in">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-red-500">{Icons.warning}</span>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <span className="text-terracotta-500">{Icons.warning}</span>
+                  <h3 className="text-lg font-serif font-bold text-forest-600">
                     Alle data resetten?
                   </h3>
                 </div>
-                <p className="text-gray-600 mb-6">
-                  Dit verwijdert <strong>alle</strong> inschrijvingen, plekken, matches en
+                <p className="text-navy-500 mb-6">
+                  Dit verwijdert <strong className="text-forest-600">alle</strong> inschrijvingen, plekken, matches en
                   logboekregels. Deze actie kan niet ongedaan worden gemaakt.
                 </p>
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowResetConfirm(false)}
-                    className="btn-secondary flex-1"
+                    className="btn-outline flex-1"
                   >
                     Annuleren
                   </button>
@@ -413,67 +403,67 @@ export default function ImportExport() {
 
         {/* Info about CSV format */}
         <div className="card mt-6">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900">CSV formaat informatie</h2>
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">CSV formaat informatie</h2>
           </div>
-          <div className="card-body">
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="p-6">
+            <p className="text-sm text-navy-500 mb-4">
               Het CSV bestand moet de volgende kolommen bevatten:
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50">
+                <thead className="bg-cream-50">
                   <tr>
-                    <th className="px-4 py-2 text-left font-medium text-gray-700">Kolom</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-700">Verplicht</th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-700">Beschrijving</th>
+                    <th className="px-4 py-2 text-left font-semibold text-forest-600">Kolom</th>
+                    <th className="px-4 py-2 text-left font-semibold text-forest-600">Verplicht</th>
+                    <th className="px-4 py-2 text-left font-semibold text-forest-600">Beschrijving</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-cream-200">
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">parent_name</td>
-                    <td className="px-4 py-2 text-green-600">Ja</td>
-                    <td className="px-4 py-2 text-gray-600">Naam ouder/verzorger</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">parent_name</td>
+                    <td className="px-4 py-2 text-teal-600">Ja</td>
+                    <td className="px-4 py-2 text-navy-500">Naam ouder/verzorger</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">parent_email</td>
-                    <td className="px-4 py-2 text-gray-400">Nee</td>
-                    <td className="px-4 py-2 text-gray-600">E-mailadres ouder</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">parent_email</td>
+                    <td className="px-4 py-2 text-navy-400">Nee</td>
+                    <td className="px-4 py-2 text-navy-500">E-mailadres ouder</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">child_name</td>
-                    <td className="px-4 py-2 text-green-600">Ja</td>
-                    <td className="px-4 py-2 text-gray-600">Naam kind</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">child_name</td>
+                    <td className="px-4 py-2 text-teal-600">Ja</td>
+                    <td className="px-4 py-2 text-navy-500">Naam kind</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">child_birthdate</td>
-                    <td className="px-4 py-2 text-gray-400">Nee</td>
-                    <td className="px-4 py-2 text-gray-600">Geboortedatum (YYYY-MM-DD)</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">child_birthdate</td>
+                    <td className="px-4 py-2 text-navy-400">Nee</td>
+                    <td className="px-4 py-2 text-navy-500">Geboortedatum (YYYY-MM-DD)</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">preferred_days</td>
-                    <td className="px-4 py-2 text-green-600">Ja</td>
-                    <td className="px-4 py-2 text-gray-600">Gewenste dagen (MA,DI,WO,DO,VR)</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">preferred_days</td>
+                    <td className="px-4 py-2 text-teal-600">Ja</td>
+                    <td className="px-4 py-2 text-navy-500">Gewenste dagen (MA,DI,WO,DO,VR)</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">desired_start_date</td>
-                    <td className="px-4 py-2 text-green-600">Ja</td>
-                    <td className="px-4 py-2 text-gray-600">Gewenste startdatum (YYYY-MM-DD)</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">desired_start_date</td>
+                    <td className="px-4 py-2 text-teal-600">Ja</td>
+                    <td className="px-4 py-2 text-navy-500">Gewenste startdatum (YYYY-MM-DD)</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">has_sibling</td>
-                    <td className="px-4 py-2 text-gray-400">Nee</td>
-                    <td className="px-4 py-2 text-gray-600">Broertje/zusje (true/false)</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">has_sibling</td>
+                    <td className="px-4 py-2 text-navy-400">Nee</td>
+                    <td className="px-4 py-2 text-navy-500">Broertje/zusje (true/false)</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">single_parent</td>
-                    <td className="px-4 py-2 text-gray-400">Nee</td>
-                    <td className="px-4 py-2 text-gray-600">Alleenstaand ouder (true/false)</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">single_parent</td>
+                    <td className="px-4 py-2 text-navy-400">Nee</td>
+                    <td className="px-4 py-2 text-navy-500">Alleenstaand ouder (true/false)</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2 font-mono text-gray-800">notes</td>
-                    <td className="px-4 py-2 text-gray-400">Nee</td>
-                    <td className="px-4 py-2 text-gray-600">Opmerkingen</td>
+                    <td className="px-4 py-2 font-mono text-forest-600">notes</td>
+                    <td className="px-4 py-2 text-navy-400">Nee</td>
+                    <td className="px-4 py-2 text-navy-500">Opmerkingen</td>
                   </tr>
                 </tbody>
               </table>

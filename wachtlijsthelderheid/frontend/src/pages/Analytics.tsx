@@ -68,7 +68,7 @@ export default function Analytics() {
     return (
       <Layout title="Analytics">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta-500"></div>
         </div>
       </Layout>
     );
@@ -77,7 +77,7 @@ export default function Analytics() {
   if (!analytics) {
     return (
       <Layout title="Analytics">
-        <div className="text-center text-gray-500">Kon analytics niet laden</div>
+        <div className="text-center text-navy-400">Kon analytics niet laden</div>
       </Layout>
     );
   }
@@ -97,35 +97,43 @@ export default function Analytics() {
           value={analytics.totalWaiting}
           subtext="Actief op wachtlijst"
           icon={Icons.users}
+          iconBg="bg-forest-100"
+          iconColor="text-forest-600"
         />
         <MetricCard
           label="Geplaatst"
           value={analytics.acceptedCount}
           subtext={`${conversionRate}% conversie`}
           icon={Icons.check}
+          iconBg="bg-teal-100"
+          iconColor="text-teal-600"
         />
         <MetricCard
           label="Gem. wachttijd"
           value={`${analytics.avgWaitTimeDays}d`}
           subtext="Voor geplaatste kinderen"
           icon={Icons.clock}
+          iconBg="bg-terracotta-100"
+          iconColor="text-terracotta-600"
         />
         <MetricCard
           label="Activiteit (7d)"
           value={analytics.recentActivity}
           subtext="Acties in logboek"
           icon={Icons.activity}
+          iconBg="bg-forest-100"
+          iconColor="text-forest-600"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Day demand chart */}
         <div className="card">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900">Vraag per dag</h2>
-            <p className="text-sm text-gray-500">Aantal aanvragen per dag van de week</p>
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Vraag per dag</h2>
+            <p className="text-sm text-navy-400 mt-1">Aantal aanvragen per dag van de week</p>
           </div>
-          <div className="card-body">
+          <div className="p-6">
             <div className="space-y-4">
               {(Object.entries(analytics.dayDemand) as [Day, number][]).map(([day, count]) => {
                 const percentage = maxDayDemand > 0 ? (count / maxDayDemand) * 100 : 0;
@@ -134,14 +142,14 @@ export default function Analytics() {
                 return (
                   <div key={day}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-700">{DAY_LABELS[day]}</span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm font-medium text-forest-600">{DAY_LABELS[day]}</span>
+                      <span className="text-sm text-navy-400">
                         {count} ({sharePercentage}%)
                       </span>
                     </div>
-                    <div className="h-4 bg-gray-100 rounded overflow-hidden">
+                    <div className="h-4 bg-cream-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-primary-500 rounded transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-teal-400 to-teal-500 rounded-full transition-all duration-500"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -150,9 +158,9 @@ export default function Analytics() {
               })}
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-100">
-              <p className="text-sm text-gray-600">
-                <strong>Inzicht:</strong>{' '}
+            <div className="mt-6 pt-6 border-t border-cream-200">
+              <p className="text-sm text-navy-500">
+                <strong className="text-forest-600">Inzicht:</strong>{' '}
                 {getMostPopularDay(analytics.dayDemand)} is de meest gevraagde dag
                 met {analytics.dayDemand[getMostPopularDay(analytics.dayDemand)]} aanvragen.
               </p>
@@ -162,11 +170,11 @@ export default function Analytics() {
 
         {/* Funnel / conversion */}
         <div className="card">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900">Wachtlijst funnel</h2>
-            <p className="text-sm text-gray-500">Van inschrijving tot plaatsing</p>
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Wachtlijst funnel</h2>
+            <p className="text-sm text-navy-400 mt-1">Van inschrijving tot plaatsing</p>
           </div>
-          <div className="card-body">
+          <div className="p-6">
             <div className="space-y-4">
               <FunnelStep
                 label="Totaal ingeschreven"
@@ -178,25 +186,25 @@ export default function Analytics() {
                 label="Actief wachtend"
                 value={analytics.totalWaiting}
                 percentage={analytics.totalEntries > 0 ? (analytics.totalWaiting / analytics.totalEntries) * 100 : 0}
-                color="yellow"
+                color="amber"
               />
               <FunnelStep
                 label="Geplaatst"
                 value={analytics.acceptedCount}
                 percentage={analytics.totalEntries > 0 ? (analytics.acceptedCount / analytics.totalEntries) * 100 : 0}
-                color="green"
+                color="teal"
               />
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-100">
+            <div className="mt-6 pt-6 border-t border-cream-200">
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-3xl font-bold text-gray-900">{conversionRate}%</p>
-                  <p className="text-sm text-gray-500">Conversie ratio</p>
+                <div className="text-center p-4 bg-cream-50 rounded-xl">
+                  <p className="text-3xl font-bold text-forest-600">{conversionRate}%</p>
+                  <p className="text-sm text-navy-400">Conversie ratio</p>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-3xl font-bold text-gray-900">{analytics.avgWaitTimeDays}</p>
-                  <p className="text-sm text-gray-500">Gem. wachtdagen</p>
+                <div className="text-center p-4 bg-cream-50 rounded-xl">
+                  <p className="text-3xl font-bold text-forest-600">{analytics.avgWaitTimeDays}</p>
+                  <p className="text-sm text-navy-400">Gem. wachtdagen</p>
                 </div>
               </div>
             </div>
@@ -205,11 +213,11 @@ export default function Analytics() {
 
         {/* Insights */}
         <div className="card lg:col-span-2">
-          <div className="card-header flex items-center gap-2">
-            <span className="text-primary-500">{Icons.lightbulb}</span>
-            <h2 className="font-semibold text-gray-900">Inzichten & aanbevelingen</h2>
+          <div className="card-header bg-cream-50 flex items-center gap-2">
+            <span className="text-terracotta-500">{Icons.lightbulb}</span>
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Inzichten & aanbevelingen</h2>
           </div>
-          <div className="card-body">
+          <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <InsightCard
                 title="Piekdagen"
@@ -243,11 +251,15 @@ function MetricCard({
   value,
   subtext,
   icon,
+  iconBg,
+  iconColor,
 }: {
   label: string;
   value: string | number;
   subtext: string;
   icon: React.ReactNode;
+  iconBg: string;
+  iconColor: string;
 }) {
   return (
     <div className="stat-card">
@@ -257,7 +269,7 @@ function MetricCard({
           <p className="stat-value">{value}</p>
           <p className="stat-sublabel">{subtext}</p>
         </div>
-        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+        <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center ${iconColor}`}>
           {icon}
         </div>
       </div>
@@ -274,23 +286,23 @@ function FunnelStep({
   label: string;
   value: number;
   percentage: number;
-  color: 'gray' | 'yellow' | 'green';
+  color: 'gray' | 'amber' | 'teal';
 }) {
   const colorClasses = {
-    gray: 'bg-gray-300',
-    yellow: 'bg-yellow-400',
-    green: 'bg-green-500',
+    gray: 'bg-cream-300',
+    amber: 'bg-terracotta-400',
+    teal: 'bg-teal-500',
   };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-sm font-medium text-gray-700">{label}</span>
-        <span className="text-sm font-bold text-gray-900">{value}</span>
+        <span className="text-sm font-medium text-forest-600">{label}</span>
+        <span className="text-sm font-bold text-forest-600">{value}</span>
       </div>
-      <div className="h-6 bg-gray-100 rounded overflow-hidden">
+      <div className="h-6 bg-cream-200 rounded-full overflow-hidden">
         <div
-          className={`h-full ${colorClasses[color]} rounded transition-all duration-500 flex items-center justify-end pr-2`}
+          className={`h-full ${colorClasses[color]} rounded-full transition-all duration-500 flex items-center justify-end pr-2`}
           style={{ width: `${Math.max(percentage, 5)}%` }}
         >
           {percentage >= 15 && (
@@ -312,14 +324,14 @@ function InsightCard({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="p-4 bg-gray-50 rounded-lg">
+    <div className="p-4 bg-cream-50 rounded-xl">
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-teal-100 text-teal-600 rounded-lg flex items-center justify-center">
           {icon}
         </div>
-        <h3 className="font-medium text-gray-900">{title}</h3>
+        <h3 className="font-semibold text-forest-600">{title}</h3>
       </div>
-      <p className="text-sm text-gray-600">{description}</p>
+      <p className="text-sm text-navy-500">{description}</p>
     </div>
   );
 }
