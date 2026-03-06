@@ -77,7 +77,6 @@ export default function Waitlist() {
     }
   }
 
-  // Feature 9: Reset confirmation status
   async function handleResetConfirmation(entry: WaitlistEntry) {
     try {
       const response = await entriesApi.resetConfirmation(entry.id);
@@ -87,7 +86,6 @@ export default function Waitlist() {
     }
   }
 
-  // Feature 9: Bulk reset confirmation
   async function handleBulkResetConfirmation() {
     if (selectedEntries.length === 0) return;
 
@@ -103,7 +101,6 @@ export default function Waitlist() {
     }
   }
 
-  // Feature 9: Restore archived entry
   async function handleRestore(entry: WaitlistEntry) {
     try {
       const response = await entriesApi.restore(entry.id);
@@ -132,7 +129,6 @@ export default function Waitlist() {
   const filteredAndSorted = useMemo(() => {
     let result = showArchived ? [...archivedEntries] : [...entries];
 
-    // Search filter
     if (search) {
       const searchLower = search.toLowerCase();
       result = result.filter(e =>
@@ -142,22 +138,18 @@ export default function Waitlist() {
       );
     }
 
-    // Status filter
     if (filterStatus !== 'all') {
       result = result.filter(e => e.status === filterStatus);
     }
 
-    // Confirmation status filter (Feature 9)
     if (filterConfirmation !== 'all') {
       result = result.filter(e => e.confirmation_status === filterConfirmation);
     }
 
-    // Day filter
     if (filterDay !== 'all') {
       result = result.filter(e => e.preferred_days.includes(filterDay as Day));
     }
 
-    // Sort
     result.sort((a, b) => {
       let comparison = 0;
       switch (sortField) {
@@ -195,7 +187,6 @@ export default function Waitlist() {
     }
   };
 
-  // Feature 9: Count by confirmation status
   const confirmationCounts = useMemo(() => ({
     active: entries.filter(e => e.confirmation_status === 'active').length,
     pending: entries.filter(e => e.confirmation_status === 'pending_confirmation').length,
@@ -206,7 +197,7 @@ export default function Waitlist() {
     return (
       <Layout title="Wachtlijst">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta-500"></div>
         </div>
       </Layout>
     );
@@ -214,22 +205,22 @@ export default function Waitlist() {
 
   return (
     <Layout title="Wachtlijst">
-      {/* Feature 9: Confirmation warning banner */}
+      {/* Confirmation warning banner */}
       {confirmationCounts.pending > 0 && !showArchived && (
-        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <div className="mb-6 p-4 bg-terracotta-50 border border-terracotta-200 rounded-2xl">
           <div className="flex items-center gap-3">
-            <span className="text-yellow-600">{Icons.warning}</span>
+            <span className="text-terracotta-600">{Icons.warning}</span>
             <div className="flex-1">
-              <p className="font-medium text-yellow-800">
+              <p className="font-semibold text-terracotta-700">
                 {confirmationCounts.pending} inschrijving(en) wachten op bevestiging
               </p>
-              <p className="text-sm text-yellow-700">
+              <p className="text-sm text-terracotta-600">
                 Deze ouders hebben hun interesse nog niet bevestigd en kunnen binnenkort verlopen.
               </p>
             </div>
             <button
               onClick={() => setFilterConfirmation('pending_confirmation')}
-              className="text-sm font-medium text-yellow-700 hover:text-yellow-900"
+              className="text-sm font-semibold text-terracotta-600 hover:text-terracotta-800"
             >
               Bekijk
             </button>
@@ -259,7 +250,6 @@ export default function Waitlist() {
             <option value="matched">Voorstel verstuurd</option>
             <option value="accepted">Geplaatst</option>
           </select>
-          {/* Feature 9: Confirmation filter */}
           <select
             value={filterConfirmation}
             onChange={(e) => setFilterConfirmation(e.target.value)}
@@ -280,10 +270,9 @@ export default function Waitlist() {
               <option key={day} value={day}>{day}</option>
             ))}
           </select>
-          {/* Feature 9: Toggle archived */}
           <button
             onClick={() => setShowArchived(!showArchived)}
-            className={`btn-secondary flex items-center gap-2 ${showArchived ? 'bg-gray-200' : ''}`}
+            className={`btn-outline flex items-center gap-2 ${showArchived ? 'bg-forest-500 text-white' : ''}`}
           >
             {Icons.archive}
             {showArchived ? 'Actief' : `Archief (${archivedEntries.length})`}
@@ -294,23 +283,23 @@ export default function Waitlist() {
         </div>
       </div>
 
-      {/* Feature 9: Bulk actions */}
+      {/* Bulk actions */}
       {selectedEntries.length > 0 && !showArchived && (
-        <div className="mb-4 p-3 bg-primary-50 border border-primary-200 rounded-lg flex items-center gap-4">
-          <span className="text-sm text-primary-700">
+        <div className="mb-4 p-3 bg-teal-50 border border-teal-200 rounded-xl flex items-center gap-4">
+          <span className="text-sm text-teal-700 font-medium">
             {selectedEntries.length} geselecteerd
           </span>
           <button
             onClick={handleBulkResetConfirmation}
             disabled={bulkAction}
-            className="text-sm font-medium text-primary-600 hover:text-primary-800 flex items-center gap-1"
+            className="text-sm font-semibold text-teal-600 hover:text-teal-800 flex items-center gap-1"
           >
             {Icons.refresh}
             {bulkAction ? 'Bezig...' : 'Reset bevestigingsstatus'}
           </button>
           <button
             onClick={() => setSelectedEntries([])}
-            className="text-sm text-gray-500 hover:text-gray-700 ml-auto"
+            className="text-sm text-navy-400 hover:text-navy-600 ml-auto"
           >
             Deselecteer
           </button>
@@ -319,51 +308,49 @@ export default function Waitlist() {
 
       {/* Stats summary */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">{entries.length}</p>
-          <p className="text-sm text-gray-500">Totaal</p>
+        <div className="stat-card text-center">
+          <p className="text-2xl font-bold text-forest-600">{entries.length}</p>
+          <p className="text-sm text-navy-400">Totaal</p>
         </div>
-        <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-yellow-600">
+        <div className="stat-card text-center">
+          <p className="text-2xl font-bold text-terracotta-500">
             {entries.filter(e => e.status === 'waiting').length}
           </p>
-          <p className="text-sm text-gray-500">Wachtend</p>
+          <p className="text-sm text-navy-400">Wachtend</p>
         </div>
-        <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-blue-600">
+        <div className="stat-card text-center">
+          <p className="text-2xl font-bold text-forest-500">
             {entries.filter(e => e.status === 'matched').length}
           </p>
-          <p className="text-sm text-gray-500">Voorstel verstuurd</p>
+          <p className="text-sm text-navy-400">Voorstel verstuurd</p>
         </div>
-        <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-green-600">
+        <div className="stat-card text-center">
+          <p className="text-2xl font-bold text-teal-600">
             {entries.filter(e => e.status === 'accepted').length}
           </p>
-          <p className="text-sm text-gray-500">Geplaatst</p>
+          <p className="text-sm text-navy-400">Geplaatst</p>
         </div>
-        {/* Feature 9: Pending confirmation count */}
-        <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-orange-600">
+        <div className="stat-card text-center">
+          <p className="text-2xl font-bold text-terracotta-600">
             {confirmationCounts.pending}
           </p>
-          <p className="text-sm text-gray-500">Wacht op bevestiging</p>
+          <p className="text-sm text-navy-400">Wacht op bevestiging</p>
         </div>
       </div>
 
       {/* Table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-cream-50">
               <tr>
-                {/* Feature 9: Checkbox column */}
                 {!showArchived && (
                   <th className="px-4 py-3 w-10">
                     <input
                       type="checkbox"
                       checked={selectedEntries.length === filteredAndSorted.length && filteredAndSorted.length > 0}
                       onChange={toggleSelectAll}
-                      className="rounded border-gray-300"
+                      className="rounded border-cream-300"
                     />
                   </th>
                 )}
@@ -381,7 +368,7 @@ export default function Waitlist() {
                   dir={sortDir}
                   onSort={handleSort}
                 />
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dagen</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase">Dagen</th>
                 <SortHeader
                   label="Gewenste start"
                   field="desired_start_date"
@@ -396,7 +383,7 @@ export default function Waitlist() {
                   dir={sortDir}
                   onSort={handleSort}
                 />
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prioriteit</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase">Prioriteit</th>
                 <SortHeader
                   label="Status"
                   field="status"
@@ -404,7 +391,6 @@ export default function Waitlist() {
                   dir={sortDir}
                   onSort={handleSort}
                 />
-                {/* Feature 9: Confirmation status column */}
                 <SortHeader
                   label="Bevestiging"
                   field="confirmation_status"
@@ -412,13 +398,13 @@ export default function Waitlist() {
                   dir={sortDir}
                   onSort={handleSort}
                 />
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acties</th>
+                <th className="px-6 py-3 text-right text-xs font-semibold text-navy-400 uppercase">Acties</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-cream-200">
               {filteredAndSorted.length === 0 ? (
                 <tr>
-                  <td colSpan={showArchived ? 9 : 10} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={showArchived ? 9 : 10} className="px-6 py-12 text-center text-navy-400">
                     {search || filterStatus !== 'all' || filterDay !== 'all' || filterConfirmation !== 'all'
                       ? 'Geen resultaten gevonden'
                       : showArchived ? 'Geen gearchiveerde inschrijvingen' : 'Nog geen inschrijvingen'}
@@ -426,33 +412,32 @@ export default function Waitlist() {
                 </tr>
               ) : (
                 filteredAndSorted.map((entry, index) => (
-                  <tr key={entry.id} className="hover:bg-gray-50">
-                    {/* Feature 9: Checkbox */}
+                  <tr key={entry.id} className="hover:bg-cream-50 transition-colors">
                     {!showArchived && (
                       <td className="px-4 py-4">
                         <input
                           type="checkbox"
                           checked={selectedEntries.includes(entry.id)}
                           onChange={() => toggleSelectEntry(entry.id)}
-                          className="rounded border-gray-300"
+                          className="rounded border-cream-300"
                         />
                       </td>
                     )}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-medium text-sm">
+                        <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 font-medium text-sm">
                           {index + 1}
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{entry.child_name}</p>
-                          <p className="text-xs text-gray-500 font-mono">{entry.access_code}</p>
+                          <p className="font-medium text-forest-600">{entry.child_name}</p>
+                          <p className="text-xs text-navy-400 font-mono">{entry.access_code}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-900">{entry.parent_name}</p>
+                      <p className="text-sm text-navy-600">{entry.parent_name}</p>
                       {entry.parent_email && (
-                        <p className="text-xs text-gray-500">{entry.parent_email}</p>
+                        <p className="text-xs text-navy-400">{entry.parent_email}</p>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -460,10 +445,10 @@ export default function Waitlist() {
                         {DAYS.map(day => (
                           <span
                             key={day}
-                            className={`w-7 h-7 rounded text-xs font-medium flex items-center justify-center ${
+                            className={`w-7 h-7 rounded-lg text-xs font-medium flex items-center justify-center ${
                               entry.preferred_days.includes(day)
-                                ? 'bg-primary-100 text-primary-700'
-                                : 'bg-gray-100 text-gray-400'
+                                ? 'bg-teal-100 text-teal-700'
+                                : 'bg-cream-200 text-navy-300'
                             }`}
                           >
                             {day}
@@ -471,10 +456,10 @@ export default function Waitlist() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-navy-500">
                       {new Date(entry.desired_start_date).toLocaleDateString('nl-NL')}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-navy-500">
                       {new Date(entry.created_at).toLocaleDateString('nl-NL')}
                     </td>
                     <td className="px-6 py-4">
@@ -483,41 +468,38 @@ export default function Waitlist() {
                           <span className="badge-blue" title="Broertje/zusje">B/Z</span>
                         )}
                         {entry.priority_factors.single_parent && (
-                          <span className="badge-yellow" title="Alleenstaand ouder">AO</span>
+                          <span className="badge-amber" title="Alleenstaand ouder">AO</span>
                         )}
                         {entry.priority_factors.custom && (
                           <span className="badge-gray" title={entry.priority_factors.custom}>+</span>
                         )}
                         {!entry.priority_factors.has_sibling && !entry.priority_factors.single_parent && !entry.priority_factors.custom && (
-                          <span className="text-gray-400 text-sm">-</span>
+                          <span className="text-navy-300 text-sm">-</span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={entry.status} />
                     </td>
-                    {/* Feature 9: Confirmation status */}
                     <td className="px-6 py-4">
                       <ConfirmationBadge status={entry.confirmation_status} lastConfirmed={entry.last_confirmed_at} />
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         {showArchived ? (
-                          // Restore button for archived
                           <button
                             onClick={() => handleRestore(entry)}
-                            className="p-2 text-gray-400 hover:text-green-600 rounded-lg hover:bg-gray-100"
+                            className="p-2 text-navy-300 hover:text-teal-600 rounded-lg hover:bg-cream-100"
                             title="Herstellen"
                           >
                             {Icons.restore}
                           </button>
                         ) : (
                           <>
-                            {/* Feature 9: Reset confirmation button */}
                             {entry.confirmation_status !== 'active' && (
                               <button
                                 onClick={() => handleResetConfirmation(entry)}
-                                className="p-2 text-gray-400 hover:text-primary-600 rounded-lg hover:bg-gray-100"
+                                className="p-2 text-navy-300 hover:text-teal-600 rounded-lg hover:bg-cream-100"
                                 title="Reset bevestigingsstatus"
                               >
                                 {Icons.refresh}
@@ -525,7 +507,7 @@ export default function Waitlist() {
                             )}
                             <Link
                               to={`/waitlist/${entry.id}/edit`}
-                              className="p-2 text-gray-400 hover:text-primary-600 rounded-lg hover:bg-gray-100"
+                              className="p-2 text-navy-300 hover:text-forest-600 rounded-lg hover:bg-cream-100"
                               title="Bewerken"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -534,7 +516,7 @@ export default function Waitlist() {
                             </Link>
                             <button
                               onClick={() => setShowDeleteModal(entry)}
-                              className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100"
+                              className="p-2 text-navy-300 hover:text-terracotta-600 rounded-lg hover:bg-cream-100"
                               title="Verwijderen"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -555,18 +537,18 @@ export default function Waitlist() {
 
       {/* Delete Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <div className="fixed inset-0 bg-forest-900/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <h3 className="text-lg font-serif font-bold text-forest-600 mb-2">
               Inschrijving verwijderen
             </h3>
-            <p className="text-gray-600 mb-6">
-              Weet je zeker dat je de inschrijving van <strong>{showDeleteModal.child_name}</strong> wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+            <p className="text-navy-500 mb-6">
+              Weet je zeker dat je de inschrijving van <strong className="text-forest-600">{showDeleteModal.child_name}</strong> wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteModal(null)}
-                className="btn-secondary"
+                className="btn-outline"
               >
                 Annuleren
               </button>
@@ -600,7 +582,7 @@ function SortHeader({
   const isActive = current === field;
   return (
     <th
-      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100"
+      className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase cursor-pointer hover:bg-cream-100"
       onClick={() => onSort(field)}
     >
       <div className="flex items-center gap-1">
@@ -617,11 +599,11 @@ function SortHeader({
 
 function StatusBadge({ status }: { status: string }) {
   const classes = {
-    waiting: 'badge-yellow',
+    waiting: 'badge-amber',
     matched: 'badge-blue',
     accepted: 'badge-green',
     removed: 'badge-gray',
-    pending_confirmation: 'badge-orange',
+    pending_confirmation: 'badge-amber',
     expired: 'badge-red',
     archived: 'badge-gray',
   };
@@ -643,11 +625,10 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-// Feature 9: Confirmation status badge
 function ConfirmationBadge({ status, lastConfirmed }: { status?: ConfirmationStatus; lastConfirmed?: string }) {
   const classes = {
     active: 'badge-green',
-    pending_confirmation: 'badge-orange',
+    pending_confirmation: 'badge-amber',
     expired: 'badge-red',
     archived: 'badge-gray',
   };
@@ -659,7 +640,7 @@ function ConfirmationBadge({ status, lastConfirmed }: { status?: ConfirmationSta
     archived: 'Gearchiveerd',
   };
 
-  if (!status) return <span className="text-gray-400 text-sm">-</span>;
+  if (!status) return <span className="text-navy-300 text-sm">-</span>;
 
   return (
     <div>
@@ -667,7 +648,7 @@ function ConfirmationBadge({ status, lastConfirmed }: { status?: ConfirmationSta
         {labels[status] || status}
       </span>
       {lastConfirmed && (
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-xs text-navy-400 mt-1">
           {new Date(lastConfirmed).toLocaleDateString('nl-NL')}
         </p>
       )}

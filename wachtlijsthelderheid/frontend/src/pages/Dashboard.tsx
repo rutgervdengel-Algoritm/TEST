@@ -87,7 +87,7 @@ export default function Dashboard() {
     return (
       <Layout title="Dashboard">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta-500"></div>
         </div>
       </Layout>
     );
@@ -102,24 +102,32 @@ export default function Dashboard() {
           value={analytics?.totalWaiting || 0}
           sublabel="Actief op wachtlijst"
           icon={Icons.users}
+          iconBg="bg-forest-100"
+          iconColor="text-forest-600"
         />
         <StatCard
           label="Geplaatst"
           value={analytics?.acceptedCount || 0}
           sublabel="Totaal geplaatst"
           icon={Icons.check}
+          iconBg="bg-teal-100"
+          iconColor="text-teal-600"
         />
         <StatCard
           label="Gem. wachttijd"
           value={`${analytics?.avgWaitTimeDays || 0}d`}
           sublabel="In dagen"
           icon={Icons.clock}
+          iconBg="bg-terracotta-100"
+          iconColor="text-terracotta-600"
         />
         <StatCard
           label="Activiteit"
           value={analytics?.recentActivity || 0}
           sublabel="Laatste 7 dagen"
           icon={Icons.activity}
+          iconBg="bg-forest-100"
+          iconColor="text-forest-600"
         />
       </div>
 
@@ -127,54 +135,54 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Link
           to="/waitlist/new"
-          className="stat-card hover:border-primary-300 hover:shadow-md transition-all group flex items-center justify-between"
+          className="stat-card hover:border-terracotta-300 hover:shadow-xl transition-all group flex items-center justify-between"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600 group-hover:bg-primary-200 transition-colors">
+            <div className="w-10 h-10 bg-terracotta-100 rounded-xl flex items-center justify-center text-terracotta-600 group-hover:bg-terracotta-200 transition-colors">
               {Icons.plus}
             </div>
             <div>
-              <h3 className="font-medium text-gray-900">Nieuwe inschrijving</h3>
-              <p className="text-sm text-gray-500">Kind toevoegen</p>
+              <h3 className="font-semibold text-forest-600">Nieuwe inschrijving</h3>
+              <p className="text-sm text-navy-400">Kind toevoegen</p>
             </div>
           </div>
-          <span className="text-gray-400 group-hover:text-primary-500 transition-colors">
+          <span className="text-navy-300 group-hover:text-terracotta-500 transition-colors">
             {Icons.arrow}
           </span>
         </Link>
 
         <Link
           to="/spots/new"
-          className="stat-card hover:border-green-300 hover:shadow-md transition-all group flex items-center justify-between"
+          className="stat-card hover:border-teal-300 hover:shadow-xl transition-all group flex items-center justify-between"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 group-hover:bg-green-200 transition-colors">
+            <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 group-hover:bg-teal-200 transition-colors">
               {Icons.spot}
             </div>
             <div>
-              <h3 className="font-medium text-gray-900">Plek beschikbaar</h3>
-              <p className="text-sm text-gray-500">Vind de beste match</p>
+              <h3 className="font-semibold text-forest-600">Plek beschikbaar</h3>
+              <p className="text-sm text-navy-400">Vind de beste match</p>
             </div>
           </div>
-          <span className="text-gray-400 group-hover:text-green-500 transition-colors">
+          <span className="text-navy-300 group-hover:text-teal-500 transition-colors">
             {Icons.arrow}
           </span>
         </Link>
 
         <Link
           to="/matches"
-          className="stat-card hover:border-yellow-300 hover:shadow-md transition-all group flex items-center justify-between"
+          className="stat-card hover:border-forest-300 hover:shadow-xl transition-all group flex items-center justify-between"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600 group-hover:bg-yellow-200 transition-colors">
+            <div className="w-10 h-10 bg-forest-100 rounded-xl flex items-center justify-center text-forest-600 group-hover:bg-forest-200 transition-colors">
               {Icons.match}
             </div>
             <div>
-              <h3 className="font-medium text-gray-900">Bekijk matches</h3>
-              <p className="text-sm text-gray-500">Lopende voorstellen</p>
+              <h3 className="font-semibold text-forest-600">Bekijk matches</h3>
+              <p className="text-sm text-navy-400">Lopende voorstellen</p>
             </div>
           </div>
-          <span className="text-gray-400 group-hover:text-yellow-500 transition-colors">
+          <span className="text-navy-300 group-hover:text-forest-500 transition-colors">
             {Icons.arrow}
           </span>
         </Link>
@@ -183,8 +191,8 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Day demand chart */}
         <div className="card">
-          <div className="card-header">
-            <h2 className="font-semibold text-gray-900">Vraag per dag</h2>
+          <div className="card-header bg-cream-50">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Vraag per dag</h2>
           </div>
           <div className="card-body">
             {analytics && (
@@ -194,16 +202,16 @@ export default function Dashboard() {
                   const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
                   return (
                     <div key={day} className="flex items-center gap-4">
-                      <div className="w-20 text-sm font-medium text-gray-600">
+                      <div className="w-20 text-sm font-medium text-forest-500">
                         {DAY_LABELS[day]}
                       </div>
-                      <div className="flex-1 h-6 bg-gray-100 rounded overflow-hidden">
+                      <div className="flex-1 h-6 bg-cream-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-primary-500 rounded transition-all duration-500"
+                          className="h-full bg-gradient-to-r from-teal-400 to-teal-500 rounded-full transition-all duration-500"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
-                      <div className="w-8 text-sm font-semibold text-gray-900 text-right">
+                      <div className="w-8 text-sm font-semibold text-forest-600 text-right">
                         {count}
                       </div>
                     </div>
@@ -216,22 +224,22 @@ export default function Dashboard() {
 
         {/* Recent activity */}
         <div className="card">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Recente activiteit</h2>
-            <Link to="/log" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+          <div className="card-header bg-cream-50 flex items-center justify-between">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Recente activiteit</h2>
+            <Link to="/log" className="text-sm text-terracotta-500 hover:text-terracotta-600 font-semibold">
               Bekijk alles
             </Link>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-cream-200">
             {recentLogs.length === 0 ? (
-              <div className="card-body text-center text-gray-500">
+              <div className="py-8 text-center text-navy-400">
                 Nog geen activiteit
               </div>
             ) : (
               recentLogs.map(log => (
-                <div key={log.id} className="px-6 py-3">
-                  <p className="text-sm text-gray-900">{log.description}</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                <div key={log.id} className="py-3">
+                  <p className="text-sm text-navy-600">{log.description}</p>
+                  <p className="text-xs text-navy-400 mt-1">
                     {new Date(log.created_at).toLocaleString('nl-NL')}
                   </p>
                 </div>
@@ -242,43 +250,43 @@ export default function Dashboard() {
 
         {/* Recent entries */}
         <div className="card lg:col-span-2">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Laatste inschrijvingen</h2>
-            <Link to="/waitlist" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+          <div className="card-header bg-cream-50 flex items-center justify-between">
+            <h2 className="font-serif font-bold text-forest-600 text-lg">Laatste inschrijvingen</h2>
+            <Link to="/waitlist" className="text-sm text-terracotta-500 hover:text-terracotta-600 font-semibold">
               Bekijk alles
             </Link>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-6">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-cream-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kind</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ouder</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dagen</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Startdatum</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase tracking-wider">Kind</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase tracking-wider">Ouder</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase tracking-wider">Dagen</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase tracking-wider">Startdatum</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-navy-400 uppercase tracking-wider">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-cream-200">
                 {recentEntries.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={5} className="px-6 py-8 text-center text-navy-400">
                       Nog geen inschrijvingen
                     </td>
                   </tr>
                 ) : (
                   recentEntries.map(entry => (
-                    <tr key={entry.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    <tr key={entry.id} className="hover:bg-cream-50 transition-colors">
+                      <td className="px-6 py-4 text-sm font-medium text-forest-600">
                         {entry.child_name}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                      <td className="px-6 py-4 text-sm text-navy-500">
                         {entry.parent_name}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                      <td className="px-6 py-4 text-sm text-navy-500">
                         {entry.preferred_days.join(', ')}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                      <td className="px-6 py-4 text-sm text-navy-500">
                         {new Date(entry.desired_start_date).toLocaleDateString('nl-NL')}
                       </td>
                       <td className="px-6 py-4">
@@ -301,11 +309,15 @@ function StatCard({
   value,
   sublabel,
   icon,
+  iconBg,
+  iconColor,
 }: {
   label: string;
   value: string | number;
   sublabel: string;
   icon: React.ReactNode;
+  iconBg: string;
+  iconColor: string;
 }) {
   return (
     <div className="stat-card">
@@ -315,7 +327,7 @@ function StatCard({
           <p className="stat-value">{value}</p>
           <p className="stat-sublabel">{sublabel}</p>
         </div>
-        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+        <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center ${iconColor}`}>
           {icon}
         </div>
       </div>
@@ -325,7 +337,7 @@ function StatCard({
 
 function StatusBadge({ status }: { status: string }) {
   const classes = {
-    waiting: 'badge-yellow',
+    waiting: 'badge-amber',
     matched: 'badge-blue',
     accepted: 'badge-green',
     removed: 'badge-gray',

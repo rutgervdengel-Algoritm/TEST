@@ -116,58 +116,52 @@ export default function Layout({ children, title }: LayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cream-100">
       {/* Mobile overlay backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          className="fixed inset-0 bg-forest-900/50 z-20 md:hidden"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
       )}
 
-      {/* Sidebar - fixed left, full height */}
+      {/* Sidebar - fixed left, full height - Forest green theme */}
       <aside className={`
-        fixed inset-y-0 left-0 w-64 bg-sidebar z-30 flex flex-col
+        fixed inset-y-0 left-0 w-64 bg-forest-500 z-30 flex flex-col
         transform transition-transform duration-200 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}>
         {/* Header met logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-forest-400">
           <Link to="/" className="flex items-center gap-3">
-            {/* Logo icon - w-9 h-9 bg-primary-400 rounded-lg */}
-            <div className="w-9 h-9 bg-primary-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">W</span>
+            {/* Logo icon - forest groen vierkant met witte letter */}
+            <div className="w-9 h-9 bg-terracotta-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg font-serif">W</span>
             </div>
-            <span className="font-semibold text-white text-lg tracking-tight">Wait</span>
+            <span className="font-serif text-white text-xl tracking-tight">WachtlijstHelderheid</span>
           </Link>
-          <div className="flex items-center gap-2">
-            {/* Sandbox badge */}
-            <span className="bg-amber-400 text-amber-900 text-xs font-medium px-2 py-0.5 rounded">
-              Sandbox
-            </span>
-            {/* Close button - mobile only */}
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="md:hidden p-1.5 text-gray-400 hover:text-white hover:bg-sidebar-light rounded-lg"
-              aria-label="Sluit menu"
-            >
-              {Icons.close}
-            </button>
-          </div>
+          {/* Close button - mobile only */}
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden p-1.5 text-forest-200 hover:text-white hover:bg-forest-600 rounded-lg"
+            aria-label="Sluit menu"
+          >
+            {Icons.close}
+          </button>
         </div>
 
         {/* Organisatie info */}
-        <div className="px-4 py-3 border-b border-sidebar-border">
+        <div className="px-4 py-3 border-b border-forest-400">
           <p className="text-white font-medium text-sm truncate">{organization?.name}</p>
-          <p className="text-gray-400 text-xs truncate mt-0.5">
+          <p className="text-forest-200 text-xs truncate mt-0.5">
             {organization?.type === 'BSO' ? 'Buitenschoolse opvang' : 'Kinderdagverblijf'}
           </p>
         </div>
 
         {/* Navigatie */}
-        <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map(item => {
             const isActive = location.pathname === item.path;
             return (
@@ -175,14 +169,14 @@ export default function Layout({ children, title }: LayoutProps) {
                 key={item.path}
                 to={item.path}
                 className={`
-                  flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+                  flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer
                   ${isActive
-                    ? 'bg-primary-400/20 text-primary-300'
-                    : 'text-gray-300 hover:bg-sidebar-light hover:text-white'
+                    ? 'bg-white/15 text-white'
+                    : 'text-forest-100 hover:bg-forest-600 hover:text-white'
                   }
                 `}
               >
-                <span className={isActive ? 'text-primary-300' : 'text-gray-400'}>
+                <span className={isActive ? 'text-teal-300' : 'text-forest-200'}>
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
@@ -192,16 +186,16 @@ export default function Layout({ children, title }: LayoutProps) {
         </nav>
 
         {/* User section */}
-        <div className="p-4 border-t border-sidebar-border">
+        <div className="p-4 border-t border-forest-400">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs text-gray-400 truncate">
+              <p className="text-xs text-forest-200 truncate">
                 {organization?.email}
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="ml-2 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-sidebar-light transition-colors"
+              className="ml-2 p-2 text-forest-200 hover:text-white rounded-lg hover:bg-forest-600 transition-colors"
               title="Uitloggen"
             >
               {Icons.logout}
@@ -212,23 +206,23 @@ export default function Layout({ children, title }: LayoutProps) {
 
       {/* Main content - offset by sidebar width on desktop */}
       <main className="md:ml-64 min-h-screen">
-        {/* Sticky header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 md:px-8 sticky top-0 z-10">
+        {/* Sticky header - cream/warm style */}
+        <header className="h-16 bg-cream-100/90 backdrop-blur-md border-b border-cream-300 flex items-center px-4 md:px-8 sticky top-0 z-10">
           {/* Hamburger menu button - mobile only */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="md:hidden p-2 -ml-2 mr-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+            className="md:hidden p-2 -ml-2 mr-2 text-forest-500 hover:text-forest-700 hover:bg-cream-200 rounded-lg"
             aria-label="Open menu"
           >
             {Icons.menu}
           </button>
           {title && (
-            <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
+            <h1 className="text-xl font-serif font-bold text-forest-600">{title}</h1>
           )}
         </header>
 
         {/* Content area */}
-        <div className="p-4 md:p-8">
+        <div className="p-4 md:p-8 max-w-7xl mx-auto">
           {children}
         </div>
       </main>
