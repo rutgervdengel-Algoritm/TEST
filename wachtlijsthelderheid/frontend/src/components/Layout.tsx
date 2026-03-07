@@ -134,18 +134,18 @@ export default function Layout({ children, title }: LayoutProps) {
         md:translate-x-0
       `}>
         {/* Header met logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-forest-400">
-          <Link to="/" className="flex items-center gap-3">
+        <div className="h-16 flex items-center px-4 border-b border-forest-400">
+          <Link to="/" className="flex items-center gap-3 flex-1 min-w-0">
             {/* Logo icon - forest groen vierkant met witte letter */}
-            <div className="w-9 h-9 bg-terracotta-500 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 bg-terracotta-500 rounded-lg flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold text-lg font-serif">W</span>
             </div>
-            <span className="font-serif text-white text-xl tracking-tight">WachtlijstHelderheid</span>
+            <span className="font-serif text-white text-lg tracking-tight truncate">WachtlijstHelderheid</span>
           </Link>
           {/* Close button - mobile only */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden p-1.5 text-forest-200 hover:text-white hover:bg-forest-600 rounded-lg"
+            className="md:hidden p-1.5 ml-2 text-forest-200 hover:text-white hover:bg-forest-600 rounded-lg flex-shrink-0"
             aria-label="Sluit menu"
           >
             {Icons.close}

@@ -139,7 +139,7 @@ export default function EntryForm() {
 
           {isEditing && accessCode && (
             <div className="card p-4 bg-teal-50 border-teal-200">
-              <div className="flex items-start gap-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 <div className="flex-shrink-0">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(
@@ -149,13 +149,13 @@ export default function EntryForm() {
                     className="w-[120px] h-[120px] rounded-xl border border-teal-200"
                   />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 text-center sm:text-left">
                   <p className="text-sm font-medium text-teal-700">Toegangscode ouder portal</p>
                   <p className="text-xl font-mono font-bold text-teal-800 mt-1">{accessCode}</p>
                   <p className="text-xs text-teal-600 mt-2">
                     Scan de QR-code of gebruik de code om in te loggen op het ouderportaal.
                   </p>
-                  <div className="flex gap-2 mt-3">
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
                     <button
                       type="button"
                       onClick={() => navigator.clipboard.writeText(accessCode)}
